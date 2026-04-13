@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cat Focus Design System"
+  short_description: "Popup design tokens for this repo"
+  default_prompt: "Use $cat-focus-design-system to design or restyle a Cat Focus extension surface."

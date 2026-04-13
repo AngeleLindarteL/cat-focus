@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gatito Pixel Art</title>
+    <style>
+      :root {
+        --pixel: 12px;
+        --fur-primary: #d0a06a;
+        --fur-secondary: #8a5527;
+        --fur-light: #ffffff;
+        --outline: #000000;
+        --inner-ear: #f1d9e6;
+        --blush: #efb4c3;
+        --shadow: rgba(0, 0, 0, 0.22);
+        --bg: #f4efe9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #fbf7f2 0%, var(--bg) 100%);
+        font-family: system-ui, sans-serif;
+      }
+
+      .scene {
+        display: grid;
+        justify-items: center;
+        gap: 18px;
+        padding: 24px;
+      }
+
+      .cat-wrap {
+        position: relative;
+        width: calc(var(--pixel) * 22);
+        height: calc(var(--pixel) * 22);
+      }
+
+      .cat {
+        position: absolute;
+        inset: 0;
+        image-rendering: pixelated;
+      }
+
+      .shadow {
+        position: absolute;
+        left: 50%;
+        bottom: calc(var(--pixel) * 0.8);
+        width: calc(var(--pixel) * 12);
+        height: calc(var(--pixel) * 2);
+        transform: translateX(-50%);
+        background: var(--shadow);
+        filter: blur(1px);
+        border-radius: 999px;
+      }
+
+      .pixel {
+        position: absolute;
+        width: var(--pixel);
+        height: var(--pixel);
+      }
+
+      .outline {
+        background: var(--outline);
+      }
+      .fur1 {
+        background: var(--fur-primary);
+      }
+      .fur2 {
+        background: var(--fur-secondary);
+      }
+      .fur-light {
+        background: var(--fur-light);
+      }
+      .inner-ear {
+        background: var(--inner-ear);
+      }
+      .blush {
+        background: var(--blush);
+      }
+
+      .hint {
+        max-width: 760px;
+        text-align: center;
+        color: #5b5046;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      code {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene">
+      <div class="cat-wrap">
+        <div class="shadow"></div>
+        <div class="cat" id="cat"></div>
+      </div>
+
+      <div class="hint">
+        Sí, el otro estaba feo. Este quedó mucho más limpio y mantiene la lógica
+        correcta:
+        <code>--fur-primary</code> para el pelaje base,
+        <code>--fur-secondary</code> para rayas, cola y patas, y
+        <code>--fur-light</code> para cara, pecho y pancita.
+      </div>
+    </div>
+
+    <script>
+      const cat = document.getElementById("cat");
+
+      // 22 x 22
+      // X = contorno
+      // P = pelaje principal
+      // S = pelaje secundario
+      // W = pelaje claro
+      // I = interior de oreja
+      // B = mejillas
+      const sprite = [
+        "......XXX....XXX......",
+        "......XIXX..XXIX......",
+        "......XIPX..XPIX......",
+        ".....XXPPXXXXPPXX.....",
+        "....XXPPPPSSPPPPXX....",
+        "....XPPPPWWWWPPPPX....",
+        "...XXPPWWWWWWWWPPXX...",
+        "...XPPWWWWWWWWWWPPX...",
+        "...XPWWXWWWWWWXWWPX...",
+        "...XWWWBXWXWXWBWWWX...",
+        "...XWWWWXXXXXWWWWWX...",
+        "....XWWWWWWWWWWWWX....",
+        "....XXWWWWWWWWWWXX....",
+        "...XXSWWWWWWWWWWWSXXX.",
+        "...XSSWWWWWWWWWWWWSSXP",
+        "...XSSWWWWWWWWWWWWSSXP",
+        "...XXXXXXWWWWWWXXXXXP.",
+        ".....XXSXWWWWXSSXX.XP.",
+        ".....XSSXXXXXXSSX.XXP.",
+        ".....XXXX....XXXXXX...",
+      ];
+
+      const palette = {
+        X: "outline",
+        P: "fur1",
+        S: "fur2",
+        W: "fur-light",
+        I: "inner-ear",
+        B: "blush",
+      };
+
+      const pixelSize = getComputedStyle(document.documentElement)
+        .getPropertyValue("--pixel")
+        .trim();
+
+      sprite.forEach((row, y) => {
+        [...row].forEach((cell, x) => {
+          if (cell === ".") return;
+
+          const pixel = document.createElement("div");
+          pixel.className = `pixel ${palette[cell]}`;
+          pixel.style.left = `calc(${pixelSize} * ${x})`;
+          pixel.style.top = `calc(${pixelSize} * ${y})`;
+          cat.appendChild(pixel);
+        });
+      });
+    </script>
+  </body>
+</html>

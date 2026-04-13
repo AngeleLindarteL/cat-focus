@@ -1,8 +1,7 @@
-import Popup from "@/views/Popup";
-import "@/index.css";
+import { PopupGateContainer } from "@/modules/onboarding/containers/PopupGateContainer";
 
 function App() {
-  return <Popup />;
+  return <PopupGateContainer />;
 }
 
 export default App;

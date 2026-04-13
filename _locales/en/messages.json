@@ -1,0 +1,71 @@
+{
+  "popupEyebrow": { "message": "Popup" },
+  "popupRedirectTitle": { "message": "Hello! Thanks for installing our extension" },
+  "popupRedirectDescription": {
+    "message": "We’ll help you set up your focus companion and preferences."
+  },
+  "popupRedirectBody": {
+    "message": "Continue in the options page to choose your cat, review your progress, and finish setup."
+  },
+  "popupRedirectAction": { "message": "Open options" },
+  "popupRedirectFooter": {
+    "message": "You can leave and come back later. Your saved onboarding data will be ready when you return."
+  },
+  "homePopupTitle": { "message": "Cat Focus" },
+  "homePopupDescription": {
+    "message": "A clean popup shell for the extension while the focus workflow is built out."
+  },
+  "homePopupBody": {
+    "message": "Open the options page to configure behavior, site rules, and future focus-session settings."
+  },
+  "homePopupAction": { "message": "Open options" },
+  "homePopupFooter": {
+    "message": "Popup logic stays in containers, while the shared card UI remains presentation-only."
+  },
+  "optionsEyebrow": { "message": "Options" },
+  "homeOptionsTitle": { "message": "Extension settings" },
+  "homeOptionsDescription": {
+    "message": "This options surface is ready for persisted settings and feature-specific forms."
+  },
+  "homeOptionsBody": {
+    "message": "Use this page as the home for storage-backed preferences, Chrome API integrations, and module-specific configuration screens."
+  },
+  "homeOptionsFooter": {
+    "message": "The options entrypoint stays thin and delegates orchestration to a container."
+  },
+  "onboardingEyebrow": { "message": "Onboarding" },
+  "onboardingTitle": { "message": "Set up Cat Focus" },
+  "onboardingDescription": {
+    "message": "Finish your first setup to personalize the extension and unlock the default popup and options experience."
+  },
+  "onboardingStepOneLabel": { "message": "Choose your cat" },
+  "onboardingStepTwoLabel": { "message": "Review your habits" },
+  "onboardingStepThreeLabel": { "message": "Finish setup" },
+  "onboardingBackAction": { "message": "Back" },
+  "onboardingNextAction": { "message": "Next" },
+  "onboardingFinishAction": { "message": "Finish onboarding" },
+  "onboardingStepTwoTitle": { "message": "Focus methods are next" },
+  "onboardingStepTwoDescription": {
+    "message": "This placeholder keeps the onboarding flow valid while the next setup screen is being built."
+  },
+  "onboardingStepThreeTitle": { "message": "Confirm your setup" },
+  "onboardingStepThreeDescription": {
+    "message": "Complete onboarding to switch the extension into its normal popup and options experience."
+  },
+  "onboardingStepPlaceholderNote": {
+    "message": "This step is intentionally lightweight for now, but the navigation and persisted onboarding state are already wired."
+  },
+  "catSetupTitle": { "message": "Create your cat companion" },
+  "catSetupDescription": {
+    "message": "Pick a name and choose two fur colors. You can come back later and your saved values will be prefilled."
+  },
+  "catNameLabel": { "message": "Cat name" },
+  "catNamePlaceholder": { "message": "Mochi" },
+  "catPrimaryColorLabel": { "message": "Primary fur color" },
+  "catSecondaryColorLabel": { "message": "Secondary fur color" },
+  "catPreviewLabel": { "message": "Live preview" },
+  "catStepSubmit": { "message": "Save and continue" },
+  "validationCatNameRequired": { "message": "Enter a name for your cat." },
+  "validationColorInvalid": { "message": "Choose a valid color." },
+  "loadingLabel": { "message": "Loading..." }
+}

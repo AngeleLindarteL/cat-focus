@@ -1,0 +1,6 @@
+import { ONBOARDING_STORAGE_KEYS } from "@/lib/onboarding";
+
+export const ONBOARDING_REPOSITORY_STORAGE_KEYS = [
+  ONBOARDING_STORAGE_KEYS.step,
+  ONBOARDING_STORAGE_KEYS.finished,
+];

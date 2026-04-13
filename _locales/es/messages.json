@@ -1,0 +1,71 @@
+{
+  "popupEyebrow": { "message": "Popup" },
+  "popupRedirectTitle": { "message": "¡Hola! Gracias por instalar nuestra extensión" },
+  "popupRedirectDescription": {
+    "message": "Te ayudaremos a configurar tu compañero de enfoque y tus preferencias."
+  },
+  "popupRedirectBody": {
+    "message": "Continúa en la página de opciones para elegir tu gato, revisar tu progreso y terminar la configuración."
+  },
+  "popupRedirectAction": { "message": "Abrir opciones" },
+  "popupRedirectFooter": {
+    "message": "Puedes salir y volver luego. Tus datos guardados del onboarding estarán listos cuando regreses."
+  },
+  "homePopupTitle": { "message": "Cat Focus" },
+  "homePopupDescription": {
+    "message": "Una base limpia para el popup mientras construimos el flujo principal de enfoque."
+  },
+  "homePopupBody": {
+    "message": "Abre la página de opciones para configurar el comportamiento, las reglas de sitios y futuros ajustes de sesiones de enfoque."
+  },
+  "homePopupAction": { "message": "Abrir opciones" },
+  "homePopupFooter": {
+    "message": "La lógica del popup vive en contenedores, mientras la UI compartida permanece solo de presentación."
+  },
+  "optionsEyebrow": { "message": "Opciones" },
+  "homeOptionsTitle": { "message": "Configuración de la extensión" },
+  "homeOptionsDescription": {
+    "message": "Esta superficie de opciones está lista para preferencias persistidas y formularios específicos por funcionalidad."
+  },
+  "homeOptionsBody": {
+    "message": "Usa esta página como base para preferencias persistidas, integraciones con Chrome APIs y pantallas de configuración por módulo."
+  },
+  "homeOptionsFooter": {
+    "message": "El entrypoint de opciones se mantiene delgado y delega la orquestación a un contenedor."
+  },
+  "onboardingEyebrow": { "message": "Onboarding" },
+  "onboardingTitle": { "message": "Configura Cat Focus" },
+  "onboardingDescription": {
+    "message": "Completa tu primera configuración para personalizar la extensión y desbloquear la experiencia normal del popup y opciones."
+  },
+  "onboardingStepOneLabel": { "message": "Elige tu gato" },
+  "onboardingStepTwoLabel": { "message": "Revisa tus hábitos" },
+  "onboardingStepThreeLabel": { "message": "Termina la configuración" },
+  "onboardingBackAction": { "message": "Atrás" },
+  "onboardingNextAction": { "message": "Siguiente" },
+  "onboardingFinishAction": { "message": "Finalizar onboarding" },
+  "onboardingStepTwoTitle": { "message": "Los métodos de enfoque siguen después" },
+  "onboardingStepTwoDescription": {
+    "message": "Este placeholder mantiene válido el flujo de onboarding mientras construimos la siguiente pantalla."
+  },
+  "onboardingStepThreeTitle": { "message": "Confirma tu configuración" },
+  "onboardingStepThreeDescription": {
+    "message": "Completa el onboarding para cambiar la extensión a su experiencia normal de popup y opciones."
+  },
+  "onboardingStepPlaceholderNote": {
+    "message": "Este paso es ligero por ahora, pero la navegación y el estado persistido del onboarding ya están conectados."
+  },
+  "catSetupTitle": { "message": "Crea tu compañero felino" },
+  "catSetupDescription": {
+    "message": "Elige un nombre y dos colores de pelaje. Puedes volver luego y los valores guardados aparecerán precargados."
+  },
+  "catNameLabel": { "message": "Nombre del gato" },
+  "catNamePlaceholder": { "message": "Mochi" },
+  "catPrimaryColorLabel": { "message": "Color principal del pelaje" },
+  "catSecondaryColorLabel": { "message": "Color secundario del pelaje" },
+  "catPreviewLabel": { "message": "Vista previa" },
+  "catStepSubmit": { "message": "Guardar y continuar" },
+  "validationCatNameRequired": { "message": "Ingresa un nombre para tu gato." },
+  "validationColorInvalid": { "message": "Elige un color válido." },
+  "loadingLabel": { "message": "Cargando..." }
+}

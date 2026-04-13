@@ -1,0 +1,1 @@
+export const POPUP_ONBOARDING_REDIRECT_VARIANT = "popup";

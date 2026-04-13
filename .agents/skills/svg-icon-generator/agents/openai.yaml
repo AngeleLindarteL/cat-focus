@@ -1,0 +1,4 @@
+interface:
+  display_name: "SVG Icon Generator"
+  short_description: "Icon design and creation tool for SVG icons."
+  default_prompt: "Use $svg-icon-generator to design and create SVG icons for this repo. You can specify the style, color, and size of the icons. For example, you can say 'Create a set of 5 flat design SVG icons in blue and white colors, each 64x64 pixels.'"
