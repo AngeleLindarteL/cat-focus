@@ -7,6 +7,12 @@ import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositor
 import type { ScheduleBlock } from "@/lib/schedules";
 import { ScheduleCard } from "@/modules/schedule/views/ScheduleCard";
 import { ScheduleEmptyState } from "@/modules/schedule/views/ScheduleEmptyState";
+import {
+  createScheduleSitePresetItems,
+  isPresetBackedScheduleSite,
+  type ScheduleSitePresetItem,
+  toggleScheduleSitePreset,
+} from "@/modules/schedule/services/scheduleSitePresets";
 import { ScheduleBlockForm } from "@/modules/schedule/views/ScheduleBlockForm";
 import { ScheduleSummary } from "@/modules/schedule/views/ScheduleSummary";
 import {
@@ -22,6 +28,7 @@ type ScheduleBlockContainerProps = {
   isOnboarding: boolean;
   getTranslation: UseTranslationResult["getTranslation"];
   repository?: ScheduleRepository;
+  onSchedulesChange?: (schedules: ScheduleBlock[]) => void;
 };
 
 function createWeekdayOptions(
@@ -71,6 +78,7 @@ export function ScheduleBlockContainer({
   isOnboarding,
   getTranslation,
   repository = defaultScheduleRepository,
+  onSchedulesChange,
 }: ScheduleBlockContainerProps) {
   const [schedules, setSchedules] = useState<ScheduleBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +93,7 @@ export function ScheduleBlockContainer({
     setIsLoading(true);
     const storedSchedules = await repository.findAll();
     setSchedules(storedSchedules);
+    onSchedulesChange?.(storedSchedules);
 
     if (isOnboarding) {
       if (storedSchedules.length > 0) {
@@ -97,7 +106,7 @@ export function ScheduleBlockContainer({
     }
 
     setIsLoading(false);
-  }, [repository, isOnboarding]);
+  }, [repository, isOnboarding, onSchedulesChange]);
 
   useEffect(() => {
     let isMounted = true;
@@ -108,6 +117,7 @@ export function ScheduleBlockContainer({
       }
 
       setSchedules(storedSchedules);
+      onSchedulesChange?.(storedSchedules);
 
       if (isOnboarding) {
         if (storedSchedules.length > 0) {
@@ -125,12 +135,24 @@ export function ScheduleBlockContainer({
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [repository, isOnboarding, onSchedulesChange]);
 
   const weekdayOptions = useMemo(
     () => createWeekdayOptions(getTranslation, draft.days),
     [draft.days, getTranslation],
   );
+  const popularSites = useMemo(
+    () => createScheduleSitePresetItems(draft.sites),
+    [draft.sites],
+  );
+
+  function handlePopularSiteSelect(item: ScheduleSitePresetItem) {
+    setDraft((currentValue) => ({
+      ...currentValue,
+      sites: toggleScheduleSitePreset(currentValue.sites, item),
+    }));
+    setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
+  }
 
   function openCreateForm() {
     setDraft(createDefaultScheduleValues());
@@ -275,6 +297,11 @@ export function ScheduleBlockContainer({
               siteDomainPlaceholder={getTranslation(
                 TranslationKey.ScheduleSiteDomainPlaceholder,
               )}
+              popularSitesTitle={getTranslation(
+                TranslationKey.SchedulePopularSitesTitle,
+              )}
+              popularSites={popularSites}
+              onPopularSiteSelect={handlePopularSiteSelect}
               addSiteLabel={getTranslation(TranslationKey.ScheduleCreate)}
               editSiteLabel={getTranslation(TranslationKey.ScheduleEdit)}
               deleteSiteLabel={getTranslation(TranslationKey.ScheduleDelete)}
@@ -290,6 +317,7 @@ export function ScheduleBlockContainer({
               clearSitesValidationError={() => {
                 setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
               }}
+              isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
               submitLabel={getTranslation(TranslationKey.ScheduleSave)}
               onSubmit={() => {
                 void handleSubmit(null);
@@ -370,6 +398,11 @@ export function ScheduleBlockContainer({
                 siteDomainPlaceholder={getTranslation(
                   TranslationKey.ScheduleSiteDomainPlaceholder,
                 )}
+                popularSitesTitle={getTranslation(
+                  TranslationKey.SchedulePopularSitesTitle,
+                )}
+                popularSites={popularSites}
+                onPopularSiteSelect={handlePopularSiteSelect}
                 addSiteLabel={getTranslation(TranslationKey.ScheduleCreate)}
                 editSiteLabel={getTranslation(TranslationKey.ScheduleEdit)}
                 deleteSiteLabel={getTranslation(TranslationKey.ScheduleDelete)}
@@ -385,6 +418,7 @@ export function ScheduleBlockContainer({
                 clearSitesValidationError={() => {
                   setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
                 }}
+                isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
                 submitLabel={getTranslation(TranslationKey.ScheduleSave)}
                 onSubmit={() => {
                   void handleSubmit(schedule.id);

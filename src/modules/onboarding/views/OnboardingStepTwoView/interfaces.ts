@@ -9,6 +9,7 @@ export type OnboardingStepTwoViewProps = {
   options: BlockTypeOption<StepTwoBlockType>[];
   previousActionLabel: string;
   nextActionLabel: string;
+  isNextActionDisabled?: boolean;
   onValueChange: (value: StepTwoBlockType) => void;
   onPreviousAction: () => void;
   onNextAction: () => void;

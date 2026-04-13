@@ -13,5 +13,6 @@ export type WebsiteListInputProps = {
   onChange: (nextValue: BlockedSite[]) => void;
   onValidationError: (message: string) => void;
   clearValidationError: () => void;
+  isSiteEditable?: (site: BlockedSite) => boolean;
   disabled?: boolean;
 };

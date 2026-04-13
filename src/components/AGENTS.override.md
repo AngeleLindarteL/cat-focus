@@ -25,3 +25,4 @@ ComponentName/
 - Add `useComponentName.ts` only when the component has real local hook logic.
 - Shared components must remain presentational and must not talk directly to repositories, storage, or Chrome APIs.
 - Prefer imports through the component folder barrel.
+- All clickable buttons in shared components must include pointer cursor behavior.

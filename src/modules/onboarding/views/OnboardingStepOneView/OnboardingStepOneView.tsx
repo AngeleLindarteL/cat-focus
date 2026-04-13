@@ -5,10 +5,20 @@ import tailIcon from "@/assets/icons/cat-tail.svg";
 import { CatColorSelector } from "@/components/CatColorSelector";
 import { PixelCat } from "@/components/PixelCat";
 import type { OnboardingStepOneViewProps } from "@/modules/onboarding/views/OnboardingStepOneView/interfaces";
+import {
+  ONBOARDING_STEP_ONE_CAT_NAME_CLASS_NAME,
+  ONBOARDING_STEP_ONE_COLOR_GRID_CLASS_NAME,
+  ONBOARDING_STEP_ONE_FORM_PANEL_CLASS_NAME,
+  ONBOARDING_STEP_ONE_LAYOUT_CLASS_NAME,
+  ONBOARDING_STEP_ONE_PREVIEW_PANEL_CLASS_NAME,
+  ONBOARDING_STEP_ONE_PREVIEW_SHELL_CLASS_NAME,
+  ONBOARDING_STEP_ONE_SUBMIT_CLASS_NAME,
+} from "@/modules/onboarding/views/OnboardingStepOneView/constants";
 
 export function OnboardingStepOneView({
   register,
   errors,
+  catName,
   furColorPrimary,
   furColorSecondary,
   eyeColor,
@@ -25,8 +35,8 @@ export function OnboardingStepOneView({
   submitLabel,
 }: OnboardingStepOneViewProps) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
-      <div className="space-y-5">
+    <div className={ONBOARDING_STEP_ONE_LAYOUT_CLASS_NAME}>
+      <div className={ONBOARDING_STEP_ONE_FORM_PANEL_CLASS_NAME}>
         <div className="space-y-2">
           <h2 className="text-xl font-semibold tracking-tight text-stone-900">
             {title}
@@ -47,7 +57,7 @@ export function OnboardingStepOneView({
           ) : null}
         </label>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className={ONBOARDING_STEP_ONE_COLOR_GRID_CLASS_NAME}>
           <CatColorSelector
             {...register("furColorPrimary")}
             label={primaryColorLabel}
@@ -77,23 +87,31 @@ export function OnboardingStepOneView({
           />
         </div>
 
-        <button
-          type="submit"
-          className="cursor-pointer rounded-2xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
-        >
+        <button type="submit" className={ONBOARDING_STEP_ONE_SUBMIT_CLASS_NAME}>
           {submitLabel}
         </button>
       </div>
 
-      <div className="rounded-[30px] border border-stone-200 bg-stone-50/80 p-5">
+      <div className={ONBOARDING_STEP_ONE_PREVIEW_SHELL_CLASS_NAME}>
         <p className="text-sm font-medium text-stone-800">{previewLabel}</p>
-        <div className="mt-4 flex min-h-[280px] items-center justify-center rounded-[28px] bg-white">
-          <PixelCat
-            furColorPrimary={furColorPrimary}
-            furColorSecondary={furColorSecondary}
-            eyeColor={eyeColor}
-            tailColor={tailColor}
-          />
+        <div className={ONBOARDING_STEP_ONE_PREVIEW_PANEL_CLASS_NAME}>
+          <div className="flex flex-col items-center gap-3">
+            <p
+              className={ONBOARDING_STEP_ONE_CAT_NAME_CLASS_NAME}
+              style={{
+                fontFamily:
+                  '"Press Start 2P", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+              }}
+            >
+              {catName}
+            </p>
+            <PixelCat
+              furColorPrimary={furColorPrimary}
+              furColorSecondary={furColorSecondary}
+              eyeColor={eyeColor}
+              tailColor={tailColor}
+            />
+          </div>
         </div>
       </div>
     </div>

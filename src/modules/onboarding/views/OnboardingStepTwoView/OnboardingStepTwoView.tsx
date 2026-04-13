@@ -8,6 +8,7 @@ export function OnboardingStepTwoView({
   options,
   previousActionLabel,
   nextActionLabel,
+  isNextActionDisabled,
   onValueChange,
   onPreviousAction,
   onNextAction,
@@ -36,7 +37,8 @@ export function OnboardingStepTwoView({
         <button
           type="button"
           onClick={onNextAction}
-          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+          disabled={isNextActionDisabled}
+          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
         >
           {nextActionLabel}
         </button>

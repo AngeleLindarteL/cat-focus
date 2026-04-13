@@ -1,5 +1,6 @@
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { WeekdayToggleGroup } from "@/components/WeekdayToggleGroup";
+import { PopularSiteCarousel } from "@/modules/schedule/components/PopularSiteCarousel";
 import type { ScheduleBlockFormProps } from "@/modules/schedule/views/ScheduleBlockForm/interfaces";
 
 export function ScheduleBlockForm({
@@ -24,6 +25,9 @@ export function ScheduleBlockForm({
   siteNameLabel,
   siteNamePlaceholder,
   siteDomainPlaceholder,
+  popularSitesTitle,
+  popularSites,
+  onPopularSiteSelect,
   addSiteLabel,
   editSiteLabel,
   deleteSiteLabel,
@@ -32,8 +36,10 @@ export function ScheduleBlockForm({
   onSitesChange,
   onSitesValidationError,
   clearSitesValidationError,
+  isSiteEditable,
   submitLabel,
   onSubmit,
+  submitDisabled,
   onDelete,
   deleteLabel,
   onClose,
@@ -110,6 +116,12 @@ export function ScheduleBlockForm({
         </label>
       </div>
 
+      <PopularSiteCarousel
+        title={popularSitesTitle}
+        items={popularSites}
+        onSelect={onPopularSiteSelect}
+      />
+
       <WebsiteListInput
         label={sitesLabel}
         value={sitesValue}
@@ -123,6 +135,7 @@ export function ScheduleBlockForm({
         onChange={onSitesChange}
         onValidationError={onSitesValidationError}
         clearValidationError={clearSitesValidationError}
+        isSiteEditable={isSiteEditable}
       />
 
       <div className="flex justify-between gap-3">
@@ -140,7 +153,8 @@ export function ScheduleBlockForm({
         <button
           type="button"
           onClick={onSubmit}
-          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+          disabled={submitDisabled}
+          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
         >
           {submitLabel}
         </button>

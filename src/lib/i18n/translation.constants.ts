@@ -63,6 +63,7 @@ export const TranslationKey = {
   ScheduleFromLabel: "scheduleFromLabel",
   ScheduleToLabel: "scheduleToLabel",
   ScheduleSitesLabel: "scheduleSitesLabel",
+  SchedulePopularSitesTitle: "schedulePopularSitesTitle",
   ScheduleSiteNamePlaceholder: "scheduleSiteNamePlaceholder",
   ScheduleSiteDomainPlaceholder: "scheduleSiteDomainPlaceholder",
   ScheduleSave: "scheduleSave",

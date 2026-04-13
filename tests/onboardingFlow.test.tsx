@@ -107,6 +107,82 @@ describe("onboarding flow", () => {
     });
   });
 
+  it("reloads the saved cat profile after step one submit", async () => {
+    const onboardingRepository = createOnboardingRepository({
+      step: 1,
+      finished: false,
+    });
+    let getCatProfileCalls = 0;
+    let currentProfile: CatProfile | null = {
+      name: "Captain Whiskers",
+      furColorPrimary: "#112233",
+      furColorSecondary: "#445566",
+      eyeColor: "#365314",
+      tailColor: "#445566",
+    };
+
+    const catRepository: CatRepository = {
+      getCatProfile: async () => {
+        getCatProfileCalls += 1;
+        return currentProfile;
+      },
+      saveCatProfile: async (nextProfile) => {
+        currentProfile = nextProfile;
+      },
+    };
+
+    render(
+      <OptionsGateContainer
+        onboardingRepository={onboardingRepository}
+        catRepository={catRepository}
+      />,
+    );
+
+    const nameInput = (await screen.findByDisplayValue(
+      "Captain Whiskers",
+    )) as HTMLInputElement;
+
+    fireEvent.change(nameInput, { target: { value: "Luna Ray" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save and continue" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Choose how you want to block distractions"),
+      ).toBeInTheDocument();
+    });
+
+    expect(getCatProfileCalls).toBeGreaterThan(1);
+    expect(currentProfile?.name).toBe("Luna Ray");
+  });
+
+  it("updates the cat name preview in real time", async () => {
+    const onboardingRepository = createOnboardingRepository({
+      step: 1,
+      finished: false,
+    });
+
+    render(
+      <OptionsGateContainer
+        onboardingRepository={onboardingRepository}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    const nameInput = (await screen.findByDisplayValue(
+      "Captain Whiskers",
+    )) as HTMLInputElement;
+
+    fireEvent.change(nameInput, { target: { value: "Luna Ray" } });
+
+    expect(screen.getByText("Luna Ray")).toBeInTheDocument();
+  });
+
   it("uses the persisted app language for onboarding copy", async () => {
     globalThis.chrome = createChromeMock({
       [USER_PREFERENCES_STORAGE_KEY]: { language: "es" },

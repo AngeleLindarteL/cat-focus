@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { TranslationKey, type Language, type UseTranslationResult } from "@/lib/i18n";
 import type { CatProfile, OnboardingStep } from "@/lib/onboarding";
 import {
@@ -51,19 +51,34 @@ export function OnboardingContainer({
     [getTranslation],
   );
 
-  async function loadCatProfile() {
+  const loadCatProfile = useCallback(async () => {
     setIsCatProfileLoading(true);
     const storedProfile = await catRepository.getCatProfile();
     setCatProfile(storedProfile);
     setIsCatProfileLoading(false);
-  }
+  }, [catRepository]);
 
   useEffect(() => {
+    let isMounted = true;
+
     void catRepository.getCatProfile().then((storedProfile) => {
+      if (!isMounted) {
+        return;
+      }
+
       setCatProfile(storedProfile);
       setIsCatProfileLoading(false);
     });
+
+    return () => {
+      isMounted = false;
+    };
   }, [catRepository]);
+
+  async function refreshAfterStepOneSubmit() {
+    await loadCatProfile();
+    await refresh();
+  }
 
   async function handleMoveToStep(step: OnboardingStep) {
     await onboardingRepository.setActiveStep(step);
@@ -112,7 +127,7 @@ export function OnboardingContainer({
         catRepository={catRepository}
         onboardingRepository={onboardingRepository}
         initialValues={catProfile}
-        onSubmitted={refresh}
+        onSubmitted={refreshAfterStepOneSubmit}
         getTranslation={getTranslation}
       />
     );

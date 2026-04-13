@@ -33,6 +33,7 @@ export function OnboardingStepOneContainer({
       <OnboardingStepOneView
         register={form.register}
         errors={form.formState.errors}
+        catName={form.name}
         furColorPrimary={form.furColorPrimary}
         furColorSecondary={form.furColorSecondary}
         eyeColor={form.eyeColor}

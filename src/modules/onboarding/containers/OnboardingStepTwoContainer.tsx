@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
+import type { ScheduleBlock } from "@/lib/schedules";
 import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import { ScheduleBlockContainer } from "@/modules/schedule/containers/ScheduleBlockContainer";
 import { OnboardingStepTwoView } from "@/modules/onboarding/views/OnboardingStepTwoView";
@@ -22,6 +23,16 @@ export function OnboardingStepTwoContainer({
   onSubmitted,
 }: OnboardingStepTwoContainerProps) {
   const [blockType, setBlockType] = useState<StepTwoBlockType>("scheduleBlock");
+  const [scheduleBlocks, setScheduleBlocks] = useState<ScheduleBlock[]>([]);
+  const scheduleBlockValid = useMemo(
+    () => scheduleBlocks.length > 0,
+    [scheduleBlocks.length],
+  );
+  const usageBlockTimeValid = useMemo(() => true, []);
+  const canContinueToStepThree = useMemo(
+    () => scheduleBlockValid && usageBlockTimeValid,
+    [scheduleBlockValid, usageBlockTimeValid],
+  );
 
   async function handlePreviousAction() {
     await onboardingRepository.setActiveStep(1);
@@ -29,6 +40,10 @@ export function OnboardingStepTwoContainer({
   }
 
   async function handleNextAction() {
+    if (!canContinueToStepThree) {
+      return;
+    }
+
     await onboardingRepository.setActiveStep(3);
     await onSubmitted();
   }
@@ -52,6 +67,7 @@ export function OnboardingStepTwoContainer({
       ]}
       previousActionLabel={getTranslation(TranslationKey.OnboardingBackAction)}
       nextActionLabel={getTranslation(TranslationKey.OnboardingNextAction)}
+      isNextActionDisabled={!canContinueToStepThree}
       onValueChange={setBlockType}
       onPreviousAction={() => {
         void handlePreviousAction();
@@ -65,6 +81,7 @@ export function OnboardingStepTwoContainer({
           isOnboarding
           repository={scheduleRepository}
           getTranslation={getTranslation}
+          onSchedulesChange={setScheduleBlocks}
         />
       ) : (
         <div className="rounded-[30px] border border-dashed border-stone-300 bg-stone-50/80 px-5 py-8 text-center text-sm font-medium text-stone-600">

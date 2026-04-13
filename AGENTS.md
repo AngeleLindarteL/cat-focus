@@ -44,6 +44,7 @@ Additional extension surfaces like `sidepanel/` or future background/service-wor
 - keep reusable shared UI in `src/components`
 - keep module-specific code inside `src/modules/<module-name>`
 - move cross-module infrastructure into `src/lib`
+- module-local reusable UI may live in `src/modules/<module-name>/components`
 
 If the current file tree does not fully match this target yet, prefer moving the codebase toward this structure as changes are made.
 
@@ -125,6 +126,12 @@ Apply these rules:
 - if the component has no hook, omit the hook file rather than adding an empty one
 - keep component-local helpers inside the component folder unless they are reused elsewhere
 - prefer imports through the component folder barrel, not deep relative imports into sibling internals
+- all clickable buttons in shared or module-local React UI should include pointer cursor behavior
+
+For feature modules, use this distinction:
+
+- `views/` are screen-level or form-level presentational surfaces
+- `components/` are smaller reusable UI pieces owned by that module
 
 This is the default rule for shared components, module views, and other React UI components.
 

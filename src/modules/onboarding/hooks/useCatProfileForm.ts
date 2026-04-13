@@ -53,9 +53,15 @@ export function useCatProfileForm(
     name: "tailColor",
     defaultValue: initialValues?.tailColor ?? DEFAULT_CAT_PROFILE.tailColor,
   });
+  const name = useWatch({
+    control: form.control,
+    name: "name",
+    defaultValue: initialValues?.name ?? DEFAULT_CAT_PROFILE.name,
+  });
 
   return {
     ...form,
+    name,
     furColorPrimary,
     furColorSecondary,
     eyeColor,

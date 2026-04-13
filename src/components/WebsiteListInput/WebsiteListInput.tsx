@@ -4,6 +4,7 @@ import {
   normalizeDomainInput,
   validateDomainInput,
 } from "@/modules/schedule/services/scheduleBlockForm";
+import { findScheduleSiteIndexByDomain } from "@/modules/schedule/services/scheduleSitePresets";
 import type { WebsiteListInputProps } from "@/components/WebsiteListInput/interfaces";
 
 export function WebsiteListInput({
@@ -19,6 +20,7 @@ export function WebsiteListInput({
   onChange,
   onValidationError,
   clearValidationError,
+  isSiteEditable = () => true,
   disabled = false,
 }: WebsiteListInputProps) {
   const [siteName, setSiteName] = useState("");
@@ -49,6 +51,16 @@ export function WebsiteListInput({
       name: trimmedSiteName,
       domain: normalizeDomainInput(siteDomain),
     };
+
+    const duplicateIndex = findScheduleSiteIndexByDomain(
+      value,
+      nextSite.domain,
+    );
+
+    if (duplicateIndex >= 0 && duplicateIndex !== editingIndex) {
+      resetDraft();
+      return;
+    }
 
     if (editingIndex === null) {
       onChange([...value, nextSite]);
@@ -109,40 +121,49 @@ export function WebsiteListInput({
       </div>
       {error ? <p className="text-sm text-red-700">{error}</p> : null}
       <div className="space-y-2">
-        {value.map((site, index) => (
-          <div
-            key={`${site.domain}-${index}`}
-            className="flex items-center justify-between rounded-2xl border border-stone-200 bg-white px-4 py-3"
-          >
-            <div>
-              <p className="text-sm font-semibold text-stone-800">{site.name}</p>
-              <p className="text-sm text-stone-500">{site.domain}</p>
+        {value.map((site, index) => {
+          const editable = isSiteEditable(site);
+
+          return (
+            <div
+              key={`${site.domain}-${index}`}
+              className="flex items-center justify-between rounded-2xl border border-stone-200 bg-white px-4 py-3"
+            >
+              <div>
+                <p className="text-sm font-semibold text-stone-800">
+                  {site.name}
+                </p>
+                <p className="text-sm text-stone-500">{site.domain}</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={!editable}
+                  onClick={() => {
+                    setSiteName(site.name);
+                    setSiteDomain(site.domain);
+                    setEditingIndex(index);
+                    clearValidationError();
+                  }}
+                  className="cursor-pointer rounded-2xl border border-stone-200 px-3 py-2 text-sm font-medium text-stone-700 transition hover:border-amber-300 disabled:cursor-not-allowed disabled:border-stone-200 disabled:text-stone-400"
+                >
+                  {editLabel}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChange(
+                      value.filter((_, currentIndex) => currentIndex !== index),
+                    );
+                  }}
+                  className="cursor-pointer rounded-2xl border border-red-200 px-3 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
+                >
+                  {deleteLabel}
+                </button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setSiteName(site.name);
-                  setSiteDomain(site.domain);
-                  setEditingIndex(index);
-                  clearValidationError();
-                }}
-                className="cursor-pointer rounded-2xl border border-stone-200 px-3 py-2 text-sm font-medium text-stone-700 transition hover:border-amber-300"
-              >
-                {editLabel}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onChange(value.filter((_, currentIndex) => currentIndex !== index));
-                }}
-                className="cursor-pointer rounded-2xl border border-red-200 px-3 py-2 text-sm font-medium text-red-700 transition hover:border-red-300"
-              >
-                {deleteLabel}
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

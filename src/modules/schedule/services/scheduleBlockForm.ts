@@ -1,4 +1,5 @@
 import { DEFAULT_SCHEDULE_DAYS, DEFAULT_SCHEDULE_NAME, type BlockedSite, type ScheduleBlockDraft, type ScheduleDays } from "@/lib/schedules";
+import { normalizeScheduleSiteDomain } from "@/modules/schedule/services/scheduleSitePresets";
 
 export type ScheduleBlockFormValues = {
   name: string;
@@ -17,18 +18,7 @@ export function sanitizeScheduleName(value: string): string {
 }
 
 export function normalizeDomainInput(value: string): string {
-  const trimmedValue = value.trim().toLowerCase();
-
-  if (!trimmedValue) {
-    return "";
-  }
-
-  const normalizedUrl = trimmedValue.startsWith("http")
-    ? trimmedValue
-    : `https://${trimmedValue}`;
-  const hostname = new URL(normalizedUrl).hostname.toLowerCase();
-
-  return hostname.replace(/^www\./, "");
+  return normalizeScheduleSiteDomain(value);
 }
 
 export function validateDomainInput(value: string): boolean {

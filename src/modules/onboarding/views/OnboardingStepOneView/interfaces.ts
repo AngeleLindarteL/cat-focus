@@ -4,6 +4,7 @@ import type { CatProfileFormValues } from "@/modules/onboarding/types/onboarding
 export type OnboardingStepOneViewProps = {
   register: UseFormRegister<CatProfileFormValues>;
   errors: FieldErrors<CatProfileFormValues>;
+  catName: string;
   furColorPrimary: string;
   furColorSecondary: string;
   eyeColor: string;

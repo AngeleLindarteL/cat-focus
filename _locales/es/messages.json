@@ -123,6 +123,8 @@
   "scheduleToLabel_es": { "message": "Hasta" },
   "scheduleSitesLabel_en": { "message": "Websites to block" },
   "scheduleSitesLabel_es": { "message": "Sitios web a bloquear" },
+  "schedulePopularSitesTitle_en": { "message": "Add from popular sites" },
+  "schedulePopularSitesTitle_es": { "message": "Agregar desde sitios populares" },
   "scheduleSiteNamePlaceholder_en": { "message": "Instagram" },
   "scheduleSiteNamePlaceholder_es": { "message": "Instagram" },
   "scheduleSiteDomainPlaceholder_en": { "message": "instagram.com" },

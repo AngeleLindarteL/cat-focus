@@ -4,6 +4,7 @@ import type {
   DayToggleOption,
   WeekdayToggleGroupRef,
 } from "@/components/WeekdayToggleGroup";
+import type { ScheduleSitePresetItem } from "@/modules/schedule/services/scheduleSitePresets";
 
 export type ScheduleBlockFormProps = {
   mode: "create" | "edit";
@@ -28,6 +29,9 @@ export type ScheduleBlockFormProps = {
   siteNameLabel: string;
   siteNamePlaceholder: string;
   siteDomainPlaceholder: string;
+  popularSitesTitle: string;
+  popularSites: ScheduleSitePresetItem[];
+  onPopularSiteSelect: (item: ScheduleSitePresetItem) => void;
   addSiteLabel: string;
   editSiteLabel: string;
   deleteSiteLabel: string;
@@ -36,8 +40,10 @@ export type ScheduleBlockFormProps = {
   onSitesChange: (nextValue: BlockedSite[]) => void;
   onSitesValidationError: (message: string) => void;
   clearSitesValidationError: () => void;
+  isSiteEditable?: (site: BlockedSite) => boolean;
   submitLabel: string;
   onSubmit: () => void;
+  submitDisabled?: boolean;
   onDelete?: () => void;
   deleteLabel?: string;
   onClose?: () => void;
