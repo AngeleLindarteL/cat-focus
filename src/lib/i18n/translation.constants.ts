@@ -67,6 +67,8 @@ export const TranslationKey = {
   ScheduleSiteNamePlaceholder: "scheduleSiteNamePlaceholder",
   ScheduleSiteDomainPlaceholder: "scheduleSiteDomainPlaceholder",
   ScheduleSave: "scheduleSave",
+  ScheduleUnsavedReminderTitle: "scheduleUnsavedReminderTitle",
+  ScheduleUnsavedReminderDescription: "scheduleUnsavedReminderDescription",
   ScheduleEdit: "scheduleEdit",
   ScheduleDelete: "scheduleDelete",
   ScheduleDeleteConfirmTitle: "scheduleDeleteConfirmTitle",

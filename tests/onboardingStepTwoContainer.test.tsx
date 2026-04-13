@@ -65,6 +65,9 @@ function getTranslation(key: string): string {
     [TranslationKey.ScheduleSiteNamePlaceholder]: "Site name",
     [TranslationKey.ScheduleSiteDomainPlaceholder]: "Site domain",
     [TranslationKey.ScheduleSave]: "Save",
+    [TranslationKey.ScheduleUnsavedReminderTitle]: "You changed this schedule.",
+    [TranslationKey.ScheduleUnsavedReminderDescription]:
+      "Press Save schedule to keep your updates.",
     [TranslationKey.ScheduleEdit]: "Edit",
     [TranslationKey.ScheduleDelete]: "Delete",
     [TranslationKey.ScheduleClose]: "Close",
@@ -149,6 +152,104 @@ describe("OnboardingStepTwoContainer", () => {
     await waitFor(() => {
       expect(onboardingRepository.setActiveStep).toHaveBeenCalledWith(3);
       expect(onSubmitted).toHaveBeenCalled();
+    });
+  });
+
+  it("shows a reminder when an existing schedule changes", async () => {
+    const onboardingRepository = {
+      setActiveStep: vi.fn().mockResolvedValue(undefined),
+      finishOnboarding: vi.fn().mockResolvedValue(undefined),
+      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
+    } as OnboardingRepository;
+    const scheduleRepository = createScheduleRepository();
+
+    await scheduleRepository.insertOne({
+      name: "Weekday focus",
+      schedule: {
+        days: {
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: false,
+          sunday: false,
+        },
+        time: {
+          from: "06:00",
+          to: "18:00",
+        },
+      },
+      sites: [{ name: "X", domain: "x.com" }],
+    });
+
+    render(
+      <OnboardingStepTwoContainer
+        onboardingRepository={onboardingRepository}
+        scheduleRepository={scheduleRepository}
+        getTranslation={getTranslation}
+        onSubmitted={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
+
+    expect(await screen.findByDisplayValue("Weekday focus")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Schedule name"), {
+      target: { value: "Weekday focus updated" },
+    });
+
+    expect(screen.getByText("You changed this schedule.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Press Save schedule to keep your updates."),
+    ).toBeInTheDocument();
+
+    const reminder = screen.getByText("You changed this schedule.");
+    const highlightedCard = reminder.closest("[data-highlighted]");
+
+    expect(highlightedCard?.className).toContain("border-dashed");
+    expect(highlightedCard?.className).toContain("border-amber-400");
+    expect(highlightedCard).toHaveAttribute("data-highlighted", "true");
+  });
+
+  it("accepts 3-character names and rejects 2-character names", async () => {
+    const onboardingRepository = {
+      setActiveStep: vi.fn().mockResolvedValue(undefined),
+      finishOnboarding: vi.fn().mockResolvedValue(undefined),
+      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
+    } as OnboardingRepository;
+
+    render(
+      <OnboardingStepTwoContainer
+        onboardingRepository={onboardingRepository}
+        scheduleRepository={createScheduleRepository()}
+        getTranslation={getTranslation}
+        onSubmitted={vi.fn().mockResolvedValue(undefined)}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Create first schedule" }));
+    fireEvent.change(screen.getByLabelText("Schedule name"), {
+      target: { value: "AB" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Site name"), {
+      target: { value: "X" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Site domain"), {
+      target: { value: "x.com" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Create" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    expect(await screen.findByText("Name is too short")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByPlaceholderText("Weekday focus"), {
+      target: { value: "ABC" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+
+    await waitFor(() => {
+      expect(screen.queryByText("Name is too short")).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
     });
   });
 });

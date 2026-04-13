@@ -70,7 +70,7 @@ export function validateScheduleBlockForm(
 
   if (!sanitizedName) {
     errors.name = messages.nameRequired;
-  } else if (sanitizedName.length < 5) {
+  } else if (sanitizedName.length < 3) {
     errors.name = messages.nameMinLength;
   } else if (sanitizedName.length > 48) {
     errors.name = messages.nameMaxLength;
@@ -124,4 +124,11 @@ export function createScheduleBlockDraft(
       domain: normalizeDomainInput(site.domain),
     })),
   };
+}
+
+export function areScheduleBlockDraftsEqual(
+  left: ScheduleBlockDraft,
+  right: ScheduleBlockDraft,
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
 }

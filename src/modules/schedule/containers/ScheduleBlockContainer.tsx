@@ -16,6 +16,7 @@ import {
 import { ScheduleBlockForm } from "@/modules/schedule/views/ScheduleBlockForm";
 import { ScheduleSummary } from "@/modules/schedule/views/ScheduleSummary";
 import {
+  areScheduleBlockDraftsEqual,
   createDefaultScheduleValues,
   createScheduleBlockDraft,
   createScheduleFormValuesFromDraft,
@@ -230,6 +231,20 @@ export function ScheduleBlockContainer({
   const canCollapse = !isOnboarding;
   const canDelete = !isOnboarding && !!activeSchedule;
   const renderCreateForm = isCreating && (!isOnboarding || schedules.length === 0);
+  const activeScheduleDraft = activeSchedule
+    ? createScheduleBlockDraft({
+        ...draft,
+        days: weekdayGroupRef.current?.value ?? draft.days,
+      })
+    : null;
+  const persistedActiveScheduleDraft = activeSchedule
+    ? createScheduleBlockDraft(createScheduleFormValuesFromDraft(activeSchedule))
+    : null;
+  const isActiveScheduleDirty =
+    !!activeSchedule &&
+    !!activeScheduleDraft &&
+    !!persistedActiveScheduleDraft &&
+    !areScheduleBlockDraftsEqual(activeScheduleDraft, persistedActiveScheduleDraft);
 
   return (
     <div className="space-y-4">
@@ -257,11 +272,13 @@ export function ScheduleBlockContainer({
       {renderCreateForm ? (
         <ScheduleCard
           isExpanded
+          isHighlighted={false}
           onExpand={() => undefined}
           summary={null}
           expandedContent={
             <ScheduleBlockForm
               mode="create"
+              showUnsavedReminder={false}
               nameLabel={getTranslation(TranslationKey.ScheduleNameLabel)}
               namePlaceholder={getTranslation(
                 TranslationKey.ScheduleNamePlaceholder,
@@ -347,6 +364,7 @@ export function ScheduleBlockContainer({
           <ScheduleCard
             key={schedule.id}
             isExpanded={isExpanded}
+            isHighlighted={isExpanded && schedule.id === activeSchedule?.id && isActiveScheduleDirty}
             onExpand={() => {
               openEditForm(schedule);
             }}
@@ -363,6 +381,15 @@ export function ScheduleBlockContainer({
             expandedContent={
               <ScheduleBlockForm
                 mode="edit"
+                reminderTitle={getTranslation(
+                  TranslationKey.ScheduleUnsavedReminderTitle,
+                )}
+                reminderDescription={getTranslation(
+                  TranslationKey.ScheduleUnsavedReminderDescription,
+                )}
+                showUnsavedReminder={
+                  isExpanded && schedule.id === activeSchedule?.id && isActiveScheduleDirty
+                }
                 nameLabel={getTranslation(TranslationKey.ScheduleNameLabel)}
                 namePlaceholder={getTranslation(
                   TranslationKey.ScheduleNamePlaceholder,

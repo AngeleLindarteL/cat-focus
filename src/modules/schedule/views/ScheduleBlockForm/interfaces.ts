@@ -8,6 +8,9 @@ import type { ScheduleSitePresetItem } from "@/modules/schedule/services/schedul
 
 export type ScheduleBlockFormProps = {
   mode: "create" | "edit";
+  reminderTitle?: string;
+  reminderDescription?: string;
+  showUnsavedReminder?: boolean;
   nameLabel: string;
   namePlaceholder: string;
   nameValue: string;

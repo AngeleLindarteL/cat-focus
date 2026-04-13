@@ -23,4 +23,21 @@ describe("Stepper", () => {
     expect(two.className).toContain("bg-amber-100");
     expect(three.className).toContain("bg-stone-100");
   });
+
+  it("renders a connector for every step including the last one", () => {
+    render(
+      <Stepper
+        steps={[
+          { key: "1", label: "One" },
+          { key: "2", label: "Two" },
+          { key: "3", label: "Three" },
+        ]}
+        actualStep="2"
+      />,
+    );
+
+    expect(screen.getByTestId("stepper-connector-1")).toBeInTheDocument();
+    expect(screen.getByTestId("stepper-connector-2")).toBeInTheDocument();
+    expect(screen.getByTestId("stepper-connector-3")).toBeInTheDocument();
+  });
 });

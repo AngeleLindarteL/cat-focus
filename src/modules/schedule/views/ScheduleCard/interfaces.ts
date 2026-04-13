@@ -5,4 +5,5 @@ export type ScheduleCardProps = {
   summary: ReactNode;
   expandedContent: ReactNode;
   onExpand: () => void;
+  isHighlighted?: boolean;
 };

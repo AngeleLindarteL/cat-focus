@@ -4,6 +4,10 @@ import { PopularSiteCarousel } from "@/modules/schedule/components/PopularSiteCa
 import type { ScheduleBlockFormProps } from "@/modules/schedule/views/ScheduleBlockForm/interfaces";
 
 export function ScheduleBlockForm({
+  mode,
+  reminderTitle,
+  reminderDescription,
+  showUnsavedReminder = false,
   nameLabel,
   namePlaceholder,
   nameValue,
@@ -66,6 +70,13 @@ export function ScheduleBlockForm({
           ) : null}
         </div>
       </div>
+
+      {mode === "edit" && showUnsavedReminder && reminderTitle && reminderDescription ? (
+        <div className="rounded-3xl border border-amber-300 bg-amber-50 px-4 py-3">
+          <p className="text-sm font-semibold text-amber-800">{reminderTitle}</p>
+          <p className="mt-1 text-sm leading-6 text-amber-700">{reminderDescription}</p>
+        </div>
+      ) : null}
 
       <label className="block space-y-2">
         <span className="text-sm font-medium text-stone-800">{nameLabel}</span>

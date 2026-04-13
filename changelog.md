@@ -3,6 +3,20 @@
 ## [2026-04-13]
 ### Author: AngeleLindarteL
 ### Co-Authors: None
+### Resume: Polished the shared stepper and schedule-block experience with dirty-state reminders, relaxed name validation, and preset hover fixes.
+### Changes:
+- Reworked the shared `Stepper` layout so all steps, including the last one, sit centered over full connector segments.
+- Added dirty-state detection for existing schedule edits and surfaced it through an amber reminder card plus an amber dashed schedule-card border.
+- Lowered the schedule-name minimum validation threshold from 5 to 3 characters and updated the locale copy.
+- Adjusted the popular-sites carousel overflow and button stacking so hover lift animations are not clipped by the scroll container.
+- Expanded tests for stepper connectors, schedule dirty-state reminders, validation behavior, and carousel hover class coverage.
+- Saved the iteration plan in `docs/plans/schedule-ui-polish-v2.1.2.md`.
+
+### Notes: The unsaved-change reminder is intentionally limited to editing persisted schedules; create mode remains clean until the first save.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
 ### Resume: Refined the v2.1 schedule-block flow with preset sites, stronger deduplication rules, onboarding step-two gating, and updated architecture guidance for module-local components.
 ### Changes:
 - Added popular-site presets for schedule blocks, including icon assets for Instagram, Facebook, Reddit, X, Amazon, YouTube, TikTok, and Netflix.

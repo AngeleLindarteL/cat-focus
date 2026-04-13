@@ -75,4 +75,25 @@ describe("schedule site presets", () => {
       "true",
     );
   });
+
+  it("keeps hover-lift styling visible in the carousel classes", () => {
+    const items = createScheduleSitePresetItems([]);
+
+    render(
+      <PopularSiteCarousel
+        title="Add from popular sites"
+        items={items}
+        onSelect={() => undefined}
+      />,
+    );
+
+    const wrapper = screen
+      .getByText("Add from popular sites")
+      .nextElementSibling as HTMLElement;
+    const youtubeButton = screen.getByRole("button", { name: "YouTube" });
+
+    expect(wrapper.className).toContain("overflow-y-visible");
+    expect(youtubeButton.className).toContain("hover:z-10");
+    expect(youtubeButton.className).toContain("hover:-translate-y-0.5");
+  });
 });
