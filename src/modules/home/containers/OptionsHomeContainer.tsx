@@ -1,14 +1,20 @@
-import { messages } from "@/lib/i18n/messages";
+import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import { HomeView } from "@/modules/home/views/HomeView";
 
-export function OptionsHomeContainer() {
+type OptionsHomeContainerProps = {
+  getTranslation: UseTranslationResult["getTranslation"];
+};
+
+export function OptionsHomeContainer({
+  getTranslation,
+}: OptionsHomeContainerProps) {
   return (
     <HomeView
-      eyebrow={messages.optionsEyebrow()}
-      title={messages.homeOptionsTitle()}
-      description={messages.homeOptionsDescription()}
-      body={messages.homeOptionsBody()}
-      secondaryText={messages.homeOptionsFooter()}
+      eyebrow={getTranslation(TranslationKey.OptionsEyebrow)}
+      title={getTranslation(TranslationKey.HomeOptionsTitle)}
+      description={getTranslation(TranslationKey.HomeOptionsDescription)}
+      body={getTranslation(TranslationKey.HomeOptionsBody)}
+      secondaryText={getTranslation(TranslationKey.HomeOptionsFooter)}
     />
   );
 }

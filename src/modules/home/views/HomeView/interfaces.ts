@@ -1,4 +1,5 @@
 export type HomeViewProps = {
+  surface?: "options" | "popup";
   eyebrow: string;
   title: string;
   description: string;

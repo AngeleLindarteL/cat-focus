@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
+import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
 import type { CatProfile, OnboardingState } from "@/lib/onboarding";
 import type { CatRepository } from "@/lib/repositories/catRepository";
 import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
@@ -79,6 +80,8 @@ describe("onboarding flow", () => {
       name: "Captain Whiskers",
       furColorPrimary: "#112233",
       furColorSecondary: "#445566",
+      eyeColor: "#365314",
+      tailColor: "#445566",
     });
 
     render(
@@ -98,7 +101,28 @@ describe("onboarding flow", () => {
     fireEvent.click(screen.getByRole("button", { name: "Save and continue" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Focus methods are next")).toBeInTheDocument();
+      expect(
+        screen.getByText("Choose how you want to block distractions"),
+      ).toBeInTheDocument();
     });
+  });
+
+  it("uses the persisted app language for onboarding copy", async () => {
+    globalThis.chrome = createChromeMock({
+      [USER_PREFERENCES_STORAGE_KEY]: { language: "es" },
+    });
+
+    render(
+      <PopupGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 1,
+          finished: false,
+        })}
+      />,
+    );
+
+    expect(
+      await screen.findByText("¡Hola! Gracias por instalar nuestra extensión"),
+    ).toBeInTheDocument();
   });
 });

@@ -12,6 +12,7 @@ export function PopupOnboardingRedirectView({
 }: PopupOnboardingRedirectViewProps) {
   return (
     <HomeView
+      surface="popup"
       eyebrow={eyebrow}
       title={title}
       description={description}

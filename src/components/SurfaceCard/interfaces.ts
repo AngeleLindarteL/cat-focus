@@ -5,4 +5,5 @@ export type SurfaceCardProps = PropsWithChildren<{
   title: string;
   description: string;
   footer?: ReactNode;
+  headerAccessory?: ReactNode;
 }>;

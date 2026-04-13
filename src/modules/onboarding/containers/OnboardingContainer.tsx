@@ -1,5 +1,5 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { messages } from "@/lib/i18n/messages";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { TranslationKey, type Language, type UseTranslationResult } from "@/lib/i18n";
 import type { CatProfile, OnboardingStep } from "@/lib/onboarding";
 import {
   catRepository as defaultCatRepository,
@@ -9,7 +9,12 @@ import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
 } from "@/lib/repositories/onboardingRepository";
+import {
+  scheduleRepository as defaultScheduleRepository,
+  type ScheduleRepository,
+} from "@/lib/repositories/scheduleRepository";
 import { OnboardingStepOneContainer } from "@/modules/onboarding/containers/OnboardingStepOneContainer";
+import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
 import type { OnboardingStepItem } from "@/modules/onboarding/types/onboardingView";
 import { OnboardingStepPlaceholderView } from "@/modules/onboarding/views/OnboardingStepPlaceholderView";
@@ -18,25 +23,33 @@ import { OnboardingView } from "@/modules/onboarding/views/OnboardingView";
 type OnboardingContainerProps = {
   catRepository?: CatRepository;
   onboardingRepository?: OnboardingRepository;
+  scheduleRepository?: ScheduleRepository;
   onCompleted?: () => Promise<void> | void;
+  language: Language;
+  setLanguage: UseTranslationResult["setLanguage"];
+  getTranslation: UseTranslationResult["getTranslation"];
 };
-
-function getStepItems(): OnboardingStepItem[] {
-  return [
-    { key: "1", label: messages.onboardingStepOneLabel() },
-    { key: "2", label: messages.onboardingStepTwoLabel() },
-    { key: "3", label: messages.onboardingStepThreeLabel() },
-  ];
-}
 
 export function OnboardingContainer({
   catRepository = defaultCatRepository,
   onboardingRepository = defaultOnboardingRepository,
+  scheduleRepository = defaultScheduleRepository,
   onCompleted,
+  language,
+  setLanguage,
+  getTranslation,
 }: OnboardingContainerProps) {
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
   const [catProfile, setCatProfile] = useState<CatProfile | null>(null);
   const [isCatProfileLoading, setIsCatProfileLoading] = useState(true);
+  const stepItems = useMemo<OnboardingStepItem[]>(
+    () => [
+      { key: "1", label: getTranslation(TranslationKey.OnboardingStepOneLabel) },
+      { key: "2", label: getTranslation(TranslationKey.OnboardingStepTwoLabel) },
+      { key: "3", label: getTranslation(TranslationKey.OnboardingStepThreeLabel) },
+    ],
+    [getTranslation],
+  );
 
   async function loadCatProfile() {
     setIsCatProfileLoading(true);
@@ -70,13 +83,18 @@ export function OnboardingContainer({
   if (!onboardingState) {
     return (
       <OnboardingView
-        eyebrow={messages.onboardingEyebrow()}
-        title={messages.onboardingTitle()}
-        description={messages.onboardingDescription()}
-        loadingLabel={messages.loadingLabel()}
-        steps={getStepItems()}
+        eyebrow={getTranslation(TranslationKey.OnboardingEyebrow)}
+        title={getTranslation(TranslationKey.OnboardingTitle)}
+        description={getTranslation(TranslationKey.OnboardingDescription)}
+        loadingLabel={getTranslation(TranslationKey.LoadingLabel)}
+        steps={stepItems}
         actualStep="1"
         isLoading
+        language={language}
+        languageLabel={getTranslation(TranslationKey.LanguageLabel)}
+        languageEnglishLabel={getTranslation(TranslationKey.LanguageEnglish)}
+        languageSpanishLabel={getTranslation(TranslationKey.LanguageSpanish)}
+        onLanguageChange={setLanguage}
       >
         <div />
       </OnboardingView>
@@ -95,32 +113,26 @@ export function OnboardingContainer({
         onboardingRepository={onboardingRepository}
         initialValues={catProfile}
         onSubmitted={refresh}
+        getTranslation={getTranslation}
       />
     );
   } else if (onboardingState.step === 2) {
     stepContent = (
-      <OnboardingStepPlaceholderView
-        title={messages.onboardingStepTwoTitle()}
-        description={messages.onboardingStepTwoDescription()}
-        note={messages.onboardingStepPlaceholderNote()}
-        previousActionLabel={messages.onboardingBackAction()}
-        nextActionLabel={messages.onboardingNextAction()}
-        onPreviousAction={() => {
-          void handleMoveToStep(1);
-        }}
-        onNextAction={() => {
-          void handleMoveToStep(3);
-        }}
+      <OnboardingStepTwoContainer
+        onboardingRepository={onboardingRepository}
+        scheduleRepository={scheduleRepository}
+        getTranslation={getTranslation}
+        onSubmitted={refresh}
       />
     );
   } else {
     stepContent = (
       <OnboardingStepPlaceholderView
-        title={messages.onboardingStepThreeTitle()}
-        description={messages.onboardingStepThreeDescription()}
-        note={messages.onboardingStepPlaceholderNote()}
-        previousActionLabel={messages.onboardingBackAction()}
-        nextActionLabel={messages.onboardingFinishAction()}
+        title={getTranslation(TranslationKey.OnboardingStepThreeTitle)}
+        description={getTranslation(TranslationKey.OnboardingStepThreeDescription)}
+        note=""
+        previousActionLabel={getTranslation(TranslationKey.OnboardingBackAction)}
+        nextActionLabel={getTranslation(TranslationKey.OnboardingFinishAction)}
         onPreviousAction={() => {
           void handleMoveToStep(2);
         }}
@@ -133,13 +145,18 @@ export function OnboardingContainer({
 
   return (
     <OnboardingView
-      eyebrow={messages.onboardingEyebrow()}
-      title={messages.onboardingTitle()}
-      description={messages.onboardingDescription()}
-      loadingLabel={messages.loadingLabel()}
-      steps={getStepItems()}
+      eyebrow={getTranslation(TranslationKey.OnboardingEyebrow)}
+      title={getTranslation(TranslationKey.OnboardingTitle)}
+      description={getTranslation(TranslationKey.OnboardingDescription)}
+      loadingLabel={getTranslation(TranslationKey.LoadingLabel)}
+      steps={stepItems}
       actualStep={actualStep}
       isLoading={showLoading}
+      language={language}
+      languageLabel={getTranslation(TranslationKey.LanguageLabel)}
+      languageEnglishLabel={getTranslation(TranslationKey.LanguageEnglish)}
+      languageSpanishLabel={getTranslation(TranslationKey.LanguageSpanish)}
+      onLanguageChange={setLanguage}
     >
       {stepContent}
     </OnboardingView>

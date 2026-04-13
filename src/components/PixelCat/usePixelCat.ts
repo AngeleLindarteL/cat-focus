@@ -8,10 +8,17 @@ import type { PixelCatProps, UsePixelCatResult } from "@/components/PixelCat/int
 export function usePixelCat({
   furColorPrimary,
   furColorSecondary,
-}: Pick<PixelCatProps, "furColorPrimary" | "furColorSecondary">): UsePixelCatResult {
+  eyeColor,
+  tailColor,
+}: Pick<
+  PixelCatProps,
+  "furColorPrimary" | "furColorSecondary" | "eyeColor" | "tailColor"
+>): UsePixelCatResult {
   const style: CSSProperties = {
     "--cat-fur-primary": furColorPrimary,
     "--cat-fur-secondary": furColorSecondary,
+    "--cat-tail": tailColor,
+    "--cat-eyes": eyeColor,
     "--cat-fur-light": "#ffffff",
     "--cat-outline": "#000000",
     "--cat-inner-ear": "#f1d9e6",

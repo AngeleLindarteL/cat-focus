@@ -1,15 +1,16 @@
 import type { CatRepository } from "@/lib/repositories/catRepository";
+import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import { useCatProfileForm } from "@/modules/onboarding/hooks/useCatProfileForm";
 import type { CatProfileFormValues } from "@/modules/onboarding/types/onboardingView";
 import { OnboardingStepOneView } from "@/modules/onboarding/views/OnboardingStepOneView";
-import { messages } from "@/lib/i18n/messages";
 
 type OnboardingStepOneContainerProps = {
   catRepository: CatRepository;
   onboardingRepository: OnboardingRepository;
   initialValues: Awaited<ReturnType<CatRepository["getCatProfile"]>>;
   onSubmitted: () => Promise<void>;
+  getTranslation: UseTranslationResult["getTranslation"];
 };
 
 export function OnboardingStepOneContainer({
@@ -17,8 +18,9 @@ export function OnboardingStepOneContainer({
   onboardingRepository,
   initialValues,
   onSubmitted,
+  getTranslation,
 }: OnboardingStepOneContainerProps) {
-  const form = useCatProfileForm(initialValues);
+  const form = useCatProfileForm(initialValues, getTranslation);
 
   async function handleSubmit(values: CatProfileFormValues) {
     await catRepository.saveCatProfile(values);
@@ -33,14 +35,18 @@ export function OnboardingStepOneContainer({
         errors={form.formState.errors}
         furColorPrimary={form.furColorPrimary}
         furColorSecondary={form.furColorSecondary}
-        title={messages.catSetupTitle()}
-        description={messages.catSetupDescription()}
-        nameLabel={messages.catNameLabel()}
-        namePlaceholder={messages.catNamePlaceholder()}
-        primaryColorLabel={messages.catPrimaryColorLabel()}
-        secondaryColorLabel={messages.catSecondaryColorLabel()}
-        previewLabel={messages.catPreviewLabel()}
-        submitLabel={messages.catStepSubmit()}
+        eyeColor={form.eyeColor}
+        tailColor={form.tailColor}
+        title={getTranslation(TranslationKey.CatSetupTitle)}
+        description={getTranslation(TranslationKey.CatSetupDescription)}
+        nameLabel={getTranslation(TranslationKey.CatNameLabel)}
+        namePlaceholder={getTranslation(TranslationKey.CatNamePlaceholder)}
+        primaryColorLabel={getTranslation(TranslationKey.CatPrimaryColorLabel)}
+        secondaryColorLabel={getTranslation(TranslationKey.CatSecondaryColorLabel)}
+        eyeColorLabel={getTranslation(TranslationKey.CatEyeColorLabel)}
+        tailColorLabel={getTranslation(TranslationKey.CatTailColorLabel)}
+        previewLabel={getTranslation(TranslationKey.CatPreviewLabel)}
+        submitLabel={getTranslation(TranslationKey.CatStepSubmit)}
       />
     </form>
   );

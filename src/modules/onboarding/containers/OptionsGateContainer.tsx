@@ -1,3 +1,4 @@
+import { useTranslation } from "@/lib/i18n";
 import {
   catRepository as defaultCatRepository,
   type CatRepository,
@@ -19,6 +20,7 @@ export function OptionsGateContainer({
   catRepository = defaultCatRepository,
   onboardingRepository = defaultOnboardingRepository,
 }: OptionsGateContainerProps) {
+  const { language, setLanguage, getTranslation } = useTranslation();
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
 
   if (isLoading || !onboardingState) {
@@ -27,6 +29,9 @@ export function OptionsGateContainer({
         catRepository={catRepository}
         onboardingRepository={onboardingRepository}
         onCompleted={refresh}
+        language={language}
+        setLanguage={setLanguage}
+        getTranslation={getTranslation}
       />
     );
   }
@@ -37,9 +42,12 @@ export function OptionsGateContainer({
         catRepository={catRepository}
         onboardingRepository={onboardingRepository}
         onCompleted={refresh}
+        language={language}
+        setLanguage={setLanguage}
+        getTranslation={getTranslation}
       />
     );
   }
 
-  return <OptionsHomeContainer />;
+  return <OptionsHomeContainer getTranslation={getTranslation} />;
 }

@@ -9,4 +9,6 @@ export type CatProfile = {
   name: string;
   furColorPrimary: string;
   furColorSecondary: string;
+  eyeColor: string;
+  tailColor: string;
 };

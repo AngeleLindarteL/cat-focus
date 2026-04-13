@@ -7,6 +7,8 @@ import {
 describe("cat profile form schema", () => {
   const schema = createCatProfileSchema({
     nameRequired: "Name required",
+    nameMinLength: "Name too short",
+    nameMaxLength: "Name too long",
     colorInvalid: "Invalid color",
   });
 
@@ -19,6 +21,8 @@ describe("cat profile form schema", () => {
       name: "   ",
       furColorPrimary: "#d0a06a",
       furColorSecondary: "#8a5527",
+      eyeColor: "#365314",
+      tailColor: "#8a5527",
     });
 
     expect(result.success).toBe(false);
@@ -29,6 +33,8 @@ describe("cat profile form schema", () => {
       name: "Mochi",
       furColorPrimary: "orange",
       furColorSecondary: "#8a5527",
+      eyeColor: "#365314",
+      tailColor: "#8a5527",
     });
 
     expect(result.success).toBe(false);
@@ -39,6 +45,8 @@ describe("cat profile form schema", () => {
       name: "  Captain   Whiskers ",
       furColorPrimary: "#d0a06a",
       furColorSecondary: "#8a5527",
+      eyeColor: "#365314",
+      tailColor: "#8a5527",
     });
 
     expect(result.name).toBe("Captain Whiskers");

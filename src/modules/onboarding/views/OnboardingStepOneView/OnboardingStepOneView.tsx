@@ -1,12 +1,9 @@
+import bodyPrimaryIcon from "@/assets/icons/cat-body-primary.svg";
+import eyeIcon from "@/assets/icons/cat-eyes.svg";
+import furPatchIcon from "@/assets/icons/cat-fur-patch.svg";
+import tailIcon from "@/assets/icons/cat-tail.svg";
+import { CatColorSelector } from "@/components/CatColorSelector";
 import { PixelCat } from "@/components/PixelCat";
-import {
-  ONBOARDING_STEP_ONE_COLOR_GRID_CLASS_NAME,
-  ONBOARDING_STEP_ONE_FORM_PANEL_CLASS_NAME,
-  ONBOARDING_STEP_ONE_LAYOUT_CLASS_NAME,
-  ONBOARDING_STEP_ONE_PREVIEW_PANEL_CLASS_NAME,
-  ONBOARDING_STEP_ONE_PREVIEW_SHELL_CLASS_NAME,
-  ONBOARDING_STEP_ONE_SUBMIT_CLASS_NAME,
-} from "@/modules/onboarding/views/OnboardingStepOneView/constants";
 import type { OnboardingStepOneViewProps } from "@/modules/onboarding/views/OnboardingStepOneView/interfaces";
 
 export function OnboardingStepOneView({
@@ -14,18 +11,22 @@ export function OnboardingStepOneView({
   errors,
   furColorPrimary,
   furColorSecondary,
+  eyeColor,
+  tailColor,
   title,
   description,
   nameLabel,
   namePlaceholder,
   primaryColorLabel,
   secondaryColorLabel,
+  eyeColorLabel,
+  tailColorLabel,
   previewLabel,
   submitLabel,
 }: OnboardingStepOneViewProps) {
   return (
-    <div className={ONBOARDING_STEP_ONE_LAYOUT_CLASS_NAME}>
-      <div className={ONBOARDING_STEP_ONE_FORM_PANEL_CLASS_NAME}>
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(260px,0.8fr)]">
+      <div className="space-y-5">
         <div className="space-y-2">
           <h2 className="text-xl font-semibold tracking-tight text-stone-900">
             {title}
@@ -46,51 +47,52 @@ export function OnboardingStepOneView({
           ) : null}
         </label>
 
-        <div className={ONBOARDING_STEP_ONE_COLOR_GRID_CLASS_NAME}>
-          <label className="block space-y-2">
-            <span className="text-sm font-medium text-stone-800">
-              {primaryColorLabel}
-            </span>
-            <input
-              {...register("furColorPrimary")}
-              type="color"
-              className="h-12 w-full rounded-2xl border border-stone-200 bg-white p-2"
-            />
-            {errors.furColorPrimary ? (
-              <p className="text-sm text-red-700">
-                {errors.furColorPrimary.message}
-              </p>
-            ) : null}
-          </label>
+        <div className="grid gap-4 md:grid-cols-2">
+          <CatColorSelector
+            {...register("furColorPrimary")}
+            label={primaryColorLabel}
+            icon={<img src={bodyPrimaryIcon} alt="" className="h-5 w-5" />}
+            error={errors.furColorPrimary?.message}
+          />
 
-          <label className="block space-y-2">
-            <span className="text-sm font-medium text-stone-800">
-              {secondaryColorLabel}
-            </span>
-            <input
-              {...register("furColorSecondary")}
-              type="color"
-              className="h-12 w-full rounded-2xl border border-stone-200 bg-white p-2"
-            />
-            {errors.furColorSecondary ? (
-              <p className="text-sm text-red-700">
-                {errors.furColorSecondary.message}
-              </p>
-            ) : null}
-          </label>
+          <CatColorSelector
+            {...register("furColorSecondary")}
+            label={secondaryColorLabel}
+            icon={<img src={furPatchIcon} alt="" className="h-5 w-5" />}
+            error={errors.furColorSecondary?.message}
+          />
+
+          <CatColorSelector
+            {...register("eyeColor")}
+            label={eyeColorLabel}
+            icon={<img src={eyeIcon} alt="" className="h-5 w-5" />}
+            error={errors.eyeColor?.message}
+          />
+
+          <CatColorSelector
+            {...register("tailColor")}
+            label={tailColorLabel}
+            icon={<img src={tailIcon} alt="" className="h-5 w-5" />}
+            error={errors.tailColor?.message}
+          />
         </div>
 
-        <button type="submit" className={ONBOARDING_STEP_ONE_SUBMIT_CLASS_NAME}>
+        <button
+          type="submit"
+          className="cursor-pointer rounded-2xl bg-stone-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-700"
+        >
           {submitLabel}
         </button>
       </div>
 
-      <div className={ONBOARDING_STEP_ONE_PREVIEW_SHELL_CLASS_NAME}>
+      <div className="rounded-[30px] border border-stone-200 bg-stone-50/80 p-5">
         <p className="text-sm font-medium text-stone-800">{previewLabel}</p>
-        <div className={ONBOARDING_STEP_ONE_PREVIEW_PANEL_CLASS_NAME}>
+        <div className="mt-4 flex min-h-[280px] items-center justify-center rounded-[28px] bg-white">
           <PixelCat
             furColorPrimary={furColorPrimary}
             furColorSecondary={furColorSecondary}
+            eyeColor={eyeColor}
+            tailColor={tailColor}
           />
         </div>
       </div>

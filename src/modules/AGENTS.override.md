@@ -21,3 +21,5 @@ module-name/
 
 - Apply the container/view pattern inside modules.
 - Cross-module infrastructure belongs in `src/lib`, not inside a feature module.
+- For one-time async initialization in containers/hooks, do not call a `setState`-heavy refresh helper directly inside `useEffect`.
+- Prefer a one-time effect dedicated to the initial load, and keep reusable reload helpers wrapped in `useCallback` for user-triggered refresh paths.

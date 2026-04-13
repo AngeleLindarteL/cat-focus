@@ -1,19 +1,26 @@
 import { openExtensionOptions } from "@/lib/chrome/extension";
-import { messages } from "@/lib/i18n/messages";
+import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import { HomeView } from "@/modules/home/views/HomeView";
 
-export function PopupHomeContainer() {
+type PopupHomeContainerProps = {
+  getTranslation: UseTranslationResult["getTranslation"];
+};
+
+export function PopupHomeContainer({
+  getTranslation,
+}: PopupHomeContainerProps) {
   return (
     <HomeView
-      eyebrow={messages.popupEyebrow()}
-      title={messages.homePopupTitle()}
-      description={messages.homePopupDescription()}
-      body={messages.homePopupBody()}
-      primaryActionLabel={messages.homePopupAction()}
+      surface="popup"
+      eyebrow={getTranslation(TranslationKey.PopupEyebrow)}
+      title={getTranslation(TranslationKey.HomePopupTitle)}
+      description={getTranslation(TranslationKey.HomePopupDescription)}
+      body={getTranslation(TranslationKey.HomePopupBody)}
+      primaryActionLabel={getTranslation(TranslationKey.HomePopupAction)}
       onPrimaryAction={() => {
         void openExtensionOptions();
       }}
-      secondaryText={messages.homePopupFooter()}
+      secondaryText={getTranslation(TranslationKey.HomePopupFooter)}
     />
   );
 }

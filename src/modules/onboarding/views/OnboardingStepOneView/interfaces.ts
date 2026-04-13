@@ -6,12 +6,16 @@ export type OnboardingStepOneViewProps = {
   errors: FieldErrors<CatProfileFormValues>;
   furColorPrimary: string;
   furColorSecondary: string;
+  eyeColor: string;
+  tailColor: string;
   title: string;
   description: string;
   nameLabel: string;
   namePlaceholder: string;
   primaryColorLabel: string;
   secondaryColorLabel: string;
+  eyeColorLabel: string;
+  tailColorLabel: string;
   previewLabel: string;
   submitLabel: string;
 };

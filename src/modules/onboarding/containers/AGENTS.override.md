@@ -11,3 +11,5 @@ Containers that orchestrate onboarding flow.
 - Containers must not accumulate markup-heavy rendering; push render details into views.
 - The onboarding stepper state should be derived from repository-backed onboarding state.
 - Resume behavior and prefilling should be handled here or in supporting hooks, not in views.
+- Avoid effect bodies that synchronously kick off `setState`-heavy refresh helpers.
+- For initial async loads, use a dedicated one-time effect and keep refresh actions memoized with `useCallback` for explicit re-use.

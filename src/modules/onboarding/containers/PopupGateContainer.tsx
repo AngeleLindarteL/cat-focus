@@ -1,5 +1,5 @@
 import { openExtensionOptions } from "@/lib/chrome/extension";
-import { messages } from "@/lib/i18n/messages";
+import { TranslationKey, useTranslation } from "@/lib/i18n";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
@@ -15,17 +15,18 @@ type PopupGateContainerProps = {
 export function PopupGateContainer({
   onboardingRepository = defaultOnboardingRepository,
 }: PopupGateContainerProps) {
+  const { getTranslation } = useTranslation();
   const { isLoading, onboardingState } = useOnboardingState(onboardingRepository);
 
   if (isLoading || !onboardingState) {
     return (
       <PopupOnboardingRedirectView
-        eyebrow={messages.popupEyebrow()}
-        title={messages.popupRedirectTitle()}
-        description={messages.popupRedirectDescription()}
-        body={messages.loadingLabel()}
-        primaryActionLabel={messages.popupRedirectAction()}
-        secondaryText={messages.popupRedirectFooter()}
+        eyebrow={getTranslation(TranslationKey.PopupEyebrow)}
+        title={getTranslation(TranslationKey.PopupRedirectTitle)}
+        description={getTranslation(TranslationKey.PopupRedirectDescription)}
+        body={getTranslation(TranslationKey.LoadingLabel)}
+        primaryActionLabel={getTranslation(TranslationKey.PopupRedirectAction)}
+        secondaryText={getTranslation(TranslationKey.PopupRedirectFooter)}
         onPrimaryAction={() => {
           void openExtensionOptions();
         }}
@@ -36,12 +37,12 @@ export function PopupGateContainer({
   if (!onboardingState.finished) {
     return (
       <PopupOnboardingRedirectView
-        eyebrow={messages.popupEyebrow()}
-        title={messages.popupRedirectTitle()}
-        description={messages.popupRedirectDescription()}
-        body={messages.popupRedirectBody()}
-        primaryActionLabel={messages.popupRedirectAction()}
-        secondaryText={messages.popupRedirectFooter()}
+        eyebrow={getTranslation(TranslationKey.PopupEyebrow)}
+        title={getTranslation(TranslationKey.PopupRedirectTitle)}
+        description={getTranslation(TranslationKey.PopupRedirectDescription)}
+        body={getTranslation(TranslationKey.PopupRedirectBody)}
+        primaryActionLabel={getTranslation(TranslationKey.PopupRedirectAction)}
+        secondaryText={getTranslation(TranslationKey.PopupRedirectFooter)}
         onPrimaryAction={() => {
           void openExtensionOptions();
         }}
@@ -49,5 +50,5 @@ export function PopupGateContainer({
     );
   }
 
-  return <PopupHomeContainer />;
+  return <PopupHomeContainer getTranslation={getTranslation} />;
 }

@@ -9,9 +9,16 @@ import { usePixelCat } from "@/components/PixelCat/usePixelCat";
 export function PixelCat({
   furColorPrimary,
   furColorSecondary,
+  eyeColor,
+  tailColor,
   className,
 }: PixelCatProps) {
-  const { style, cells } = usePixelCat({ furColorPrimary, furColorSecondary });
+  const { style, cells } = usePixelCat({
+    furColorPrimary,
+    furColorSecondary,
+    eyeColor,
+    tailColor,
+  });
 
   return (
     <div
