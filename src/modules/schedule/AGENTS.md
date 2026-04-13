@@ -1,4 +1,4 @@
-# AGENTS.override.md
+# AGENTS.md
 
 ## Scope
 

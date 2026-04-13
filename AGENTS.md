@@ -241,6 +241,26 @@ Store development plans and feature specs in `docs/plans/`.
 
 Do not leave planning artifacts scattered across the repo root or inside feature folders when they are intended to guide implementation work.
 
+## Changelog
+
+Maintain `changelog.md` at the repository root as a mandatory record of all same-day repo changes.
+
+- every time a change is made in a day, add or update the corresponding entry in `changelog.md` on that same day
+- include code changes, documentation changes, architecture changes, and workflow/rule updates
+- use git history and the relevant files in `docs/plans/` to keep summaries accurate and contextual
+- keep the changelog in markdown and use this required format for each entry:
+
+```md
+## [Date (e.g 2026-01-01)]
+### Author: Name of the Author (e.gAngelELindarteL)
+### Co-Authors: if exists, if not, just write "None"
+### Resume: A short description of the changes
+### Changes:
+- A list of changes, here you're free to use tables, or all available elements to explain the changes we did.
+
+### Notes: Important notes about the change
+```
+
 ## Commands
 
 Prefix shell commands with `rtk` in this repository.

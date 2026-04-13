@@ -14,10 +14,10 @@ Refine the schedule preset-site experience, tighten blocked-site deduplication, 
   - `components/` hold smaller reusable UI pieces owned by that module
 - Update the corresponding guidance files to make this explicit:
   - `AGENTS.md`
-  - `src/modules/AGENTS.override.md`
-  - add `src/modules/schedule/AGENTS.override.md` if the schedule module still lacks one
-  - update any existing schedule-local override files that reference views/components boundaries
-- Add button interaction guidance to the relevant override docs:
+  - `src/modules/AGENTS.md`
+  - add `src/modules/schedule/AGENTS.md` if the schedule module still lacks one
+  - update any existing schedule-local AGENTS docs that reference views/components boundaries
+- Add button interaction guidance to the relevant AGENTS docs:
   - all clickable buttons should include pointer cursor behavior
   - this applies to shared components and module-local components/views
 
@@ -93,4 +93,3 @@ Refine the schedule preset-site experience, tighten blocked-site deduplication, 
 - Selected preset items are removable but not editable.
 - The schedule module is allowed to introduce a module-local `components/` folder without moving shared cross-module UI out of `src/components`.
 - The step-2 continue gate will only validate schedule-block existence in this iteration, while preserving the placeholder `usageBlockTimeValid` hook point for later work.
-
