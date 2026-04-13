@@ -3,6 +3,19 @@
 ## [2026-04-13]
 ### Author: AngeleLindarteL
 ### Co-Authors: None
+### Resume: Migrated app translations to custom locale dictionaries, restored standard Chrome locale files for fallback usage, and synchronized weekday toggles through state.
+### Changes:
+- Replaced the suffix-based `_locales` duplication with app-owned `en` and `es` translation catalogs under `src/lib/i18n`.
+- Refactored `useTranslation` so persisted user language preferences read from the custom catalog, while users without a saved preference fall back to Chrome `i18n` messages and UI locale detection.
+- Flattened `_locales/en/messages.json` and `_locales/es/messages.json` back to standard Chrome message keys so extension-managed fallback localization remains valid.
+- Updated the test Chrome mock and onboarding coverage to validate both persisted-language selection and Chrome-locale fallback behavior.
+- Added weekday toggle change propagation so the schedule form no longer depends on reading refs during render, which resolves the React Hooks lint violation surfaced during verification.
+
+### Notes: The in-app language selector now owns extension UI copy after a preference is saved; Chrome locale resolution is only used before that preference exists.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
 ### Resume: Polished the shared stepper and schedule-block experience with dirty-state reminders, relaxed name validation, and preset hover fixes.
 ### Changes:
 - Reworked the shared `Stepper` layout so all steps, including the last one, sit centered over full connector segments.

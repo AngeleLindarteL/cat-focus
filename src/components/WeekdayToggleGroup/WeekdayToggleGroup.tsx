@@ -8,12 +8,13 @@ import type {
 export const WeekdayToggleGroup = forwardRef<
   WeekdayToggleGroupRef,
   WeekdayToggleGroupProps
->(function WeekdayToggleGroup({ options, label, disabled = false }, ref) {
+>(function WeekdayToggleGroup({ options, label, disabled = false, onChange }, ref) {
   return (
     <ToggleGroup
       ref={ref}
       label={label}
       disabled={disabled}
+      onChange={onChange}
       options={options.map((option) => ({
         key: option.name,
         label: option.label,

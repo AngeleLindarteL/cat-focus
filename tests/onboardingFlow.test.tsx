@@ -201,4 +201,21 @@ describe("onboarding flow", () => {
       await screen.findByText("¡Hola! Gracias por instalar nuestra extensión"),
     ).toBeInTheDocument();
   });
+
+  it("falls back to the Chrome UI locale when no app language is saved", async () => {
+    globalThis.chrome = createChromeMock({}, "es");
+
+    render(
+      <PopupGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 1,
+          finished: false,
+        })}
+      />,
+    );
+
+    expect(
+      await screen.findByText("¡Hola! Gracias por instalar nuestra extensión"),
+    ).toBeInTheDocument();
+  });
 });

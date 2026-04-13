@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import { getMessage } from "@/lib/chrome/i18n";
+import { getMessage, getUILanguage } from "@/lib/chrome/i18n";
 import {
   SUPPORTED_LANGUAGES,
   TranslationKey,
 } from "@/lib/i18n/translation.constants";
+import { translationCatalog } from "@/lib/i18n/translationCatalog.constants";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
 } from "@/lib/repositories/userPreferencesRepository";
 import type {
   Language,
-  TranslationMessageKey,
 } from "@/lib/i18n/translation.interfaces";
 import type { UserPreferencesRepository } from "@/lib/repositories/userPreferencesRepository";
 
@@ -22,11 +22,17 @@ function normalizeLanguage(value: string | null | undefined): Language {
 }
 
 function getBrowserLanguage(): Language {
-  if (typeof navigator === "undefined") {
-    return "en";
+  const chromeLanguage = getUILanguage();
+
+  if (chromeLanguage) {
+    return normalizeLanguage(chromeLanguage);
   }
 
-  return normalizeLanguage(navigator.language);
+  if (typeof navigator !== "undefined") {
+    return normalizeLanguage(navigator.language);
+  }
+
+  return "en";
 }
 
 export type UseTranslationResult = {
@@ -35,17 +41,11 @@ export type UseTranslationResult = {
   getTranslation: (key: TranslationKey) => string;
 };
 
-function createTranslationMessageKey(
-  key: TranslationKey,
-  language: Language,
-): TranslationMessageKey {
-  return `${key}_${language}`;
-}
-
 export function useTranslation(
   repository: UserPreferencesRepository = defaultUserPreferencesRepository,
 ): UseTranslationResult {
   const [language, setLanguageState] = useState<Language>(getBrowserLanguage);
+  const [hasStoredPreference, setHasStoredPreference] = useState(false);
 
   useEffect(() => {
     void repository.getPreferences().then((preferences) => {
@@ -53,13 +53,19 @@ export function useTranslation(
 
       if (storedLanguage && SUPPORTED_LANGUAGES.includes(storedLanguage)) {
         setLanguageState(storedLanguage);
+        setHasStoredPreference(true);
+        return;
       }
+
+      setLanguageState(getBrowserLanguage());
+      setHasStoredPreference(false);
     });
   }, [repository]);
 
   const setLanguage = useCallback(
     async (nextLanguage: Language) => {
       setLanguageState(nextLanguage);
+      setHasStoredPreference(true);
       await repository.savePreferences({
         language: nextLanguage,
       });
@@ -69,12 +75,22 @@ export function useTranslation(
 
   const getTranslation = useCallback(
     (key: TranslationKey) => {
-      return getMessage(createTranslationMessageKey(key, language));
+      if (hasStoredPreference) {
+        return translationCatalog[language][key];
+      }
+
+      const chromeMessage = getMessage(key);
+
+      if (chromeMessage !== key) {
+        return chromeMessage;
+      }
+
+      return translationCatalog[language][key];
     },
-    [language],
+    [hasStoredPreference, language],
   );
 
   return { language, setLanguage, getTranslation };
 }
 
-export { createTranslationMessageKey, normalizeLanguage };
+export { normalizeLanguage };

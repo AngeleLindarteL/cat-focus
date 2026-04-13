@@ -14,4 +14,5 @@ export type WeekdayToggleGroupProps = {
   options: DayToggleOption[];
   label: string;
   disabled?: boolean;
+  onChange?: (value: ScheduleDays) => void;
 };

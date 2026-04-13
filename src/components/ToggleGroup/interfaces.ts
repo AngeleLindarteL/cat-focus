@@ -14,4 +14,5 @@ export type ToggleGroupProps<TKey extends string> = {
   options: ToggleGroupOption<TKey>[];
   label: string;
   disabled?: boolean;
+  onChange?: (value: ToggleGroupValue<TKey>) => void;
 };

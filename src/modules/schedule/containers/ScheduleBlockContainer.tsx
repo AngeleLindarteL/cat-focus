@@ -172,7 +172,6 @@ export function ScheduleBlockContainer({
   async function handleSubmit(activeScheduleId: string | null) {
     const nextValues: ScheduleBlockFormValues = {
       ...draft,
-      days: weekdayGroupRef.current?.value ?? draft.days,
     };
     const nextErrors = validateScheduleBlockForm(nextValues, {
       nameRequired: getTranslation(TranslationKey.ValidationScheduleNameRequired),
@@ -232,10 +231,7 @@ export function ScheduleBlockContainer({
   const canDelete = !isOnboarding && !!activeSchedule;
   const renderCreateForm = isCreating && (!isOnboarding || schedules.length === 0);
   const activeScheduleDraft = activeSchedule
-    ? createScheduleBlockDraft({
-        ...draft,
-        days: weekdayGroupRef.current?.value ?? draft.days,
-      })
+    ? createScheduleBlockDraft(draft)
     : null;
   const persistedActiveScheduleDraft = activeSchedule
     ? createScheduleBlockDraft(createScheduleFormValuesFromDraft(activeSchedule))
@@ -292,6 +288,9 @@ export function ScheduleBlockContainer({
               weekdayOptions={weekdayOptions}
               weekdayGroupKey={`create-${weekdayOptions.map((option) => Number(option.default)).join("-")}`}
               weekdayGroupRef={weekdayGroupRef}
+              onWeekdayChange={(value) => {
+                setDraft((currentValue) => ({ ...currentValue, days: value }));
+              }}
               fromLabel={getTranslation(TranslationKey.ScheduleFromLabel)}
               fromValue={draft.from}
               fromError={errors.from}
@@ -403,6 +402,9 @@ export function ScheduleBlockContainer({
                 weekdayOptions={currentWeekdayOptions}
                 weekdayGroupKey={`${schedule.id}-${currentWeekdayOptions.map((option) => Number(option.default)).join("-")}`}
                 weekdayGroupRef={weekdayGroupRef}
+                onWeekdayChange={(value) => {
+                  setDraft((currentValue) => ({ ...currentValue, days: value }));
+                }}
                 fromLabel={getTranslation(TranslationKey.ScheduleFromLabel)}
                 fromValue={draft.from}
                 fromError={errors.from}

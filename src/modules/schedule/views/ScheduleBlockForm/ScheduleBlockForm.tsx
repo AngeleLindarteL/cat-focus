@@ -17,6 +17,7 @@ export function ScheduleBlockForm({
   weekdayOptions,
   weekdayGroupKey,
   weekdayGroupRef,
+  onWeekdayChange,
   fromLabel,
   fromValue,
   fromError,
@@ -97,6 +98,7 @@ export function ScheduleBlockForm({
         ref={weekdayGroupRef}
         label={daysLabel}
         options={weekdayOptions}
+        onChange={onWeekdayChange}
       />
 
       <div className="grid gap-4 md:grid-cols-2">

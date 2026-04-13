@@ -1,548 +1,275 @@
 {
-  "popupEyebrow_en": {
+  "popupEyebrow": {
     "message": "Popup"
   },
-  "popupEyebrow_es": {
-    "message": "Popup"
-  },
-  "popupRedirectTitle_en": {
+  "popupRedirectTitle": {
     "message": "Hello! Thanks for installing our extension"
   },
-  "popupRedirectTitle_es": {
-    "message": "¡Hola! Gracias por instalar nuestra extensión"
-  },
-  "popupRedirectDescription_en": {
+  "popupRedirectDescription": {
     "message": "We’ll help you set up your focus companion and preferences."
   },
-  "popupRedirectDescription_es": {
-    "message": "Te ayudaremos a configurar tu compañero de enfoque y tus preferencias."
-  },
-  "popupRedirectBody_en": {
+  "popupRedirectBody": {
     "message": "Continue in the options page to choose your cat, review your progress, and finish setup."
   },
-  "popupRedirectBody_es": {
-    "message": "Continúa en la página de opciones para elegir tu gato, revisar tu progreso y terminar la configuración."
-  },
-  "popupRedirectAction_en": {
+  "popupRedirectAction": {
     "message": "Open options"
   },
-  "popupRedirectAction_es": {
-    "message": "Abrir opciones"
-  },
-  "popupRedirectFooter_en": {
+  "popupRedirectFooter": {
     "message": "You can leave and come back later. Your saved onboarding data will be ready when you return."
   },
-  "popupRedirectFooter_es": {
-    "message": "Puedes salir y volver luego. Tus datos guardados del onboarding estarán listos cuando regreses."
-  },
-  "homePopupTitle_en": {
+  "homePopupTitle": {
     "message": "Cat Focus"
   },
-  "homePopupTitle_es": {
-    "message": "Cat Focus"
-  },
-  "homePopupDescription_en": {
+  "homePopupDescription": {
     "message": "A clean popup shell for the extension while the focus workflow is built out."
   },
-  "homePopupDescription_es": {
-    "message": "Una base limpia para el popup mientras construimos el flujo principal de enfoque."
-  },
-  "homePopupBody_en": {
+  "homePopupBody": {
     "message": "Open the options page to configure behavior, site rules, and future focus-session settings."
   },
-  "homePopupBody_es": {
-    "message": "Abre la página de opciones para configurar el comportamiento, las reglas de sitios y futuros ajustes de sesiones de enfoque."
-  },
-  "homePopupAction_en": {
+  "homePopupAction": {
     "message": "Open options"
   },
-  "homePopupAction_es": {
-    "message": "Abrir opciones"
-  },
-  "homePopupFooter_en": {
+  "homePopupFooter": {
     "message": "Popup logic stays in containers, while the shared card UI remains presentation-only."
   },
-  "homePopupFooter_es": {
-    "message": "La lógica del popup vive en contenedores, mientras la UI compartida permanece solo de presentación."
-  },
-  "optionsEyebrow_en": {
+  "optionsEyebrow": {
     "message": "Options"
   },
-  "optionsEyebrow_es": {
-    "message": "Opciones"
-  },
-  "homeOptionsTitle_en": {
+  "homeOptionsTitle": {
     "message": "Extension settings"
   },
-  "homeOptionsTitle_es": {
-    "message": "Configuración de la extensión"
-  },
-  "homeOptionsDescription_en": {
+  "homeOptionsDescription": {
     "message": "This options surface is ready for persisted settings and feature-specific forms."
   },
-  "homeOptionsDescription_es": {
-    "message": "Esta superficie de opciones está lista para preferencias persistidas y formularios específicos por funcionalidad."
-  },
-  "homeOptionsBody_en": {
+  "homeOptionsBody": {
     "message": "Use this page as the home for storage-backed preferences, Chrome API integrations, and module-specific configuration screens."
   },
-  "homeOptionsBody_es": {
-    "message": "Usa esta página como base para preferencias persistidas, integraciones con Chrome APIs y pantallas de configuración por módulo."
-  },
-  "homeOptionsFooter_en": {
+  "homeOptionsFooter": {
     "message": "The options entrypoint stays thin and delegates orchestration to a container."
   },
-  "homeOptionsFooter_es": {
-    "message": "El entrypoint de opciones se mantiene delgado y delega la orquestación a un contenedor."
-  },
-  "onboardingEyebrow_en": {
+  "onboardingEyebrow": {
     "message": "Onboarding"
   },
-  "onboardingEyebrow_es": {
-    "message": "Onboarding"
-  },
-  "onboardingTitle_en": {
+  "onboardingTitle": {
     "message": "Set up Cat Focus"
   },
-  "onboardingTitle_es": {
-    "message": "Configura Cat Focus"
-  },
-  "onboardingDescription_en": {
+  "onboardingDescription": {
     "message": "Finish your first setup to personalize the extension and unlock the default popup and options experience."
   },
-  "onboardingDescription_es": {
-    "message": "Completa tu primera configuración para personalizar la extensión y desbloquear la experiencia normal del popup y opciones."
-  },
-  "onboardingStepOneLabel_en": {
+  "onboardingStepOneLabel": {
     "message": "Choose your cat"
   },
-  "onboardingStepOneLabel_es": {
-    "message": "Elige tu gato"
-  },
-  "onboardingStepTwoLabel_en": {
+  "onboardingStepTwoLabel": {
     "message": "Set your schedule"
   },
-  "onboardingStepTwoLabel_es": {
-    "message": "Configura tu horario"
-  },
-  "onboardingStepThreeLabel_en": {
+  "onboardingStepThreeLabel": {
     "message": "Finish setup"
   },
-  "onboardingStepThreeLabel_es": {
-    "message": "Termina la configuración"
-  },
-  "onboardingBackAction_en": {
+  "onboardingBackAction": {
     "message": "Back"
   },
-  "onboardingBackAction_es": {
-    "message": "Atrás"
-  },
-  "onboardingNextAction_en": {
+  "onboardingNextAction": {
     "message": "Next"
   },
-  "onboardingNextAction_es": {
-    "message": "Siguiente"
-  },
-  "onboardingFinishAction_en": {
+  "onboardingFinishAction": {
     "message": "Finish onboarding"
   },
-  "onboardingFinishAction_es": {
-    "message": "Finalizar onboarding"
-  },
-  "onboardingStepThreeTitle_en": {
+  "onboardingStepThreeTitle": {
     "message": "Confirm your setup"
   },
-  "onboardingStepThreeTitle_es": {
-    "message": "Confirma tu configuración"
-  },
-  "onboardingStepThreeDescription_en": {
+  "onboardingStepThreeDescription": {
     "message": "Complete onboarding to switch the extension into its normal popup and options experience."
   },
-  "onboardingStepThreeDescription_es": {
-    "message": "Completa el onboarding para cambiar la extensión a su experiencia normal de popup y opciones."
-  },
-  "catSetupTitle_en": {
+  "catSetupTitle": {
     "message": "Create your cat companion"
   },
-  "catSetupTitle_es": {
-    "message": "Crea tu compañero felino"
-  },
-  "catSetupDescription_en": {
+  "catSetupDescription": {
     "message": "Pick a name and choose its fur, eye, and tail colors. You can come back later and your saved values will be prefilled."
   },
-  "catSetupDescription_es": {
-    "message": "Elige un nombre y selecciona los colores del pelaje, ojos y cola. Puedes volver luego y los valores guardados aparecerán precargados."
-  },
-  "catNameLabel_en": {
+  "catNameLabel": {
     "message": "Cat name"
   },
-  "catNameLabel_es": {
-    "message": "Nombre del gato"
-  },
-  "catNamePlaceholder_en": {
+  "catNamePlaceholder": {
     "message": "Mochi"
   },
-  "catNamePlaceholder_es": {
-    "message": "Mochi"
-  },
-  "catPrimaryColorLabel_en": {
+  "catPrimaryColorLabel": {
     "message": "Primary fur color"
   },
-  "catPrimaryColorLabel_es": {
-    "message": "Color principal del pelaje"
-  },
-  "catSecondaryColorLabel_en": {
+  "catSecondaryColorLabel": {
     "message": "Secondary fur color"
   },
-  "catSecondaryColorLabel_es": {
-    "message": "Color secundario del pelaje"
-  },
-  "catEyeColorLabel_en": {
+  "catEyeColorLabel": {
     "message": "Eye color"
   },
-  "catEyeColorLabel_es": {
-    "message": "Color de ojos"
-  },
-  "catTailColorLabel_en": {
+  "catTailColorLabel": {
     "message": "Tail color"
   },
-  "catTailColorLabel_es": {
-    "message": "Color de cola"
-  },
-  "catPreviewLabel_en": {
+  "catPreviewLabel": {
     "message": "Live preview"
   },
-  "catPreviewLabel_es": {
-    "message": "Vista previa"
-  },
-  "catStepSubmit_en": {
+  "catStepSubmit": {
     "message": "Save and continue"
   },
-  "catStepSubmit_es": {
-    "message": "Guardar y continuar"
-  },
-  "validationCatNameRequired_en": {
+  "validationCatNameRequired": {
     "message": "Enter a name for your cat."
   },
-  "validationCatNameRequired_es": {
-    "message": "Ingresa un nombre para tu gato."
-  },
-  "validationCatNameMinLength_en": {
+  "validationCatNameMinLength": {
     "message": "Use at least 5 characters for your cat name."
   },
-  "validationCatNameMinLength_es": {
-    "message": "Usa al menos 5 caracteres para el nombre del gato."
-  },
-  "validationCatNameMaxLength_en": {
+  "validationCatNameMaxLength": {
     "message": "Keep your cat name under 32 characters."
   },
-  "validationCatNameMaxLength_es": {
-    "message": "Mantén el nombre del gato por debajo de 32 caracteres."
-  },
-  "validationColorInvalid_en": {
+  "validationColorInvalid": {
     "message": "Choose a valid color."
   },
-  "validationColorInvalid_es": {
-    "message": "Elige un color válido."
-  },
-  "loadingLabel_en": {
+  "loadingLabel": {
     "message": "Loading..."
   },
-  "loadingLabel_es": {
-    "message": "Cargando..."
-  },
-  "languageLabel_en": {
+  "languageLabel": {
     "message": "Language"
   },
-  "languageLabel_es": {
-    "message": "Idioma"
-  },
-  "languageEnglish_en": {
+  "languageEnglish": {
     "message": "English"
   },
-  "languageEnglish_es": {
-    "message": "Inglés"
-  },
-  "languageSpanish_en": {
+  "languageSpanish": {
     "message": "Spanish"
   },
-  "languageSpanish_es": {
-    "message": "Español"
-  },
-  "stepTwoTitle_en": {
+  "stepTwoTitle": {
     "message": "Choose how you want to block distractions"
   },
-  "stepTwoTitle_es": {
-    "message": "Elige cómo bloquear distracciones"
-  },
-  "stepTwoDescription_en": {
+  "stepTwoDescription": {
     "message": "Pick a blocking method for onboarding. Schedule block is ready now, and usage time block is coming next."
   },
-  "stepTwoDescription_es": {
-    "message": "Selecciona un método de bloqueo para el onboarding. El bloqueo por horario ya está listo y el bloqueo por tiempo de uso llega después."
-  },
-  "stepTwoScheduleLabel_en": {
+  "stepTwoScheduleLabel": {
     "message": "Schedule block"
   },
-  "stepTwoScheduleLabel_es": {
-    "message": "Bloqueo por horario"
-  },
-  "stepTwoScheduleDescription_en": {
+  "stepTwoScheduleDescription": {
     "message": "Block distracting sites during the days and hours you choose."
   },
-  "stepTwoScheduleDescription_es": {
-    "message": "Bloquea sitios distractores durante los días y horas que elijas."
-  },
-  "stepTwoUsageLabel_en": {
+  "stepTwoUsageLabel": {
     "message": "Usage time block"
   },
-  "stepTwoUsageLabel_es": {
-    "message": "Bloqueo por tiempo de uso"
-  },
-  "stepTwoUsageDescription_en": {
+  "stepTwoUsageDescription": {
     "message": "Limit a site's allowed usage time before it gets blocked."
   },
-  "stepTwoUsageDescription_es": {
-    "message": "Limita el tiempo permitido de uso de un sitio antes de bloquearlo."
-  },
-  "stepTwoUsageConstruction_en": {
+  "stepTwoUsageConstruction": {
     "message": "Under construction"
   },
-  "stepTwoUsageConstruction_es": {
-    "message": "En construcción"
-  },
-  "scheduleEmptyTitle_en": {
+  "scheduleEmptyTitle": {
     "message": "Let’s start with your focus, create your first schedule."
   },
-  "scheduleEmptyTitle_es": {
-    "message": "Comencemos con tu enfoque, crea tu primer horario."
-  },
-  "scheduleEmptyDescription_en": {
+  "scheduleEmptyDescription": {
     "message": "Create a weekly focus schedule and choose the sites that should be blocked during that time."
   },
-  "scheduleEmptyDescription_es": {
-    "message": "Crea un horario semanal de enfoque y elige los sitios que deben bloquearse en ese periodo."
-  },
-  "scheduleCreateFirst_en": {
+  "scheduleCreateFirst": {
     "message": "Create my first schedule"
   },
-  "scheduleCreateFirst_es": {
-    "message": "Crear mi primer horario"
-  },
-  "scheduleCreate_en": {
+  "scheduleCreate": {
     "message": "Create schedule block"
   },
-  "scheduleCreate_es": {
-    "message": "Crear bloqueo por horario"
-  },
-  "scheduleNameLabel_en": {
+  "scheduleNameLabel": {
     "message": "Name of the schedule"
   },
-  "scheduleNameLabel_es": {
-    "message": "Nombre del horario"
-  },
-  "scheduleNamePlaceholder_en": {
+  "scheduleNamePlaceholder": {
     "message": "Work"
   },
-  "scheduleNamePlaceholder_es": {
-    "message": "Trabajo"
-  },
-  "scheduleDaysLabel_en": {
+  "scheduleDaysLabel": {
     "message": "Active days"
   },
-  "scheduleDaysLabel_es": {
-    "message": "Días activos"
-  },
-  "scheduleFromLabel_en": {
+  "scheduleFromLabel": {
     "message": "From"
   },
-  "scheduleFromLabel_es": {
-    "message": "Desde"
-  },
-  "scheduleToLabel_en": {
+  "scheduleToLabel": {
     "message": "To"
   },
-  "scheduleToLabel_es": {
-    "message": "Hasta"
-  },
-  "scheduleSitesLabel_en": {
+  "scheduleSitesLabel": {
     "message": "Websites to block"
   },
-  "scheduleSitesLabel_es": {
-    "message": "Sitios web a bloquear"
-  },
-  "schedulePopularSitesTitle_en": {
+  "schedulePopularSitesTitle": {
     "message": "Add some popular sites"
   },
-  "schedulePopularSitesTitle_es": {
-    "message": "Agrega sitios populares"
-  },
-  "scheduleSiteNamePlaceholder_en": {
+  "scheduleSiteNamePlaceholder": {
     "message": "Instagram"
   },
-  "scheduleSiteNamePlaceholder_es": {
-    "message": "Instagram"
-  },
-  "scheduleSiteDomainPlaceholder_en": {
+  "scheduleSiteDomainPlaceholder": {
     "message": "instagram.com"
   },
-  "scheduleSiteDomainPlaceholder_es": {
-    "message": "instagram.com"
-  },
-  "scheduleSave_en": {
+  "scheduleSave": {
     "message": "Save schedule"
   },
-  "scheduleSave_es": {
-    "message": "Guardar horario"
-  },
-  "scheduleUnsavedReminderTitle_en": {
+  "scheduleUnsavedReminderTitle": {
     "message": "You changed this schedule."
   },
-  "scheduleUnsavedReminderTitle_es": {
-    "message": "Cambiaste este horario."
-  },
-  "scheduleUnsavedReminderDescription_en": {
+  "scheduleUnsavedReminderDescription": {
     "message": "Press Save schedule to keep your updates."
   },
-  "scheduleUnsavedReminderDescription_es": {
-    "message": "Presiona Guardar horario para conservar los cambios."
-  },
-  "scheduleEdit_en": {
+  "scheduleEdit": {
     "message": "Edit"
   },
-  "scheduleEdit_es": {
-    "message": "Editar"
-  },
-  "scheduleDelete_en": {
+  "scheduleDelete": {
     "message": "Delete schedule"
   },
-  "scheduleDelete_es": {
-    "message": "Eliminar horario"
-  },
-  "scheduleDeleteConfirmTitle_en": {
+  "scheduleDeleteConfirmTitle": {
     "message": "Delete schedule?"
   },
-  "scheduleDeleteConfirmTitle_es": {
-    "message": "¿Eliminar horario?"
-  },
-  "scheduleDeleteConfirmDescription_en": {
+  "scheduleDeleteConfirmDescription": {
     "message": "This action will permanently remove the schedule block."
   },
-  "scheduleDeleteConfirmDescription_es": {
-    "message": "Esta acción eliminará el bloqueo por horario de forma permanente."
-  },
-  "scheduleDeleteConfirmAction_en": {
+  "scheduleDeleteConfirmAction": {
     "message": "Delete"
   },
-  "scheduleDeleteConfirmAction_es": {
-    "message": "Eliminar"
-  },
-  "scheduleCancel_en": {
+  "scheduleCancel": {
     "message": "Cancel"
   },
-  "scheduleCancel_es": {
-    "message": "Cancelar"
-  },
-  "scheduleClose_en": {
+  "scheduleClose": {
     "message": "Close"
   },
-  "scheduleClose_es": {
-    "message": "Cerrar"
-  },
-  "scheduleSummarySites_en": {
+  "scheduleSummarySites": {
     "message": "sites"
   },
-  "scheduleSummarySites_es": {
-    "message": "sitios"
-  },
-  "validationScheduleNameRequired_en": {
+  "validationScheduleNameRequired": {
     "message": "Enter a name for the schedule."
   },
-  "validationScheduleNameRequired_es": {
-    "message": "Ingresa un nombre para el horario."
-  },
-  "validationScheduleNameMinLength_en": {
+  "validationScheduleNameMinLength": {
     "message": "Use at least 3 characters for the schedule name."
   },
-  "validationScheduleNameMinLength_es": {
-    "message": "Usa al menos 3 caracteres para el nombre del horario."
-  },
-  "validationScheduleNameMaxLength_en": {
+  "validationScheduleNameMaxLength": {
     "message": "Keep the schedule name under 48 characters."
   },
-  "validationScheduleNameMaxLength_es": {
-    "message": "Mantén el nombre del horario por debajo de 48 caracteres."
-  },
-  "validationTimeRequired_en": {
+  "validationTimeRequired": {
     "message": "Enter a valid time."
   },
-  "validationTimeRequired_es": {
-    "message": "Ingresa una hora válida."
-  },
-  "validationTimeRange_en": {
+  "validationTimeRange": {
     "message": "The end time must be later than the start time."
   },
-  "validationTimeRange_es": {
-    "message": "La hora final debe ser posterior a la hora inicial."
-  },
-  "validationSitesRequired_en": {
+  "validationSitesRequired": {
     "message": "Add at least one website."
   },
-  "validationSitesRequired_es": {
-    "message": "Agrega al menos un sitio web."
-  },
-  "validationSiteNameRequired_en": {
+  "validationSiteNameRequired": {
     "message": "Enter a site name."
   },
-  "validationSiteNameRequired_es": {
-    "message": "Ingresa el nombre del sitio."
-  },
-  "validationDomainInvalid_en": {
+  "validationDomainInvalid": {
     "message": "Enter a valid website domain."
   },
-  "validationDomainInvalid_es": {
-    "message": "Ingresa un dominio válido."
-  },
-  "weekdayMonday_en": {
+  "weekdayMonday": {
     "message": "Mon"
   },
-  "weekdayMonday_es": {
-    "message": "Lun"
-  },
-  "weekdayTuesday_en": {
+  "weekdayTuesday": {
     "message": "Tue"
   },
-  "weekdayTuesday_es": {
-    "message": "Mar"
-  },
-  "weekdayWednesday_en": {
+  "weekdayWednesday": {
     "message": "Wed"
   },
-  "weekdayWednesday_es": {
-    "message": "Mié"
-  },
-  "weekdayThursday_en": {
+  "weekdayThursday": {
     "message": "Thu"
   },
-  "weekdayThursday_es": {
-    "message": "Jue"
-  },
-  "weekdayFriday_en": {
+  "weekdayFriday": {
     "message": "Fri"
   },
-  "weekdayFriday_es": {
-    "message": "Vie"
-  },
-  "weekdaySaturday_en": {
+  "weekdaySaturday": {
     "message": "Sat"
   },
-  "weekdaySaturday_es": {
-    "message": "Sáb"
-  },
-  "weekdaySunday_en": {
+  "weekdaySunday": {
     "message": "Sun"
-  },
-  "weekdaySunday_es": {
-    "message": "Dom"
   }
 }

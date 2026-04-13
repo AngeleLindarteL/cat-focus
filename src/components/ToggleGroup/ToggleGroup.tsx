@@ -24,7 +24,7 @@ function createInitialValue<TKey extends string>(
 }
 
 export const ToggleGroup = forwardRef(function ToggleGroup<TKey extends string>(
-  { options, label, disabled = false }: ToggleGroupProps<TKey>,
+  { options, label, disabled = false, onChange }: ToggleGroupProps<TKey>,
   ref: ForwardedRef<ToggleGroupRef<TKey>>,
 ) {
   const [value, setValue] = useState<ToggleGroupValue<TKey>>(() =>
@@ -52,10 +52,16 @@ export const ToggleGroup = forwardRef(function ToggleGroup<TKey extends string>(
               type="button"
               disabled={disabled}
               onClick={() => {
-                setValue((currentValue) => ({
-                  ...currentValue,
-                  [option.key]: !currentValue[option.key],
-                }));
+                setValue((currentValue) => {
+                  const nextValue = {
+                    ...currentValue,
+                    [option.key]: !currentValue[option.key],
+                  };
+
+                  onChange?.(nextValue);
+
+                  return nextValue;
+                });
               }}
               className={[
                 "cursor-pointer rounded-2xl border px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed",

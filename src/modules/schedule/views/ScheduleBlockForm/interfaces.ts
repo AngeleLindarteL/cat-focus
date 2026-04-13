@@ -5,6 +5,7 @@ import type {
   WeekdayToggleGroupRef,
 } from "@/components/WeekdayToggleGroup";
 import type { ScheduleSitePresetItem } from "@/modules/schedule/services/scheduleSitePresets";
+import type { ScheduleBlockFormValues } from "@/modules/schedule/services/scheduleBlockForm";
 
 export type ScheduleBlockFormProps = {
   mode: "create" | "edit";
@@ -20,6 +21,7 @@ export type ScheduleBlockFormProps = {
   weekdayOptions: DayToggleOption[];
   weekdayGroupKey: string;
   weekdayGroupRef: RefObject<WeekdayToggleGroupRef | null>;
+  onWeekdayChange: (value: ScheduleBlockFormValues["days"]) => void;
   fromLabel: string;
   fromValue: string;
   fromError?: string;
