@@ -57,7 +57,9 @@ export function ScheduleBlockForm({
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600">
             Schedule block
           </p>
-          <p className="text-lg font-semibold text-stone-900">{nameValue || nameLabel}</p>
+          <p className="text-lg font-semibold text-stone-900">
+            {nameValue || nameLabel}
+          </p>
         </div>
         <div className="flex gap-2">
           {onClose && closeLabel ? (
@@ -71,13 +73,6 @@ export function ScheduleBlockForm({
           ) : null}
         </div>
       </div>
-
-      {mode === "edit" && showUnsavedReminder && reminderTitle && reminderDescription ? (
-        <div className="rounded-3xl border border-amber-300 bg-amber-50 px-4 py-3">
-          <p className="text-sm font-semibold text-amber-800">{reminderTitle}</p>
-          <p className="mt-1 text-sm leading-6 text-amber-700">{reminderDescription}</p>
-        </div>
-      ) : null}
 
       <label className="block space-y-2">
         <span className="text-sm font-medium text-stone-800">{nameLabel}</span>
@@ -103,7 +98,9 @@ export function ScheduleBlockForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block space-y-2">
-          <span className="text-sm font-medium text-stone-800">{fromLabel}</span>
+          <span className="text-sm font-medium text-stone-800">
+            {fromLabel}
+          </span>
           <input
             type="time"
             value={fromValue}
@@ -112,7 +109,9 @@ export function ScheduleBlockForm({
             }}
             className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500"
           />
-          {fromError ? <p className="text-sm text-red-700">{fromError}</p> : null}
+          {fromError ? (
+            <p className="text-sm text-red-700">{fromError}</p>
+          ) : null}
         </label>
 
         <label className="block space-y-2">
@@ -150,6 +149,19 @@ export function ScheduleBlockForm({
         clearValidationError={clearSitesValidationError}
         isSiteEditable={isSiteEditable}
       />
+      {mode === "edit" &&
+      showUnsavedReminder &&
+      reminderTitle &&
+      reminderDescription ? (
+        <div className="rounded-3xl border border-amber-300 bg-amber-50 px-4 py-3">
+          <p className="text-sm font-semibold text-amber-800">
+            {reminderTitle}
+          </p>
+          <p className="mt-1 text-sm leading-6 text-amber-700">
+            {reminderDescription}
+          </p>
+        </div>
+      ) : null}
 
       <div className="flex justify-between gap-3">
         {onDelete && deleteLabel ? (
