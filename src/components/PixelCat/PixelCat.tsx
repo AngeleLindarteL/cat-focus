@@ -1,8 +1,3 @@
-import {
-  PIXEL_CAT_CELL_CLASS_NAME,
-  PIXEL_CAT_CONTAINER_CLASS_NAME,
-  PIXEL_CAT_SHADOW_CLASS_NAME,
-} from "@/components/PixelCat/constants";
 import type { PixelCatProps } from "@/components/PixelCat/interfaces";
 import { usePixelCat } from "@/components/PixelCat/usePixelCat";
 
@@ -22,15 +17,15 @@ export function PixelCat({
 
   return (
     <div
-      className={[PIXEL_CAT_CONTAINER_CLASS_NAME, className ?? ""].join(" ")}
+      className={["relative h-[220px] w-[220px]", className ?? ""].join(" ")}
       style={style}
     >
-      <div className={PIXEL_CAT_SHADOW_CLASS_NAME} />
+      <div className="absolute bottom-3 left-1/2 h-5 w-32 -translate-x-1/2 rounded-full bg-[rgba(0,0,0,0.22)] blur-[1px]" />
       <div className="absolute inset-0">
         {cells.map((cell) => (
           <span
             key={cell.key}
-            className={PIXEL_CAT_CELL_CLASS_NAME}
+            className="absolute block h-2.5 w-2.5"
             style={{
               left: cell.left,
               top: cell.top,

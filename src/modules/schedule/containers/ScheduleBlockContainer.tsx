@@ -148,6 +148,25 @@ export function ScheduleBlockContainer({
     () => createScheduleSitePresetItems(draft.sites),
     [draft.sites],
   );
+  const validationMessages = useMemo(
+    () => ({
+      nameRequired: getTranslation(TranslationKey.ValidationScheduleNameRequired),
+      nameMinLength: getTranslation(
+        TranslationKey.ValidationScheduleNameMinLength,
+      ),
+      nameMaxLength: getTranslation(
+        TranslationKey.ValidationScheduleNameMaxLength,
+      ),
+      timeRequired: getTranslation(TranslationKey.ValidationTimeRequired),
+      timeRange: getTranslation(TranslationKey.ValidationTimeRange),
+      sitesRequired: getTranslation(TranslationKey.ValidationSitesRequired),
+      siteNameRequired: getTranslation(
+        TranslationKey.ValidationSiteNameRequired,
+      ),
+      domainInvalid: getTranslation(TranslationKey.ValidationDomainInvalid),
+    }),
+    [getTranslation],
+  );
 
   function handlePopularSiteSelect(item: ScheduleSitePresetItem) {
     setDraft((currentValue) => ({
@@ -175,22 +194,7 @@ export function ScheduleBlockContainer({
     const nextValues: ScheduleBlockFormValues = {
       ...draft,
     };
-    const nextErrors = validateScheduleBlockForm(nextValues, {
-      nameRequired: getTranslation(TranslationKey.ValidationScheduleNameRequired),
-      nameMinLength: getTranslation(
-        TranslationKey.ValidationScheduleNameMinLength,
-      ),
-      nameMaxLength: getTranslation(
-        TranslationKey.ValidationScheduleNameMaxLength,
-      ),
-      timeRequired: getTranslation(TranslationKey.ValidationTimeRequired),
-      timeRange: getTranslation(TranslationKey.ValidationTimeRange),
-      sitesRequired: getTranslation(TranslationKey.ValidationSitesRequired),
-      siteNameRequired: getTranslation(
-        TranslationKey.ValidationSiteNameRequired,
-      ),
-      domainInvalid: getTranslation(TranslationKey.ValidationDomainInvalid),
-    });
+    const nextErrors = validateScheduleBlockForm(nextValues, validationMessages);
 
     setErrors(nextErrors);
 
@@ -249,6 +253,17 @@ export function ScheduleBlockContainer({
     !!persistedActiveScheduleDraft &&
     !areScheduleBlockDraftsEqual(activeScheduleDraft, persistedActiveScheduleDraft);
   const hasBlockingUnsavedChanges = isCreateDirty || isActiveScheduleDirty;
+  const draftValidationErrors = useMemo(
+    () => validateScheduleBlockForm(draft, validationMessages),
+    [draft, validationMessages],
+  );
+  const hasDraftValidationErrors =
+    Object.keys(draftValidationErrors).length > 0;
+  const createSubmitDisabled = !isCreateDirty || hasDraftValidationErrors;
+  const editSubmitDisabled = !isActiveScheduleDirty || hasDraftValidationErrors;
+  const submitTooltip = !hasDraftValidationErrors
+    ? getTranslation(TranslationKey.FormSubmitDisabledNoChanges)
+    : getTranslation(TranslationKey.FormSubmitDisabledInvalid);
 
   useEffect(() => {
     onHasBlockingUnsavedChangesChange?.(hasBlockingUnsavedChanges);
@@ -322,6 +337,8 @@ export function ScheduleBlockContainer({
               onSubmit={() => {
                 void handleSubmit(null);
               }}
+              submitDisabled={createSubmitDisabled}
+              submitTooltip={createSubmitDisabled ? submitTooltip : undefined}
               onClose={
                 canCollapse
                   ? () => {
@@ -405,6 +422,8 @@ export function ScheduleBlockContainer({
                 onSubmit={() => {
                   void handleSubmit(schedule.id);
                 }}
+                submitDisabled={editSubmitDisabled}
+                submitTooltip={editSubmitDisabled ? submitTooltip : undefined}
                 onDelete={
                   canDelete
                     ? () => {

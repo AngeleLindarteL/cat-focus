@@ -12,12 +12,13 @@ import {
 
 export type UsageBlockFormValues = {
   name: string;
-  limitTime: string;
+  limitHours: string;
+  limitMinutes: string;
   sites: BlockedSite[];
 };
 
 export type UsageBlockFormErrors = Partial<
-  Record<"name" | "limitTime" | "sites", string>
+  Record<"name" | "limitHours" | "limitMinutes" | "sites", string>
 >;
 
 export function sanitizeUsageBlockName(value: string): string {
@@ -27,7 +28,8 @@ export function sanitizeUsageBlockName(value: string): string {
 export function createDefaultUsageValues(): UsageBlockFormValues {
   return {
     name: DEFAULT_USAGE_BLOCK_NAME,
-    limitTime: DEFAULT_USAGE_BLOCK_LIMIT_TIME,
+    limitHours: DEFAULT_USAGE_BLOCK_LIMIT_TIME.slice(0, 2),
+    limitMinutes: DEFAULT_USAGE_BLOCK_LIMIT_TIME.slice(3, 5),
     sites: [],
   };
 }
@@ -37,7 +39,8 @@ export function createUsageFormValuesFromDraft(
 ): UsageBlockFormValues {
   return {
     name: draft.name,
-    limitTime: draft.limit.time,
+    limitHours: draft.limit.time.slice(0, 2),
+    limitMinutes: draft.limit.time.slice(3, 5),
     sites: draft.sites.map((site) => ({ ...site })),
   };
 }
@@ -47,7 +50,10 @@ export function validateUsageBlockForm(
   messages: {
     nameRequired: string;
     nameMinLength: string;
-    timeRequired: string;
+    hoursRequired: string;
+    hoursInvalid: string;
+    minutesRequired: string;
+    minutesInvalid: string;
     sitesRequired: string;
     siteNameRequired: string;
     domainInvalid: string;
@@ -62,8 +68,28 @@ export function validateUsageBlockForm(
     errors.name = messages.nameMinLength;
   }
 
-  if (!/^\d{2}:\d{2}$/.test(values.limitTime)) {
-    errors.limitTime = messages.timeRequired;
+  if (!values.limitHours) {
+    errors.limitHours = messages.hoursRequired;
+  } else {
+    const parsedHours = Number(values.limitHours);
+
+    if (!Number.isInteger(parsedHours) || parsedHours < 0 || parsedHours > 23) {
+      errors.limitHours = messages.hoursInvalid;
+    }
+  }
+
+  if (!values.limitMinutes) {
+    errors.limitMinutes = messages.minutesRequired;
+  } else {
+    const parsedMinutes = Number(values.limitMinutes);
+
+    if (
+      !Number.isInteger(parsedMinutes) ||
+      parsedMinutes < 0 ||
+      parsedMinutes > 59
+    ) {
+      errors.limitMinutes = messages.minutesInvalid;
+    }
   }
 
   if (!values.sites.length) {
@@ -88,10 +114,13 @@ export function validateUsageBlockForm(
 export function createUsageBlockDraft(
   values: UsageBlockFormValues,
 ): UsageBlockDraft {
+  const limitHours = values.limitHours.padStart(2, "0");
+  const limitMinutes = values.limitMinutes.padStart(2, "0");
+
   return {
     name: sanitizeUsageBlockName(values.name),
     limit: {
-      time: values.limitTime,
+      time: `${limitHours}:${limitMinutes}`,
       resetsAt: DEFAULT_USAGE_BLOCK_RESETS_AT,
     },
     sites: values.sites.map((site) => ({

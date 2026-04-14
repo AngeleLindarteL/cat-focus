@@ -38,7 +38,7 @@ export function OnboardingStepTwoView({
           type="button"
           onClick={onPreviousAction}
           disabled={isPreviousActionDisabled}
-          className="cursor-pointer rounded-2xl border border-stone-200 px-4 py-3 text-sm font-semibold text-stone-700 transition hover:border-stone-300"
+          className="cursor-pointer rounded-2xl border border-stone-200 px-4 py-3 text-sm font-semibold text-stone-700 transition hover:border-stone-300 disabled:cursor-not-allowed"
         >
           {getTranslation(TranslationKey.OnboardingBackAction)}
         </button>

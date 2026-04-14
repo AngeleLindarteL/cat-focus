@@ -8,6 +8,7 @@ import type {
 
 export function useOnboardingStepper({
   currentStep,
+  hasCompletedStepOne,
   canContinueToStepThree,
   hasBlockingUnsavedChanges,
   getTranslation,
@@ -25,16 +26,24 @@ export function useOnboardingStepper({
       }
 
       if (step === 2) {
-        return currentStep >= 2;
+        return currentStep >= 2 || hasCompletedStepOne;
       }
 
       if (step === 3) {
-        return currentStep >= 3 || (currentStep >= 2 && canContinueToStepThree);
+        return (
+          currentStep >= 3 ||
+          ((currentStep >= 2 || hasCompletedStepOne) && canContinueToStepThree)
+        );
       }
 
       return false;
     },
-    [canContinueToStepThree, currentStep, hasBlockingUnsavedChanges],
+    [
+      canContinueToStepThree,
+      currentStep,
+      hasBlockingUnsavedChanges,
+      hasCompletedStepOne,
+    ],
   );
 
   const goToStep = useCallback(

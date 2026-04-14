@@ -8,9 +8,12 @@ export type UsageBlockFormProps = {
   nameValue: string;
   nameError?: string;
   onNameChange: (value: string) => void;
-  limitTimeValue: string;
-  limitTimeError?: string;
-  onLimitTimeChange: (value: string) => void;
+  limitHoursValue: string;
+  limitHoursError?: string;
+  onLimitHoursChange: (value: string) => void;
+  limitMinutesValue: string;
+  limitMinutesError?: string;
+  onLimitMinutesChange: (value: string) => void;
   popularSites: PopularSitePresetItem[];
   onPopularSiteSelect: (item: PopularSitePresetItem) => void;
   sitesValue: BlockedSite[];
@@ -20,6 +23,7 @@ export type UsageBlockFormProps = {
   isSiteEditable?: (site: BlockedSite) => boolean;
   onSubmit: () => void;
   submitDisabled?: boolean;
+  submitTooltip?: string;
   onDelete?: () => void;
   onClose?: () => void;
 };

@@ -99,6 +99,28 @@ export function UsageBlockContainer({
     () => createPopularSitePresetItems(draft.sites),
     [draft.sites],
   );
+  const validationMessages = useMemo(
+    () => ({
+      nameRequired: getTranslation(TranslationKey.ValidationUsageNameRequired),
+      nameMinLength: getTranslation(
+        TranslationKey.ValidationUsageNameMinLength,
+      ),
+      hoursRequired: getTranslation(TranslationKey.ValidationUsageHoursRequired),
+      hoursInvalid: getTranslation(TranslationKey.ValidationUsageHoursInvalid),
+      minutesRequired: getTranslation(
+        TranslationKey.ValidationUsageMinutesRequired,
+      ),
+      minutesInvalid: getTranslation(
+        TranslationKey.ValidationUsageMinutesInvalid,
+      ),
+      sitesRequired: getTranslation(TranslationKey.ValidationSitesRequired),
+      siteNameRequired: getTranslation(
+        TranslationKey.ValidationSiteNameRequired,
+      ),
+      domainInvalid: getTranslation(TranslationKey.ValidationDomainInvalid),
+    }),
+    [getTranslation],
+  );
 
   function handlePopularSiteSelect(item: PopularSitePresetItem) {
     setDraft((currentValue) => ({
@@ -126,18 +148,7 @@ export function UsageBlockContainer({
     const nextValues: UsageBlockFormValues = {
       ...draft,
     };
-    const nextErrors = validateUsageBlockForm(nextValues, {
-      nameRequired: getTranslation(TranslationKey.ValidationUsageNameRequired),
-      nameMinLength: getTranslation(
-        TranslationKey.ValidationUsageNameMinLength,
-      ),
-      timeRequired: getTranslation(TranslationKey.ValidationTimeRequired),
-      sitesRequired: getTranslation(TranslationKey.ValidationSitesRequired),
-      siteNameRequired: getTranslation(
-        TranslationKey.ValidationSiteNameRequired,
-      ),
-      domainInvalid: getTranslation(TranslationKey.ValidationDomainInvalid),
-    });
+    const nextErrors = validateUsageBlockForm(nextValues, validationMessages);
 
     setErrors(nextErrors);
 
@@ -193,6 +204,17 @@ export function UsageBlockContainer({
     !!persistedActiveBlockDraft &&
     !areUsageBlockDraftsEqual(activeBlockDraft, persistedActiveBlockDraft);
   const hasBlockingUnsavedChanges = isCreateDirty || isActiveBlockDirty;
+  const draftValidationErrors = useMemo(
+    () => validateUsageBlockForm(draft, validationMessages),
+    [draft, validationMessages],
+  );
+  const hasDraftValidationErrors =
+    Object.keys(draftValidationErrors).length > 0;
+  const createSubmitDisabled = !isCreateDirty || hasDraftValidationErrors;
+  const editSubmitDisabled = !isActiveBlockDirty || hasDraftValidationErrors;
+  const submitTooltip = !hasDraftValidationErrors
+    ? getTranslation(TranslationKey.FormSubmitDisabledNoChanges)
+    : getTranslation(TranslationKey.FormSubmitDisabledInvalid);
 
   useEffect(() => {
     onHasBlockingUnsavedChangesChange?.(hasBlockingUnsavedChanges);
@@ -235,12 +257,20 @@ export function UsageBlockContainer({
               onNameChange={(value) => {
                 setDraft((currentValue) => ({ ...currentValue, name: value }));
               }}
-              limitTimeValue={draft.limitTime}
-              limitTimeError={errors.limitTime}
-              onLimitTimeChange={(value) => {
+              limitHoursValue={draft.limitHours}
+              limitHoursError={errors.limitHours}
+              onLimitHoursChange={(value) => {
                 setDraft((currentValue) => ({
                   ...currentValue,
-                  limitTime: value,
+                  limitHours: value,
+                }));
+              }}
+              limitMinutesValue={draft.limitMinutes}
+              limitMinutesError={errors.limitMinutes}
+              onLimitMinutesChange={(value) => {
+                setDraft((currentValue) => ({
+                  ...currentValue,
+                  limitMinutes: value,
                 }));
               }}
               popularSites={popularSites}
@@ -267,6 +297,8 @@ export function UsageBlockContainer({
               onSubmit={() => {
                 void handleSubmit(null);
               }}
+              submitDisabled={createSubmitDisabled}
+              submitTooltip={createSubmitDisabled ? submitTooltip : undefined}
               onClose={
                 canCollapse
                   ? () => {
@@ -312,12 +344,20 @@ export function UsageBlockContainer({
                 onNameChange={(value) => {
                   setDraft((currentValue) => ({ ...currentValue, name: value }));
                 }}
-                limitTimeValue={draft.limitTime}
-                limitTimeError={errors.limitTime}
-                onLimitTimeChange={(value) => {
+                limitHoursValue={draft.limitHours}
+                limitHoursError={errors.limitHours}
+                onLimitHoursChange={(value) => {
                   setDraft((currentValue) => ({
                     ...currentValue,
-                    limitTime: value,
+                    limitHours: value,
+                  }));
+                }}
+                limitMinutesValue={draft.limitMinutes}
+                limitMinutesError={errors.limitMinutes}
+                onLimitMinutesChange={(value) => {
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    limitMinutes: value,
                   }));
                 }}
                 popularSites={popularSites}
@@ -344,6 +384,8 @@ export function UsageBlockContainer({
                 onSubmit={() => {
                   void handleSubmit(block.id);
                 }}
+                submitDisabled={editSubmitDisabled}
+                submitTooltip={editSubmitDisabled ? submitTooltip : undefined}
                 onDelete={
                   canDelete
                     ? () => {

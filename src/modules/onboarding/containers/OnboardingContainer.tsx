@@ -112,6 +112,7 @@ export function OnboardingContainer({
     isNextActionDisabled,
   } = useOnboardingStepper({
     currentStep,
+    hasCompletedStepOne: catProfile !== null,
     canContinueToStepThree,
     hasBlockingUnsavedChanges,
     getTranslation,

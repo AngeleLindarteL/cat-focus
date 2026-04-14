@@ -146,4 +146,36 @@ describe("WebsiteListInput", () => {
 
     expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
   });
+
+  it("renders blocked websites in a capped responsive grid and truncates content", () => {
+    const props = createProps();
+
+    render(
+      <WebsiteListInput
+        {...props}
+        value={[
+          {
+            name: "A very long website name that should truncate before reaching the actions",
+            domain:
+              "an-extremely-long-domain-name-that-should-truncate-before-overlapping-actions.example.com",
+          },
+        ]}
+      />,
+    );
+
+    const siteName = screen.getByText(
+      "A very long website name that should truncate before reaching the actions",
+    );
+    const siteDomain = screen.getByText(
+      "an-extremely-long-domain-name-that-should-truncate-before-overlapping-actions.example.com",
+    );
+    const grid = siteName.closest("div")?.parentElement?.parentElement as HTMLElement;
+
+    expect(grid).toHaveStyle({
+      gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
+      maxWidth: "calc(4 * 250px + 3 * 0.75rem)",
+    });
+    expect(siteName.className).toContain("truncate");
+    expect(siteDomain.className).toContain("truncate");
+  });
 });

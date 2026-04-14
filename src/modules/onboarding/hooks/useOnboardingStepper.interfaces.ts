@@ -4,6 +4,7 @@ import type { OnboardingStepItem } from "@/modules/onboarding/types/onboardingVi
 
 export type UseOnboardingStepperParams = {
   currentStep: OnboardingStep;
+  hasCompletedStepOne: boolean;
   canContinueToStepThree: boolean;
   hasBlockingUnsavedChanges: boolean;
   getTranslation: UseTranslationResult["getTranslation"];

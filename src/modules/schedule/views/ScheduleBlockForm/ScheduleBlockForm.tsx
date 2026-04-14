@@ -30,6 +30,7 @@ export function ScheduleBlockForm({
   isSiteEditable,
   onSubmit,
   submitDisabled,
+  submitTooltip,
   onDelete,
   onClose,
 }: ScheduleBlockFormProps) {
@@ -58,7 +59,10 @@ export function ScheduleBlockForm({
   const domainInvalidMessage = getTranslation(
     TranslationKey.ValidationDomainInvalid,
   );
-  const submitLabel = getTranslation(TranslationKey.ScheduleSave);
+  const submitLabel =
+    mode === "create"
+      ? getTranslation(TranslationKey.ScheduleCreateSubmit)
+      : getTranslation(TranslationKey.ScheduleUpdateSubmit);
   const deleteLabel = getTranslation(TranslationKey.ScheduleDelete);
   const closeLabel = getTranslation(TranslationKey.ScheduleClose);
   const reminderTitle = getTranslation(
@@ -191,14 +195,16 @@ export function ScheduleBlockForm({
         ) : (
           <span />
         )}
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={submitDisabled}
-          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
-        >
-          {submitLabel}
-        </button>
+        <div title={submitDisabled ? submitTooltip : undefined}>
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={submitDisabled}
+            className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
+          >
+            {submitLabel}
+          </button>
+        </div>
       </div>
     </div>
   );

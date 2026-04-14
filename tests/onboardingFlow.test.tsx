@@ -283,7 +283,7 @@ describe("onboarding flow", () => {
       },
     );
     fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
-    fireEvent.click(screen.getByRole("button", { name: "Save schedule" }));
+    fireEvent.click(screen.getByRole("button", { name: "Create schedule block" }));
 
     const finishSetupStep = await screen.findByRole("button", { name: "Finish setup" });
     fireEvent.click(finishSetupStep);
@@ -348,7 +348,7 @@ describe("onboarding flow", () => {
     expect(screen.getByRole("button", { name: "Back" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Save schedule" }));
+    fireEvent.click(screen.getByRole("button", { name: "Update schedule block" }));
 
     await waitFor(() => {
       expect(
@@ -377,5 +377,39 @@ describe("onboarding flow", () => {
     expect(
       await screen.findByText("¡Hola! Gracias por instalar nuestra extensión"),
     ).toBeInTheDocument();
+  });
+
+  it("allows returning to step two from step one after step one is already completed", async () => {
+    const onboardingRepository = createOnboardingRepository({
+      step: 2,
+      finished: false,
+    });
+
+    render(
+      <OptionsGateContainer
+        onboardingRepository={onboardingRepository}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Choose your cat" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save and continue" })).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Choose your blocks" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Choose how you want to block distractions"),
+      ).toBeInTheDocument();
+    });
   });
 });

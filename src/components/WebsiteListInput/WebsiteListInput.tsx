@@ -153,22 +153,28 @@ export function WebsiteListInput({
         </div>
       </div>
       {listError ? <p className="text-sm text-red-700">{listError}</p> : null}
-      <div className="space-y-2">
+      <div
+        className="grid w-full gap-3"
+        style={{
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
+          maxWidth: "calc(4 * 250px + 3 * 0.75rem)",
+        }}
+      >
         {value.map((site, index) => {
           const editable = isSiteEditable(site);
 
           return (
             <div
               key={`${site.domain}-${index}`}
-              className="flex items-center justify-between rounded-2xl border border-stone-200 bg-white px-4 py-3"
+              className="flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-white px-4 py-3"
             >
-              <div>
-                <p className="text-sm font-semibold text-stone-800">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-stone-800">
                   {site.name}
                 </p>
-                <p className="text-sm text-stone-500">{site.domain}</p>
+                <p className="truncate text-sm text-stone-500">{site.domain}</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex shrink-0 gap-2">
                 <button
                   type="button"
                   disabled={!editable}

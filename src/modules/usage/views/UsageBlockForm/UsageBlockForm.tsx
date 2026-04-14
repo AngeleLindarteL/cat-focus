@@ -1,17 +1,22 @@
 import { PopularSiteCarousel } from "@/components/PopularSiteCarousel";
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { TranslationKey } from "@/lib/i18n";
+import { UsageLimitTimeInput } from "@/modules/usage/components/UsageLimitTimeInput";
 import type { UsageBlockFormProps } from "@/modules/usage/views/UsageBlockForm/interfaces";
 
 export function UsageBlockForm({
+  mode,
   getTranslation,
   showUnsavedReminder = false,
   nameValue,
   nameError,
   onNameChange,
-  limitTimeValue,
-  limitTimeError,
-  onLimitTimeChange,
+  limitHoursValue,
+  limitHoursError,
+  onLimitHoursChange,
+  limitMinutesValue,
+  limitMinutesError,
+  onLimitMinutesChange,
   popularSites,
   onPopularSiteSelect,
   sitesValue,
@@ -21,12 +26,17 @@ export function UsageBlockForm({
   isSiteEditable,
   onSubmit,
   submitDisabled,
+  submitTooltip,
   onDelete,
   onClose,
 }: UsageBlockFormProps) {
   const nameLabel = getTranslation(TranslationKey.UsageNameLabel);
   const namePlaceholder = getTranslation(TranslationKey.UsageNamePlaceholder);
   const limitLabel = getTranslation(TranslationKey.UsageLimitLabel);
+  const limitHoursLabel = getTranslation(TranslationKey.UsageLimitHoursLabel);
+  const limitMinutesLabel = getTranslation(
+    TranslationKey.UsageLimitMinutesLabel,
+  );
   const sitesLabel = getTranslation(TranslationKey.UsageSitesLabel);
   const siteNameLabel = getTranslation(TranslationKey.ValidationSiteNameRequired);
   const siteNamePlaceholder = getTranslation(
@@ -47,7 +57,10 @@ export function UsageBlockForm({
   const domainInvalidMessage = getTranslation(
     TranslationKey.ValidationDomainInvalid,
   );
-  const submitLabel = getTranslation(TranslationKey.UsageSave);
+  const submitLabel =
+    mode === "create"
+      ? getTranslation(TranslationKey.UsageCreateSubmit)
+      : getTranslation(TranslationKey.UsageUpdateSubmit);
   const deleteLabel = getTranslation(TranslationKey.UsageDelete);
   const closeLabel = getTranslation(TranslationKey.UsageClose);
   const reminderTitle = getTranslation(
@@ -95,20 +108,17 @@ export function UsageBlockForm({
         {nameError ? <p className="text-sm text-red-700">{nameError}</p> : null}
       </label>
 
-      <label className="block space-y-2">
-        <span className="text-sm font-medium text-stone-800">{limitLabel}</span>
-        <input
-          type="time"
-          value={limitTimeValue}
-          onChange={(event) => {
-            onLimitTimeChange(event.target.value);
-          }}
-          className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500"
-        />
-        {limitTimeError ? (
-          <p className="text-sm text-red-700">{limitTimeError}</p>
-        ) : null}
-      </label>
+      <UsageLimitTimeInput
+        label={limitLabel}
+        hoursLabel={limitHoursLabel}
+        minutesLabel={limitMinutesLabel}
+        hoursValue={limitHoursValue}
+        minutesValue={limitMinutesValue}
+        hoursError={limitHoursError}
+        minutesError={limitMinutesError}
+        onHoursChange={onLimitHoursChange}
+        onMinutesChange={onLimitMinutesChange}
+      />
 
       <PopularSiteCarousel
         title={popularSitesTitle}
@@ -155,14 +165,16 @@ export function UsageBlockForm({
         ) : (
           <span />
         )}
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={submitDisabled}
-          className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
-        >
-          {submitLabel}
-        </button>
+        <div title={submitDisabled ? submitTooltip : undefined}>
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={submitDisabled}
+            className="cursor-pointer rounded-2xl bg-stone-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
+          >
+            {submitLabel}
+          </button>
+        </div>
       </div>
     </div>
   );

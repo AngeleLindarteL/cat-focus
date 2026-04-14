@@ -1,13 +1,5 @@
 import { SurfaceCard } from "@/components/SurfaceCard";
 import { TranslationKey } from "@/lib/i18n";
-import {
-  HOME_VIEW_BODY_PANEL_CLASS_NAME,
-  HOME_VIEW_OPTIONS_LAYOUT_CLASS_NAME,
-  HOME_VIEW_POPUP_LAYOUT_CLASS_NAME,
-  HOME_VIEW_PRIMARY_ACTION_CLASS_NAME,
-  HOME_VIEW_SECONDARY_TEXT_CLASS_NAME,
-  HOME_VIEW_SHELL_CLASS_NAME,
-} from "@/modules/home/views/HomeView/constants";
 import type { HomeViewProps } from "@/modules/home/views/HomeView/interfaces";
 
 export function HomeView({
@@ -18,8 +10,8 @@ export function HomeView({
   const surface = variant === "options-home" ? "options" : "popup";
   const layoutClassName =
     surface === "popup"
-      ? HOME_VIEW_POPUP_LAYOUT_CLASS_NAME
-      : HOME_VIEW_OPTIONS_LAYOUT_CLASS_NAME;
+      ? "inline-grid max-w-full justify-center [grid-template-columns:minmax(300px,24rem)]"
+      : "w-full max-w-5xl";
   const copyByVariant = {
     "options-home": {
       eyebrow: TranslationKey.OptionsEyebrow,
@@ -63,7 +55,7 @@ export function HomeView({
     : undefined;
 
   return (
-    <div className={HOME_VIEW_SHELL_CLASS_NAME}>
+    <div className="[width:fit-content] flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.22),_transparent_35%),linear-gradient(180deg,_#fef7ed_0%,_#fff7ed_45%,_#fafaf9_100%)] px-4 py-6 text-stone-900">
       <div className={layoutClassName}>
         <SurfaceCard
           eyebrow={getTranslation(copy.eyebrow)}
@@ -71,17 +63,19 @@ export function HomeView({
           description={getTranslation(copy.description)}
           footer={
             secondaryText ? (
-              <p className={HOME_VIEW_SECONDARY_TEXT_CLASS_NAME}>{secondaryText}</p>
+              <p className="text-xs leading-5 text-stone-500">
+                {secondaryText}
+              </p>
             ) : undefined
           }
         >
           <div className="space-y-4">
-            <p className={HOME_VIEW_BODY_PANEL_CLASS_NAME}>
+            <p className="rounded-2xl bg-stone-100 px-4 py-3 text-sm leading-6 text-stone-700">
               {getTranslation(copy.body)}
             </p>
             {primaryActionLabel && onPrimaryAction ? (
               <button
-                className={HOME_VIEW_PRIMARY_ACTION_CLASS_NAME}
+                className="inline-flex w-full cursor-pointer items-center justify-center rounded-2xl bg-stone-900 px-4 py-3 text-sm font-medium text-stone-50 transition hover:bg-stone-700"
                 type="button"
                 onClick={onPrimaryAction}
               >

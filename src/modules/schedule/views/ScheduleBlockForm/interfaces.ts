@@ -34,6 +34,7 @@ export type ScheduleBlockFormProps = {
   isSiteEditable?: (site: BlockedSite) => boolean;
   onSubmit: () => void;
   submitDisabled?: boolean;
+  submitTooltip?: string;
   onDelete?: () => void;
   onClose?: () => void;
 };
