@@ -1,5 +1,14 @@
-import { DEFAULT_SCHEDULE_DAYS, DEFAULT_SCHEDULE_NAME, type BlockedSite, type ScheduleBlockDraft, type ScheduleDays } from "@/lib/schedules";
-import { normalizeScheduleSiteDomain } from "@/modules/schedule/services/scheduleSitePresets";
+import {
+  normalizeBlockedSiteDomain,
+  validateBlockedSiteDomain,
+  type BlockedSite,
+} from "@/lib/blockedSites";
+import {
+  DEFAULT_SCHEDULE_DAYS,
+  DEFAULT_SCHEDULE_NAME,
+  type ScheduleBlockDraft,
+  type ScheduleDays,
+} from "@/lib/schedules";
 
 export type ScheduleBlockFormValues = {
   name: string;
@@ -18,16 +27,11 @@ export function sanitizeScheduleName(value: string): string {
 }
 
 export function normalizeDomainInput(value: string): string {
-  return normalizeScheduleSiteDomain(value);
+  return normalizeBlockedSiteDomain(value);
 }
 
 export function validateDomainInput(value: string): boolean {
-  try {
-    const normalizedDomain = normalizeDomainInput(value);
-    return /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(normalizedDomain);
-  } catch {
-    return false;
-  }
+  return validateBlockedSiteDomain(value);
 }
 
 export function createDefaultScheduleValues(): ScheduleBlockFormValues {

@@ -1,3 +1,5 @@
+import type { BlockedSite } from "@/lib/blockedSites";
+
 export type ScheduleDays = {
   monday: boolean;
   tuesday: boolean;
@@ -11,11 +13,6 @@ export type ScheduleDays = {
 export type ScheduleTimeRange = {
   from: string;
   to: string;
-};
-
-export type BlockedSite = {
-  name: string;
-  domain: string;
 };
 
 export type ScheduleBlock = {

@@ -293,6 +293,75 @@ describe("onboarding flow", () => {
     });
   });
 
+  it("locks stepper navigation while a step-two draft has unsaved changes", async () => {
+    globalThis.chrome = createChromeMock({
+      "schedule-block-data": [
+        {
+          id: "schedule-1",
+          name: "Weekday focus",
+          schedule: {
+            days: {
+              monday: true,
+              tuesday: true,
+              wednesday: true,
+              thursday: true,
+              friday: true,
+              saturday: false,
+              sunday: false,
+            },
+            time: {
+              from: "06:00",
+              to: "18:00",
+            },
+          },
+          sites: [{ name: "X", domain: "x.com" }],
+        },
+      ],
+    });
+
+    render(
+      <OptionsGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 2,
+          finished: false,
+        })}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    fireEvent.change(await screen.findByLabelText("Name of the schedule"), {
+      target: { value: "Weekday focus updated" },
+    });
+
+    expect(
+      screen.queryByRole("button", { name: "Choose your cat" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Finish setup" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Back" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Save schedule" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: "Choose your cat" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Finish setup" }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Back" })).toBeEnabled();
+      expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
+    });
+  });
+
   it("falls back to the Chrome UI locale when no app language is saved", async () => {
     globalThis.chrome = createChromeMock({}, "es");
 

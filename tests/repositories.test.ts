@@ -3,9 +3,11 @@ import { ONBOARDING_STORAGE_KEYS } from "@/lib/onboarding";
 import { ChromeStorageCatRepository } from "@/lib/repositories/catRepository";
 import { ChromeStorageOnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import { ChromeStorageScheduleRepository } from "@/lib/repositories/scheduleRepository";
+import { ChromeStorageUsageRepository } from "@/lib/repositories/usageRepository";
 import { ChromeStorageUserPreferencesRepository } from "@/lib/repositories/userPreferencesRepository";
 import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
 import { SCHEDULE_BLOCK_STORAGE_KEY } from "@/lib/schedules";
+import { USAGE_BLOCK_STORAGE_KEY } from "@/lib/usage";
 import { createChromeMock } from "./helpers/chrome";
 
 declare global {
@@ -99,6 +101,27 @@ describe("repositories", () => {
     expect(schedules[0]).toEqual(schedule);
     expect(globalThis.chrome.__storageState).toHaveProperty(
       SCHEDULE_BLOCK_STORAGE_KEY,
+    );
+  });
+
+  it("persists usage blocks", async () => {
+    const repository = new ChromeStorageUsageRepository();
+
+    const usageBlock = await repository.insertOne({
+      name: "Adult sites",
+      limit: {
+        time: "01:00",
+        resetsAt: "00:00",
+      },
+      sites: [{ name: "Instagram", domain: "instagram.com" }],
+    });
+
+    const usageBlocks = await repository.findAll();
+
+    expect(usageBlocks).toHaveLength(1);
+    expect(usageBlocks[0]).toEqual(usageBlock);
+    expect(globalThis.chrome.__storageState).toHaveProperty(
+      USAGE_BLOCK_STORAGE_KEY,
     );
   });
 });

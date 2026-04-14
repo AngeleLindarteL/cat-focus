@@ -13,6 +13,10 @@ import {
   scheduleRepository as defaultScheduleRepository,
   type ScheduleRepository,
 } from "@/lib/repositories/scheduleRepository";
+import {
+  usageRepository as defaultUsageRepository,
+  type UsageRepository,
+} from "@/lib/repositories/usageRepository";
 import { OnboardingStepOneContainer } from "@/modules/onboarding/containers/OnboardingStepOneContainer";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 import { useOnboardingStepper } from "@/modules/onboarding/hooks/useOnboardingStepper";
@@ -24,6 +28,7 @@ type OnboardingContainerProps = {
   catRepository?: CatRepository;
   onboardingRepository?: OnboardingRepository;
   scheduleRepository?: ScheduleRepository;
+  usageRepository?: UsageRepository;
   onCompleted?: () => Promise<void> | void;
   language: Language;
   setLanguage: UseTranslationResult["setLanguage"];
@@ -34,6 +39,7 @@ export function OnboardingContainer({
   catRepository = defaultCatRepository,
   onboardingRepository = defaultOnboardingRepository,
   scheduleRepository = defaultScheduleRepository,
+  usageRepository = defaultUsageRepository,
   onCompleted,
   language,
   setLanguage,
@@ -43,6 +49,7 @@ export function OnboardingContainer({
   const [catProfile, setCatProfile] = useState<CatProfile | null>(null);
   const [isCatProfileLoading, setIsCatProfileLoading] = useState(true);
   const [canContinueToStepThree, setCanContinueToStepThree] = useState(false);
+  const [hasBlockingUnsavedChanges, setHasBlockingUnsavedChanges] = useState(false);
   const loadingStepItems = useMemo(
     () => [
       { key: "1" as const, label: getTranslation(TranslationKey.OnboardingStepOneLabel) },
@@ -97,9 +104,16 @@ export function OnboardingContainer({
   }, [onCompleted, onboardingRepository, refresh]);
   const currentStep = onboardingState?.step ?? 1;
   const actualStep = String(currentStep) as `${OnboardingStep}`;
-  const { steps, goNext, goPrevious, isNextActionDisabled } = useOnboardingStepper({
+  const {
+    steps,
+    goNext,
+    goPrevious,
+    isPreviousActionDisabled,
+    isNextActionDisabled,
+  } = useOnboardingStepper({
     currentStep,
     canContinueToStepThree,
+    hasBlockingUnsavedChanges,
     getTranslation,
     onStepChange: handleMoveToStep,
     onFinish: handleFinish,
@@ -138,9 +152,12 @@ export function OnboardingContainer({
     stepContent = (
       <OnboardingStepTwoContainer
         scheduleRepository={scheduleRepository}
+        usageRepository={usageRepository}
         getTranslation={getTranslation}
+        isPreviousActionDisabled={isPreviousActionDisabled}
         isNextActionDisabled={isNextActionDisabled}
         onCanContinueToStepThreeChange={setCanContinueToStepThree}
+        onHasBlockingUnsavedChangesChange={setHasBlockingUnsavedChanges}
         onPreviousAction={() => {
           void goPrevious();
         }}

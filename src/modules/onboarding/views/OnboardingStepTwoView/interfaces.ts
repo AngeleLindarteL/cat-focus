@@ -7,6 +7,8 @@ export type OnboardingStepTwoViewProps = {
   getTranslation: UseTranslationResult["getTranslation"];
   value: StepTwoBlockType;
   options: BlockTypeOption<StepTwoBlockType>[];
+  isBlockTypeSelectorDisabled?: boolean;
+  isPreviousActionDisabled?: boolean;
   isNextActionDisabled?: boolean;
   onValueChange: (value: StepTwoBlockType) => void;
   onPreviousAction: () => void;

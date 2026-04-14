@@ -1,4 +1,4 @@
-import type { BlockedSite } from "@/lib/schedules";
+import type { BlockedSite } from "@/lib/blockedSites";
 
 export type WebsiteListInputProps = {
   label: string;

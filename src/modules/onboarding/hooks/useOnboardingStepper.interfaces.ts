@@ -5,6 +5,7 @@ import type { OnboardingStepItem } from "@/modules/onboarding/types/onboardingVi
 export type UseOnboardingStepperParams = {
   currentStep: OnboardingStep;
   canContinueToStepThree: boolean;
+  hasBlockingUnsavedChanges: boolean;
   getTranslation: UseTranslationResult["getTranslation"];
   onStepChange: (step: OnboardingStep) => Promise<void>;
   onFinish: () => Promise<void>;
@@ -16,5 +17,6 @@ export type UseOnboardingStepperResult = {
   goToStep: (step: OnboardingStep) => Promise<void>;
   goPrevious: () => Promise<void>;
   goNext: () => Promise<void>;
+  isPreviousActionDisabled: boolean;
   isNextActionDisabled: boolean;
 };

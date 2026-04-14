@@ -3,6 +3,30 @@
 ## [2026-04-13]
 ### Author: AngeleLindarteL
 ### Co-Authors: None
+### Resume: Implemented onboarding v3 with reusable usage-time blocks, shared blocked-site primitives, and step-two unsaved-draft navigation locking.
+### Changes:
+- Added the reusable usage-block domain, Chrome storage repository, validation/draft services, onboarding-aware container, and module-local usage form/card/summary/empty-state/delete-modal UI under `src/lib/usage`, `src/lib/repositories/usageRepository*`, and `src/modules/usage`.
+- Extracted blocked-site normalization, duplicate detection, and popular-site presets into shared `src/lib/blockedSites` primitives and introduced a shared `src/components/PopularSiteCarousel` so schedule and usage forms reuse the same site-building surfaces.
+- Updated `WebsiteListInput`, schedule preset services, and the schedule container so both block flows share domain normalization while schedule create/edit drafts now report blocking unsaved state the same way usage drafts do.
+- Replaced the onboarding step-two usage placeholder with the real usage container, changed step-three eligibility to `schedule || usage`, and locked block-type switching, stepper navigation, and back/next actions while step-two has unsaved changes.
+- Added usage-specific translations plus focused repository, onboarding step-two, onboarding flow, preset carousel, and shared input coverage for the new behavior.
+
+### Notes: Verified with `rtk npm test -- --run tests/repositories.test.ts tests/scheduleSitePresets.test.tsx tests/websiteListInput.test.tsx tests/onboardingStepTwoContainer.test.tsx tests/onboardingFlow.test.tsx` and `rtk npm run build`.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
+### Resume: Added the onboarding v3 implementation plan for reusable usage-time blocks, step-two OR gating, and unsaved-draft navigation locking.
+### Changes:
+- Added `docs/plans/onboarding-v3.md` with the scoped implementation plan for the reusable usage-time block module and its onboarding step-two integration.
+- Defined the target repository contract, module structure, shared-component reuse strategy, validation rules, onboarding-specific constraints, and delivery sequence for the new usage flow.
+- Documented the step-two refactor needed to lock stepper and back/next navigation while schedule or usage drafts contain unsaved changes.
+
+### Notes: This entry records planning work only; implementation is still pending.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
 ### Resume: Added clickable onboarding step navigation, centralized step reachability in a hook, and upgraded the shared stepper with interactive hover states.
 ### Changes:
 - Extended the shared `Stepper` item contract with optional per-step `onClick` support and rendered clickable circles as interactive controls only when a step is reachable.

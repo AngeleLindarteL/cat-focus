@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { TranslationKey } from "@/lib/i18n";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
+import type { UsageRepository } from "@/lib/repositories/usageRepository";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 
 function createScheduleRepository(): ScheduleRepository {
@@ -48,6 +49,31 @@ function getTranslation(key: string): string {
     [TranslationKey.StepTwoUsageLabel]: "Usage time block",
     [TranslationKey.StepTwoUsageDescription]: "Block after time limits",
     [TranslationKey.StepTwoUsageConstruction]: "Coming soon",
+    [TranslationKey.UsageEmptyTitle]: "No usage limits yet",
+    [TranslationKey.UsageEmptyDescription]: "Create your first usage limit",
+    [TranslationKey.UsageCreateFirst]: "Create first usage limit",
+    [TranslationKey.UsageCreate]: "Create usage",
+    [TranslationKey.UsageNameLabel]: "Usage name",
+    [TranslationKey.UsageNamePlaceholder]: "Adult sites",
+    [TranslationKey.UsageLimitLabel]: "Limit (Daily)",
+    [TranslationKey.UsageSitesLabel]: "Sites",
+    [TranslationKey.UsagePopularSitesTitle]: "Popular sites",
+    [TranslationKey.UsageSiteNamePlaceholder]: "Site name",
+    [TranslationKey.UsageSiteDomainPlaceholder]: "Site domain",
+    [TranslationKey.UsageSiteAdd]: "Create",
+    [TranslationKey.UsageSave]: "Save usage limit",
+    [TranslationKey.UsageUnsavedReminderTitle]: "You changed this usage limit.",
+    [TranslationKey.UsageUnsavedReminderDescription]:
+      "Press Save usage limit to keep your updates.",
+    [TranslationKey.UsageEdit]: "Edit",
+    [TranslationKey.UsageDelete]: "Delete",
+    [TranslationKey.UsageClose]: "Close",
+    [TranslationKey.UsageSiteCancelEdit]: "Cancel",
+    [TranslationKey.UsageSiteDeleteAriaLabel]: "Delete site",
+    [TranslationKey.UsageSummaryLimit]: "Daily limit",
+    [TranslationKey.UsageSummarySites]: "sites",
+    [TranslationKey.ValidationUsageNameRequired]: "Usage name is required",
+    [TranslationKey.ValidationUsageNameMinLength]: "Usage name is too short",
     [TranslationKey.OnboardingBackAction]: "Back",
     [TranslationKey.OnboardingNextAction]: "Next",
     [TranslationKey.ScheduleEmptyTitle]: "No schedules yet",
@@ -91,14 +117,52 @@ function getTranslation(key: string): string {
   return messages[key] ?? key;
 }
 
+function createUsageRepository(): UsageRepository {
+  let usageBlocks = [] as Awaited<ReturnType<UsageRepository["findAll"]>>;
+
+  return {
+    findAll: async () => usageBlocks,
+    insertOne: async (block) => {
+      const createdBlock = {
+        ...block,
+        id: crypto.randomUUID(),
+      };
+
+      usageBlocks = [...usageBlocks, createdBlock];
+
+      return createdBlock;
+    },
+    updateOneById: async (id, block) => {
+      let updatedBlock = null;
+
+      usageBlocks = usageBlocks.map((currentBlock) => {
+        if (currentBlock.id !== id) {
+          return currentBlock;
+        }
+
+        updatedBlock = { ...block, id };
+        return updatedBlock;
+      });
+
+      return updatedBlock;
+    },
+    deleteOneById: async (id) => {
+      usageBlocks = usageBlocks.filter((block) => block.id !== id);
+    },
+  };
+}
+
 describe("OnboardingStepTwoContainer", () => {
   it("disables the step 2 next action when no schedule exists", async () => {
     render(
       <OnboardingStepTwoContainer
         scheduleRepository={createScheduleRepository()}
+        usageRepository={createUsageRepository()}
         getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
         isNextActionDisabled
         onCanContinueToStepThreeChange={vi.fn()}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
         onPreviousAction={vi.fn()}
         onNextAction={vi.fn()}
       />,
@@ -116,9 +180,12 @@ describe("OnboardingStepTwoContainer", () => {
     render(
       <OnboardingStepTwoContainer
         scheduleRepository={createScheduleRepository()}
+        usageRepository={createUsageRepository()}
         getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
         isNextActionDisabled={false}
         onCanContinueToStepThreeChange={onCanContinueToStepThreeChange}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
         onPreviousAction={vi.fn()}
         onNextAction={onNextAction}
       />,
@@ -174,9 +241,12 @@ describe("OnboardingStepTwoContainer", () => {
     render(
       <OnboardingStepTwoContainer
         scheduleRepository={scheduleRepository}
+        usageRepository={createUsageRepository()}
         getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
         isNextActionDisabled={false}
         onCanContinueToStepThreeChange={vi.fn()}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
         onPreviousAction={vi.fn()}
         onNextAction={vi.fn()}
       />,
@@ -205,9 +275,12 @@ describe("OnboardingStepTwoContainer", () => {
     render(
       <OnboardingStepTwoContainer
         scheduleRepository={createScheduleRepository()}
+        usageRepository={createUsageRepository()}
         getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
         isNextActionDisabled={false}
         onCanContinueToStepThreeChange={vi.fn()}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
         onPreviousAction={vi.fn()}
         onNextAction={vi.fn()}
       />,
@@ -237,5 +310,134 @@ describe("OnboardingStepTwoContainer", () => {
       expect(screen.queryByText("Name is too short")).not.toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
     });
+  });
+
+  it("enables the step 2 next action after the first usage block is created", async () => {
+    const onCanContinueToStepThreeChange = vi.fn();
+    const onNextAction = vi.fn();
+
+    render(
+      <OnboardingStepTwoContainer
+        scheduleRepository={createScheduleRepository()}
+        usageRepository={createUsageRepository()}
+        getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={onCanContinueToStepThreeChange}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
+        onPreviousAction={vi.fn()}
+        onNextAction={onNextAction}
+      />,
+    );
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: /Usage time block/ }),
+    );
+    fireEvent.click(await screen.findByRole("button", { name: "Create first usage limit" }));
+    fireEvent.change(screen.getByLabelText("Usage name"), {
+      target: { value: "Adult sites" },
+    });
+    fireEvent.change(screen.getByLabelText("Limit (Daily)"), {
+      target: { value: "01:00" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Site name"), {
+      target: { value: "Instagram" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Site domain"), {
+      target: { value: "https://www.instagram.com/reels" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Create" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save usage limit" }));
+
+    await waitFor(() => {
+      expect(onCanContinueToStepThreeChange).toHaveBeenLastCalledWith(true);
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+
+    expect(onNextAction).toHaveBeenCalled();
+  });
+
+  it("locks back and next while an existing schedule edit is dirty", async () => {
+    const scheduleRepository = createScheduleRepository();
+    const onHasBlockingUnsavedChangesChange = vi.fn();
+
+    await scheduleRepository.insertOne({
+      name: "Weekday focus",
+      schedule: {
+        days: {
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: false,
+          sunday: false,
+        },
+        time: {
+          from: "06:00",
+          to: "18:00",
+        },
+      },
+      sites: [{ name: "X", domain: "x.com" }],
+    });
+
+    render(
+      <OnboardingStepTwoContainer
+        scheduleRepository={scheduleRepository}
+        usageRepository={createUsageRepository()}
+        getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={vi.fn()}
+        onHasBlockingUnsavedChangesChange={onHasBlockingUnsavedChangesChange}
+        onPreviousAction={vi.fn()}
+        onNextAction={vi.fn()}
+      />,
+    );
+
+    fireEvent.change(await screen.findByLabelText("Schedule name"), {
+      target: { value: "Weekday focus updated" },
+    });
+
+    await waitFor(() => {
+      expect(onHasBlockingUnsavedChangesChange).toHaveBeenLastCalledWith(true);
+      expect(
+        screen.getByRole("button", { name: /Usage time block/ }),
+      ).toBeDisabled();
+    });
+  });
+
+  it("shows the unsaved reminder for a dirty usage create draft", async () => {
+    render(
+      <OnboardingStepTwoContainer
+        scheduleRepository={createScheduleRepository()}
+        usageRepository={createUsageRepository()}
+        getTranslation={getTranslation}
+        isPreviousActionDisabled={false}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={vi.fn()}
+        onHasBlockingUnsavedChangesChange={vi.fn()}
+        onPreviousAction={vi.fn()}
+        onNextAction={vi.fn()}
+      />,
+    );
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: /Usage time block/ }),
+    );
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Create first usage limit" }),
+    );
+    fireEvent.change(screen.getByLabelText("Usage name"), {
+      target: { value: "Adult sites updated" },
+    });
+
+    expect(
+      screen.getByText("You changed this usage limit."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Press Save usage limit to keep your updates."),
+    ).toBeInTheDocument();
   });
 });

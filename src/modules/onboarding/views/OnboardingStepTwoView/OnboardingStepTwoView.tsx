@@ -6,6 +6,8 @@ export function OnboardingStepTwoView({
   getTranslation,
   value,
   options,
+  isBlockTypeSelectorDisabled,
+  isPreviousActionDisabled,
   isNextActionDisabled,
   onValueChange,
   onPreviousAction,
@@ -23,13 +25,19 @@ export function OnboardingStepTwoView({
         </p>
       </div>
 
-      <BlockTypeSelector value={value} options={options} onChange={onValueChange} />
+      <BlockTypeSelector
+        value={value}
+        options={options}
+        onChange={onValueChange}
+        disabled={isBlockTypeSelectorDisabled}
+      />
       {children}
 
       <div className="flex gap-3">
         <button
           type="button"
           onClick={onPreviousAction}
+          disabled={isPreviousActionDisabled}
           className="cursor-pointer rounded-2xl border border-stone-200 px-4 py-3 text-sm font-semibold text-stone-700 transition hover:border-stone-300"
         >
           {getTranslation(TranslationKey.OnboardingBackAction)}

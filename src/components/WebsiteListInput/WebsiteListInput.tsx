@@ -1,10 +1,10 @@
 import { useState } from "react";
-import type { BlockedSite } from "@/lib/schedules";
 import {
-  normalizeDomainInput,
-  validateDomainInput,
-} from "@/modules/schedule/services/scheduleBlockForm";
-import { findScheduleSiteIndexByDomain } from "@/modules/schedule/services/scheduleSitePresets";
+  findBlockedSiteIndexByDomain,
+  normalizeBlockedSiteDomain,
+  validateBlockedSiteDomain,
+  type BlockedSite,
+} from "@/lib/blockedSites";
 import type { WebsiteListInputProps } from "@/components/WebsiteListInput/interfaces";
 
 export function WebsiteListInput({
@@ -55,7 +55,7 @@ export function WebsiteListInput({
       return;
     }
 
-    if (!validateDomainInput(siteDomain)) {
+    if (!validateBlockedSiteDomain(siteDomain)) {
       setSiteNameError(null);
       setSiteDomainError(domainInvalidMessage);
       return;
@@ -66,10 +66,10 @@ export function WebsiteListInput({
 
     const nextSite: BlockedSite = {
       name: trimmedSiteName,
-      domain: normalizeDomainInput(siteDomain),
+      domain: normalizeBlockedSiteDomain(siteDomain),
     };
 
-    const duplicateIndex = findScheduleSiteIndexByDomain(
+    const duplicateIndex = findBlockedSiteIndexByDomain(
       value,
       nextSite.domain,
     );

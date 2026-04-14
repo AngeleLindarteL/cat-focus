@@ -9,12 +9,17 @@ import type {
 export function useOnboardingStepper({
   currentStep,
   canContinueToStepThree,
+  hasBlockingUnsavedChanges,
   getTranslation,
   onStepChange,
   onFinish,
 }: UseOnboardingStepperParams): UseOnboardingStepperResult {
   const canUserGoToStep = useCallback(
     (step: OnboardingStep) => {
+      if (currentStep === 2 && hasBlockingUnsavedChanges) {
+        return step === 2;
+      }
+
       if (step === 1) {
         return true;
       }
@@ -29,7 +34,7 @@ export function useOnboardingStepper({
 
       return false;
     },
-    [canContinueToStepThree, currentStep],
+    [canContinueToStepThree, currentStep, hasBlockingUnsavedChanges],
   );
 
   const goToStep = useCallback(
@@ -44,6 +49,10 @@ export function useOnboardingStepper({
   );
 
   const goPrevious = useCallback(async () => {
+    if (currentStep === 2 && hasBlockingUnsavedChanges) {
+      return;
+    }
+
     if (currentStep === 2) {
       await onStepChange(1);
       return;
@@ -52,9 +61,13 @@ export function useOnboardingStepper({
     if (currentStep === 3) {
       await onStepChange(2);
     }
-  }, [currentStep, onStepChange]);
+  }, [currentStep, hasBlockingUnsavedChanges, onStepChange]);
 
   const goNext = useCallback(async () => {
+    if (currentStep === 2 && hasBlockingUnsavedChanges) {
+      return;
+    }
+
     if (currentStep === 2) {
       if (!canContinueToStepThree) {
         return;
@@ -67,7 +80,13 @@ export function useOnboardingStepper({
     if (currentStep === 3) {
       await onFinish();
     }
-  }, [canContinueToStepThree, currentStep, onFinish, onStepChange]);
+  }, [
+    canContinueToStepThree,
+    currentStep,
+    hasBlockingUnsavedChanges,
+    onFinish,
+    onStepChange,
+  ]);
 
   const steps = useMemo(
     () => [
@@ -111,6 +130,9 @@ export function useOnboardingStepper({
     goToStep,
     goPrevious,
     goNext,
-    isNextActionDisabled: currentStep === 2 && !canContinueToStepThree,
+    isPreviousActionDisabled: currentStep === 2 && hasBlockingUnsavedChanges,
+    isNextActionDisabled:
+      currentStep === 2 &&
+      (!canContinueToStepThree || hasBlockingUnsavedChanges),
   };
 }

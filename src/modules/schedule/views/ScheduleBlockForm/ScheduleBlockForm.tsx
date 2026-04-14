@@ -1,7 +1,7 @@
+import { PopularSiteCarousel } from "@/components/PopularSiteCarousel";
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { WeekdayToggleGroup } from "@/components/WeekdayToggleGroup";
 import { TranslationKey } from "@/lib/i18n";
-import { PopularSiteCarousel } from "@/modules/schedule/components/PopularSiteCarousel";
 import type { ScheduleBlockFormProps } from "@/modules/schedule/views/ScheduleBlockForm/interfaces";
 
 export function ScheduleBlockForm({

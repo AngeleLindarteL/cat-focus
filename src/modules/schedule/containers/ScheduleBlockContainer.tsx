@@ -30,6 +30,7 @@ type ScheduleBlockContainerProps = {
   getTranslation: UseTranslationResult["getTranslation"];
   repository?: ScheduleRepository;
   onSchedulesChange?: (schedules: ScheduleBlock[]) => void;
+  onHasBlockingUnsavedChangesChange?: (hasUnsavedChanges: boolean) => void;
 };
 
 function createWeekdayOptions(
@@ -80,6 +81,7 @@ export function ScheduleBlockContainer({
   getTranslation,
   repository = defaultScheduleRepository,
   onSchedulesChange,
+  onHasBlockingUnsavedChangesChange,
 }: ScheduleBlockContainerProps) {
   const [schedules, setSchedules] = useState<ScheduleBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -230,6 +232,11 @@ export function ScheduleBlockContainer({
   const canCollapse = !isOnboarding;
   const canDelete = !isOnboarding && !!activeSchedule;
   const renderCreateForm = isCreating && (!isOnboarding || schedules.length === 0);
+  const defaultCreateDraft = createScheduleBlockDraft(createDefaultScheduleValues());
+  const currentCreateDraft = createScheduleBlockDraft(draft);
+  const isCreateDirty =
+    isCreating &&
+    !areScheduleBlockDraftsEqual(currentCreateDraft, defaultCreateDraft);
   const activeScheduleDraft = activeSchedule
     ? createScheduleBlockDraft(draft)
     : null;
@@ -241,6 +248,11 @@ export function ScheduleBlockContainer({
     !!activeScheduleDraft &&
     !!persistedActiveScheduleDraft &&
     !areScheduleBlockDraftsEqual(activeScheduleDraft, persistedActiveScheduleDraft);
+  const hasBlockingUnsavedChanges = isCreateDirty || isActiveScheduleDirty;
+
+  useEffect(() => {
+    onHasBlockingUnsavedChangesChange?.(hasBlockingUnsavedChanges);
+  }, [hasBlockingUnsavedChanges, onHasBlockingUnsavedChangesChange]);
 
   return (
     <div className="space-y-4">
@@ -266,7 +278,7 @@ export function ScheduleBlockContainer({
       {renderCreateForm ? (
         <ScheduleCard
           isExpanded
-          isHighlighted={false}
+          isHighlighted={isCreateDirty}
           onExpand={() => undefined}
           summary={null}
           expandedContent={
@@ -314,6 +326,8 @@ export function ScheduleBlockContainer({
                 canCollapse
                   ? () => {
                       setIsCreating(false);
+                      setDraft(createDefaultScheduleValues());
+                      setErrors({});
                     }
                   : undefined
               }

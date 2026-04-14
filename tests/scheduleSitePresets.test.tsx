@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { BlockedSite } from "@/lib/schedules";
+import { PopularSiteCarousel } from "@/components/PopularSiteCarousel";
 import {
   createScheduleSitePresetItems,
   isPresetBackedScheduleSite,
   normalizeScheduleSiteDomain,
   toggleScheduleSitePreset,
 } from "@/modules/schedule/services/scheduleSitePresets";
-import { PopularSiteCarousel } from "@/modules/schedule/components/PopularSiteCarousel";
 
 describe("schedule site presets", () => {
   it("normalizes raw, www, and https domain variants to the same hostname", () => {
