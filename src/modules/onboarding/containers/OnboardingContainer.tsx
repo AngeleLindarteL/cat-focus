@@ -15,8 +15,8 @@ import {
 } from "@/lib/repositories/scheduleRepository";
 import { OnboardingStepOneContainer } from "@/modules/onboarding/containers/OnboardingStepOneContainer";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
+import { useOnboardingStepper } from "@/modules/onboarding/hooks/useOnboardingStepper";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
-import type { OnboardingStepItem } from "@/modules/onboarding/types/onboardingView";
 import { OnboardingStepPlaceholderView } from "@/modules/onboarding/views/OnboardingStepPlaceholderView";
 import { OnboardingView } from "@/modules/onboarding/views/OnboardingView";
 
@@ -42,11 +42,12 @@ export function OnboardingContainer({
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
   const [catProfile, setCatProfile] = useState<CatProfile | null>(null);
   const [isCatProfileLoading, setIsCatProfileLoading] = useState(true);
-  const stepItems = useMemo<OnboardingStepItem[]>(
+  const [canContinueToStepThree, setCanContinueToStepThree] = useState(false);
+  const loadingStepItems = useMemo(
     () => [
-      { key: "1", label: getTranslation(TranslationKey.OnboardingStepOneLabel) },
-      { key: "2", label: getTranslation(TranslationKey.OnboardingStepTwoLabel) },
-      { key: "3", label: getTranslation(TranslationKey.OnboardingStepThreeLabel) },
+      { key: "1" as const, label: getTranslation(TranslationKey.OnboardingStepOneLabel) },
+      { key: "2" as const, label: getTranslation(TranslationKey.OnboardingStepTwoLabel) },
+      { key: "3" as const, label: getTranslation(TranslationKey.OnboardingStepThreeLabel) },
     ],
     [getTranslation],
   );
@@ -80,26 +81,35 @@ export function OnboardingContainer({
     await refresh();
   }
 
-  async function handleMoveToStep(step: OnboardingStep) {
+  const handleMoveToStep = useCallback(async (step: OnboardingStep) => {
     await onboardingRepository.setActiveStep(step);
     await loadCatProfile();
     await refresh();
-  }
+  }, [loadCatProfile, onboardingRepository, refresh]);
 
-  async function handleFinish() {
+  const handleFinish = useCallback(async () => {
     await onboardingRepository.finishOnboarding();
     await refresh();
 
     if (onCompleted) {
       await onCompleted();
     }
-  }
+  }, [onCompleted, onboardingRepository, refresh]);
+  const currentStep = onboardingState?.step ?? 1;
+  const actualStep = String(currentStep) as `${OnboardingStep}`;
+  const { steps, goNext, goPrevious, isNextActionDisabled } = useOnboardingStepper({
+    currentStep,
+    canContinueToStepThree,
+    getTranslation,
+    onStepChange: handleMoveToStep,
+    onFinish: handleFinish,
+  });
 
   if (!onboardingState) {
     return (
       <OnboardingView
         getTranslation={getTranslation}
-        steps={stepItems}
+        steps={loadingStepItems}
         actualStep="1"
         isLoading
         language={language}
@@ -110,7 +120,6 @@ export function OnboardingContainer({
     );
   }
 
-  const actualStep = String(onboardingState.step) as `${OnboardingStep}`;
   const showLoading = isLoading || isCatProfileLoading;
 
   let stepContent: ReactNode;
@@ -128,10 +137,16 @@ export function OnboardingContainer({
   } else if (onboardingState.step === 2) {
     stepContent = (
       <OnboardingStepTwoContainer
-        onboardingRepository={onboardingRepository}
         scheduleRepository={scheduleRepository}
         getTranslation={getTranslation}
-        onSubmitted={refresh}
+        isNextActionDisabled={isNextActionDisabled}
+        onCanContinueToStepThreeChange={setCanContinueToStepThree}
+        onPreviousAction={() => {
+          void goPrevious();
+        }}
+        onNextAction={() => {
+          void goNext();
+        }}
       />
     );
   } else {
@@ -140,10 +155,10 @@ export function OnboardingContainer({
         getTranslation={getTranslation}
         note=""
         onPreviousAction={() => {
-          void handleMoveToStep(2);
+          void goPrevious();
         }}
         onNextAction={() => {
-          void handleFinish();
+          void goNext();
         }}
       />
     );
@@ -152,7 +167,7 @@ export function OnboardingContainer({
   return (
     <OnboardingView
       getTranslation={getTranslation}
-      steps={stepItems}
+      steps={steps}
       actualStep={actualStep}
       isLoading={showLoading}
       language={language}

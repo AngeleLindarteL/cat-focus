@@ -1,8 +1,8 @@
+import type { StepperItem } from "@/components/Stepper";
 import type { CatProfile, OnboardingStep } from "@/lib/onboarding";
 
-export type OnboardingStepItem = {
+export type OnboardingStepItem = StepperItem & {
   key: `${OnboardingStep}`;
-  label: string;
 };
 
 export type CatProfileFormValues = CatProfile;

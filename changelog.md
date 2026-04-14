@@ -3,6 +3,20 @@
 ## [2026-04-13]
 ### Author: AngeleLindarteL
 ### Co-Authors: None
+### Resume: Added clickable onboarding step navigation, centralized step reachability in a hook, and upgraded the shared stepper with interactive hover states.
+### Changes:
+- Extended the shared `Stepper` item contract with optional per-step `onClick` support and rendered clickable circles as interactive controls only when a step is reachable.
+- Added a hover treatment for clickable step circles using the existing amber/stone Cat Focus visual language, including pointer cursor, brighter shadow, and slight lift.
+- Introduced `useOnboardingStepper` to centralize onboarding step reachability, direct step navigation, and shared back/next transition rules for stepper clicks and step actions.
+- Refactored `OnboardingContainer` and `OnboardingStepTwoContainer` so step-two completion state drives both the next-button disabled state and whether step three is directly clickable.
+- Expanded stepper and onboarding flow tests to cover clickable step behavior, blocked future-step navigation, and direct jump-to-step behavior after validation passes.
+- Added the implementation plan record in `docs/plans/onboarding-clickable-stepper.md`.
+
+### Notes: Verified with targeted Vitest runs for the shared stepper plus onboarding flow and step-two container coverage.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
 ### Resume: Clarified blocked-site copy, moved site validation feedback inline, and replaced per-site delete text with a trash icon action.
 ### Changes:
 - Added dedicated translation keys for blocked-site manual entry actions, placeholders, cancel editing, and delete-site accessibility labels in English and Spanish.

@@ -202,6 +202,97 @@ describe("onboarding flow", () => {
     ).toBeInTheDocument();
   });
 
+  it("allows returning to a reachable previous onboarding step from the stepper", async () => {
+    const onboardingRepository = createOnboardingRepository({
+      step: 2,
+      finished: false,
+    });
+
+    render(
+      <OptionsGateContainer
+        onboardingRepository={onboardingRepository}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Choose your cat" }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Save and continue" })).toBeInTheDocument();
+    });
+  });
+
+  it("keeps the step-three stepper target locked until step-two validation passes", async () => {
+    render(
+      <OptionsGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 2,
+          finished: false,
+        })}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    await screen.findByText("Choose how you want to block distractions");
+
+    expect(
+      screen.queryByRole("button", { name: "Finish setup" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("unlocks direct navigation to step three when step-two validation passes", async () => {
+    render(
+      <OptionsGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 2,
+          finished: false,
+        })}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Create my first schedule" }));
+    fireEvent.change(await screen.findByLabelText("Name of the schedule"), {
+      target: { value: "Weekday focus" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Site Name (example: Instagram)"), {
+      target: { value: "X" },
+    });
+    fireEvent.change(
+      screen.getByPlaceholderText("The Site you want to block (example: instagram.com)"),
+      {
+        target: { value: "https://www.x.com" },
+      },
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
+    fireEvent.click(screen.getByRole("button", { name: "Save schedule" }));
+
+    const finishSetupStep = await screen.findByRole("button", { name: "Finish setup" });
+    fireEvent.click(finishSetupStep);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Finish onboarding" })).toBeInTheDocument();
+    });
+  });
+
   it("falls back to the Chrome UI locale when no app language is saved", async () => {
     globalThis.chrome = createChromeMock({}, "es");
 

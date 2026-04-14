@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { TranslationKey } from "@/lib/i18n";
-import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 
@@ -64,6 +63,7 @@ function getTranslation(key: string): string {
     [TranslationKey.SchedulePopularSitesTitle]: "Popular sites",
     [TranslationKey.ScheduleSiteNamePlaceholder]: "Site name",
     [TranslationKey.ScheduleSiteDomainPlaceholder]: "Site domain",
+    [TranslationKey.ScheduleSiteAdd]: "Create",
     [TranslationKey.ScheduleSave]: "Save",
     [TranslationKey.ScheduleUnsavedReminderTitle]: "You changed this schedule.",
     [TranslationKey.ScheduleUnsavedReminderDescription]:
@@ -93,18 +93,14 @@ function getTranslation(key: string): string {
 
 describe("OnboardingStepTwoContainer", () => {
   it("disables the step 2 next action when no schedule exists", async () => {
-    const onboardingRepository = {
-      setActiveStep: vi.fn().mockResolvedValue(undefined),
-      finishOnboarding: vi.fn().mockResolvedValue(undefined),
-      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
-    } as OnboardingRepository;
-
     render(
       <OnboardingStepTwoContainer
-        onboardingRepository={onboardingRepository}
         scheduleRepository={createScheduleRepository()}
         getTranslation={getTranslation}
-        onSubmitted={vi.fn().mockResolvedValue(undefined)}
+        isNextActionDisabled
+        onCanContinueToStepThreeChange={vi.fn()}
+        onPreviousAction={vi.fn()}
+        onNextAction={vi.fn()}
       />,
     );
 
@@ -114,21 +110,21 @@ describe("OnboardingStepTwoContainer", () => {
   });
 
   it("enables the step 2 next action after the first schedule block is created", async () => {
-    const onboardingRepository = {
-      setActiveStep: vi.fn().mockResolvedValue(undefined),
-      finishOnboarding: vi.fn().mockResolvedValue(undefined),
-      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
-    } as OnboardingRepository;
-    const onSubmitted = vi.fn().mockResolvedValue(undefined);
+    const onCanContinueToStepThreeChange = vi.fn();
+    const onNextAction = vi.fn();
 
     render(
       <OnboardingStepTwoContainer
-        onboardingRepository={onboardingRepository}
         scheduleRepository={createScheduleRepository()}
         getTranslation={getTranslation}
-        onSubmitted={onSubmitted}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={onCanContinueToStepThreeChange}
+        onPreviousAction={vi.fn()}
+        onNextAction={onNextAction}
       />,
     );
+
+    expect(onCanContinueToStepThreeChange).toHaveBeenCalledWith(false);
 
     fireEvent.click(await screen.findByRole("button", { name: "Create first schedule" }));
     fireEvent.change(screen.getByLabelText("Schedule name"), {
@@ -144,23 +140,15 @@ describe("OnboardingStepTwoContainer", () => {
     fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
+      expect(onCanContinueToStepThreeChange).toHaveBeenLastCalledWith(true);
     });
 
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
 
-    await waitFor(() => {
-      expect(onboardingRepository.setActiveStep).toHaveBeenCalledWith(3);
-      expect(onSubmitted).toHaveBeenCalled();
-    });
+    expect(onNextAction).toHaveBeenCalled();
   });
 
   it("shows a reminder when an existing schedule changes", async () => {
-    const onboardingRepository = {
-      setActiveStep: vi.fn().mockResolvedValue(undefined),
-      finishOnboarding: vi.fn().mockResolvedValue(undefined),
-      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
-    } as OnboardingRepository;
     const scheduleRepository = createScheduleRepository();
 
     await scheduleRepository.insertOne({
@@ -185,10 +173,12 @@ describe("OnboardingStepTwoContainer", () => {
 
     render(
       <OnboardingStepTwoContainer
-        onboardingRepository={onboardingRepository}
         scheduleRepository={scheduleRepository}
         getTranslation={getTranslation}
-        onSubmitted={vi.fn().mockResolvedValue(undefined)}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={vi.fn()}
+        onPreviousAction={vi.fn()}
+        onNextAction={vi.fn()}
       />,
     );
 
@@ -212,18 +202,14 @@ describe("OnboardingStepTwoContainer", () => {
   });
 
   it("accepts 3-character names and rejects 2-character names", async () => {
-    const onboardingRepository = {
-      setActiveStep: vi.fn().mockResolvedValue(undefined),
-      finishOnboarding: vi.fn().mockResolvedValue(undefined),
-      getOnboardingState: vi.fn().mockResolvedValue({ step: 2, finished: false }),
-    } as OnboardingRepository;
-
     render(
       <OnboardingStepTwoContainer
-        onboardingRepository={onboardingRepository}
         scheduleRepository={createScheduleRepository()}
         getTranslation={getTranslation}
-        onSubmitted={vi.fn().mockResolvedValue(undefined)}
+        isNextActionDisabled={false}
+        onCanContinueToStepThreeChange={vi.fn()}
+        onPreviousAction={vi.fn()}
+        onNextAction={vi.fn()}
       />,
     );
 

@@ -1,6 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
-import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import type { ScheduleBlock } from "@/lib/schedules";
 import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
@@ -10,17 +9,21 @@ import { OnboardingStepTwoView } from "@/modules/onboarding/views/OnboardingStep
 export type StepTwoBlockType = "scheduleBlock" | "usageTimeBlock";
 
 type OnboardingStepTwoContainerProps = {
-  onboardingRepository: OnboardingRepository;
   scheduleRepository?: ScheduleRepository;
   getTranslation: UseTranslationResult["getTranslation"];
-  onSubmitted: () => Promise<void>;
+  isNextActionDisabled: boolean;
+  onCanContinueToStepThreeChange: (canContinue: boolean) => void;
+  onPreviousAction: () => void;
+  onNextAction: () => void;
 };
 
 export function OnboardingStepTwoContainer({
-  onboardingRepository,
   scheduleRepository = defaultScheduleRepository,
   getTranslation,
-  onSubmitted,
+  isNextActionDisabled,
+  onCanContinueToStepThreeChange,
+  onPreviousAction,
+  onNextAction,
 }: OnboardingStepTwoContainerProps) {
   const [blockType, setBlockType] = useState<StepTwoBlockType>("scheduleBlock");
   const [scheduleBlocks, setScheduleBlocks] = useState<ScheduleBlock[]>([]);
@@ -34,19 +37,9 @@ export function OnboardingStepTwoContainer({
     [scheduleBlockValid, usageBlockTimeValid],
   );
 
-  async function handlePreviousAction() {
-    await onboardingRepository.setActiveStep(1);
-    await onSubmitted();
-  }
-
-  async function handleNextAction() {
-    if (!canContinueToStepThree) {
-      return;
-    }
-
-    await onboardingRepository.setActiveStep(3);
-    await onSubmitted();
-  }
+  useEffect(() => {
+    onCanContinueToStepThreeChange(canContinueToStepThree);
+  }, [canContinueToStepThree, onCanContinueToStepThreeChange]);
 
   return (
     <OnboardingStepTwoView
@@ -64,14 +57,10 @@ export function OnboardingStepTwoContainer({
           description: getTranslation(TranslationKey.StepTwoUsageDescription),
         },
       ]}
-      isNextActionDisabled={!canContinueToStepThree}
+      isNextActionDisabled={isNextActionDisabled}
       onValueChange={setBlockType}
-      onPreviousAction={() => {
-        void handlePreviousAction();
-      }}
-      onNextAction={() => {
-        void handleNextAction();
-      }}
+      onPreviousAction={onPreviousAction}
+      onNextAction={onNextAction}
     >
       {blockType === "scheduleBlock" ? (
         <ScheduleBlockContainer
