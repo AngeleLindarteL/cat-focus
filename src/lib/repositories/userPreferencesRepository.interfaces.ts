@@ -2,7 +2,9 @@ import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferences
 import type { Language } from "@/lib/i18n";
 
 export type UserPreferences = {
-  language: Language;
+  language?: Language;
+  userName?: string;
+  installationReason?: string;
 };
 
 export type UserPreferencesStorageShape = {
@@ -12,4 +14,5 @@ export type UserPreferencesStorageShape = {
 export interface UserPreferencesRepository {
   getPreferences(): Promise<UserPreferences | null>;
   savePreferences(preferences: UserPreferences): Promise<void>;
+  updatePreferences(patch: Partial<UserPreferences>): Promise<UserPreferences>;
 }

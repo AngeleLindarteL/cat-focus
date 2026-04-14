@@ -6,6 +6,30 @@
 
 ### Co-Authors: None
 
+### Resume: Implemented onboarding v4 step-three profile capture with reusable user-preferences form, merged preference patch persistence, and a post-finish celebration screen with confetti.
+
+### Changes:
+
+- Added a reusable `src/modules/user-preferences` form module with creation/edition mode support for `userName` and `installationReason`, including validation and normalization.
+- Extended `userPreferencesRepository` contracts and implementation with patch-based updates so language updates no longer overwrite other preference fields.
+- Updated `useTranslation` to persist language via merged preference patches.
+- Replaced onboarding step-three placeholder rendering with the new profile form flow and changed final onboarding CTA copy to "Start your journey".
+- Added onboarding finish container/view with confetti (`@tsparticles/confetti`), centered customized cat preview, translated finish content, and continue-to-home action.
+- Updated `OptionsGateContainer` to show the finish screen only right after in-session onboarding completion.
+- Fixed layout wrappers for options surfaces so `fit-content` is no longer applied to options home or onboarding finish, preventing collapsed/broken page layout.
+- Updated the finish-screen quote treatment to render italicized text inside `<< >>`, added explicit attribution to `Confucio (Confucius)`, and centered the congratulation card in the viewport.
+- Added `docs/plans/onboarding-v4.md` implementation spec.
+- Expanded onboarding and repository tests for profile-step rendering, finish-screen transition, and merged user-preferences persistence.
+- Added dependency: `@tsparticles/confetti` via `pnpm`.
+
+### Notes: This iteration keeps existing onboarding step-two schedule/usage logic unchanged and scopes v4 to step-three profile persistence plus post-finish UX.
+
+## [2026-04-14]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
 ### Resume: Audited all interactive buttons across the extension and added missing `cursor-pointer` and `disabled:cursor-not-allowed` where needed.
 
 ### Changes:

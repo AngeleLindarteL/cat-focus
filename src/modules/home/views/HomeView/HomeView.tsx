@@ -12,6 +12,10 @@ export function HomeView({
     surface === "popup"
       ? "inline-grid max-w-full justify-center [grid-template-columns:minmax(300px,24rem)]"
       : "w-full max-w-5xl";
+  const wrapperClassName =
+    surface === "popup"
+      ? "[width:fit-content] flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.22),_transparent_35%),linear-gradient(180deg,_#fef7ed_0%,_#fff7ed_45%,_#fafaf9_100%)] px-4 py-6 text-stone-900"
+      : "flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.22),_transparent_35%),linear-gradient(180deg,_#fef7ed_0%,_#fff7ed_45%,_#fafaf9_100%)] px-4 py-6 text-stone-900";
   const copyByVariant = {
     "options-home": {
       eyebrow: TranslationKey.OptionsEyebrow,
@@ -55,7 +59,7 @@ export function HomeView({
     : undefined;
 
   return (
-    <div className="[width:fit-content] flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.22),_transparent_35%),linear-gradient(180deg,_#fef7ed_0%,_#fff7ed_45%,_#fafaf9_100%)] px-4 py-6 text-stone-900">
+    <div className={wrapperClassName}>
       <div className={layoutClassName}>
         <SurfaceCard
           eyebrow={getTranslation(copy.eyebrow)}

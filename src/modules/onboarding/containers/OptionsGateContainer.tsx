@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "@/lib/i18n";
 import {
   catRepository as defaultCatRepository,
@@ -8,6 +9,7 @@ import {
   type OnboardingRepository,
 } from "@/lib/repositories/onboardingRepository";
 import { OptionsHomeContainer } from "@/modules/home/containers/OptionsHomeContainer";
+import { OnboardingFinishContainer } from "@/modules/onboarding/containers/OnboardingFinishContainer";
 import { OnboardingContainer } from "@/modules/onboarding/containers/OnboardingContainer";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
 
@@ -22,13 +24,17 @@ export function OptionsGateContainer({
 }: OptionsGateContainerProps) {
   const { language, setLanguage, getTranslation } = useTranslation();
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
+  const [showFinishScreen, setShowFinishScreen] = useState(false);
 
   if (isLoading || !onboardingState) {
     return (
       <OnboardingContainer
         catRepository={catRepository}
         onboardingRepository={onboardingRepository}
-        onCompleted={refresh}
+        onCompleted={async () => {
+          setShowFinishScreen(true);
+          await refresh();
+        }}
         language={language}
         setLanguage={setLanguage}
         getTranslation={getTranslation}
@@ -41,10 +47,26 @@ export function OptionsGateContainer({
       <OnboardingContainer
         catRepository={catRepository}
         onboardingRepository={onboardingRepository}
-        onCompleted={refresh}
+        onCompleted={async () => {
+          setShowFinishScreen(true);
+          await refresh();
+        }}
         language={language}
         setLanguage={setLanguage}
         getTranslation={getTranslation}
+      />
+    );
+  }
+
+  if (showFinishScreen) {
+    return (
+      <OnboardingFinishContainer
+        getTranslation={getTranslation}
+        catRepository={catRepository}
+        onPrimaryAction={() => {
+          setShowFinishScreen(false);
+          void refresh();
+        }}
       />
     );
   }

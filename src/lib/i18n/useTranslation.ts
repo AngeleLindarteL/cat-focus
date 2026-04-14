@@ -66,7 +66,7 @@ export function useTranslation(
     async (nextLanguage: Language) => {
       setLanguageState(nextLanguage);
       setHasStoredPreference(true);
-      await repository.savePreferences({
+      await repository.updatePreferences({
         language: nextLanguage,
       });
     },

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
 import type { CatProfile, OnboardingState } from "@/lib/onboarding";
 import type { CatRepository } from "@/lib/repositories/catRepository";
@@ -11,6 +11,10 @@ import { createChromeMock } from "./helpers/chrome";
 declare global {
   var chrome: ReturnType<typeof createChromeMock>;
 }
+
+vi.mock("@tsparticles/confetti", () => ({
+  confetti: vi.fn(async () => undefined),
+}));
 
 function createOnboardingRepository(state: OnboardingState): OnboardingRepository {
   let currentState = { ...state };
@@ -285,11 +289,15 @@ describe("onboarding flow", () => {
     fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
     fireEvent.click(screen.getByRole("button", { name: "Create schedule block" }));
 
-    const finishSetupStep = await screen.findByRole("button", { name: "Finish setup" });
+    const finishSetupStep = await screen.findByRole("button", { name: "Your profile" });
     fireEvent.click(finishSetupStep);
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Finish onboarding" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Start your journey" })).toBeInTheDocument();
+      expect(screen.getByLabelText("Your name")).toBeInTheDocument();
+      expect(
+        screen.getByLabelText("Why did you install Cat Focus?"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -343,7 +351,7 @@ describe("onboarding flow", () => {
       screen.queryByRole("button", { name: "Choose your cat" }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Finish setup" }),
+      screen.queryByRole("button", { name: "Your profile" }),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Back" })).toBeDisabled();
     expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
@@ -355,10 +363,47 @@ describe("onboarding flow", () => {
         screen.getByRole("button", { name: "Choose your cat" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Finish setup" }),
+        screen.getByRole("button", { name: "Your profile" }),
       ).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "Back" })).toBeEnabled();
       expect(screen.getByRole("button", { name: "Next" })).toBeEnabled();
+    });
+  });
+
+  it("shows the onboarding finish screen after submitting step three", async () => {
+    render(
+      <OptionsGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 3,
+          finished: false,
+        })}
+        catRepository={createCatRepository({
+          name: "Captain Whiskers",
+          furColorPrimary: "#112233",
+          furColorSecondary: "#445566",
+          eyeColor: "#365314",
+          tailColor: "#445566",
+        })}
+      />,
+    );
+
+    fireEvent.change(await screen.findByLabelText("Your name"), {
+      target: { value: "John Doe" },
+    });
+    fireEvent.change(screen.getByLabelText("Why did you install Cat Focus?"), {
+      target: { value: "To focus while working" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Start your journey" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Congratulations")).toBeInTheDocument();
+      expect(screen.getByText("Go to home")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Go to home" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Extension settings")).toBeInTheDocument();
     });
   });
 

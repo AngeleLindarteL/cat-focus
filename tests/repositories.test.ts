@@ -72,6 +72,26 @@ describe("repositories", () => {
     });
   });
 
+  it("patches user preferences without dropping existing fields", async () => {
+    const repository = new ChromeStorageUserPreferencesRepository();
+
+    await repository.savePreferences({
+      language: "en",
+      userName: "John Doe",
+      installationReason: "Read more books",
+    });
+
+    await repository.updatePreferences({
+      language: "es",
+    });
+
+    await expect(repository.getPreferences()).resolves.toEqual({
+      language: "es",
+      userName: "John Doe",
+      installationReason: "Read more books",
+    });
+  });
+
   it("persists schedule blocks", async () => {
     const repository = new ChromeStorageScheduleRepository();
 

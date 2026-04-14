@@ -17,18 +17,23 @@ import {
   usageRepository as defaultUsageRepository,
   type UsageRepository,
 } from "@/lib/repositories/usageRepository";
+import {
+  userPreferencesRepository as defaultUserPreferencesRepository,
+  type UserPreferencesRepository,
+} from "@/lib/repositories/userPreferencesRepository";
 import { OnboardingStepOneContainer } from "@/modules/onboarding/containers/OnboardingStepOneContainer";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 import { useOnboardingStepper } from "@/modules/onboarding/hooks/useOnboardingStepper";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
-import { OnboardingStepPlaceholderView } from "@/modules/onboarding/views/OnboardingStepPlaceholderView";
 import { OnboardingView } from "@/modules/onboarding/views/OnboardingView";
+import { UserPreferencesFormContainer } from "@/modules/user-preferences";
 
 type OnboardingContainerProps = {
   catRepository?: CatRepository;
   onboardingRepository?: OnboardingRepository;
   scheduleRepository?: ScheduleRepository;
   usageRepository?: UsageRepository;
+  userPreferencesRepository?: UserPreferencesRepository;
   onCompleted?: () => Promise<void> | void;
   language: Language;
   setLanguage: UseTranslationResult["setLanguage"];
@@ -40,6 +45,7 @@ export function OnboardingContainer({
   onboardingRepository = defaultOnboardingRepository,
   scheduleRepository = defaultScheduleRepository,
   usageRepository = defaultUsageRepository,
+  userPreferencesRepository = defaultUserPreferencesRepository,
   onCompleted,
   language,
   setLanguage,
@@ -48,6 +54,11 @@ export function OnboardingContainer({
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
   const [catProfile, setCatProfile] = useState<CatProfile | null>(null);
   const [isCatProfileLoading, setIsCatProfileLoading] = useState(true);
+  const [isUserPreferencesLoading, setIsUserPreferencesLoading] = useState(true);
+  const [userPreferences, setUserPreferences] = useState<{
+    userName?: string;
+    installationReason?: string;
+  } | null>(null);
   const [canContinueToStepThree, setCanContinueToStepThree] = useState(false);
   const [hasBlockingUnsavedChanges, setHasBlockingUnsavedChanges] = useState(false);
   const loadingStepItems = useMemo(
@@ -82,6 +93,23 @@ export function OnboardingContainer({
       isMounted = false;
     };
   }, [catRepository]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void userPreferencesRepository.getPreferences().then((storedPreferences) => {
+      if (!isMounted) {
+        return;
+      }
+
+      setUserPreferences(storedPreferences);
+      setIsUserPreferencesLoading(false);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [userPreferencesRepository]);
 
   async function refreshAfterStepOneSubmit() {
     await loadCatProfile();
@@ -135,7 +163,7 @@ export function OnboardingContainer({
     );
   }
 
-  const showLoading = isLoading || isCatProfileLoading;
+  const showLoading = isLoading || isCatProfileLoading || isUserPreferencesLoading;
 
   let stepContent: ReactNode;
 
@@ -169,15 +197,19 @@ export function OnboardingContainer({
     );
   } else {
     stepContent = (
-      <OnboardingStepPlaceholderView
+      <UserPreferencesFormContainer
+        mode="creation"
         getTranslation={getTranslation}
-        note=""
+        repository={userPreferencesRepository}
+        initialValues={{
+          userName: userPreferences?.userName,
+          installationReason: userPreferences?.installationReason,
+        }}
         onPreviousAction={() => {
           void goPrevious();
         }}
-        onNextAction={() => {
-          void goNext();
-        }}
+        previousActionLabel={getTranslation(TranslationKey.OnboardingBackAction)}
+        onSubmitted={handleFinish}
       />
     );
   }

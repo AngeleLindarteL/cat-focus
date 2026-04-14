@@ -25,6 +25,20 @@ export class ChromeStorageUserPreferencesRepository
       [USER_PREFERENCES_STORAGE_KEY]: preferences,
     });
   }
+
+  async updatePreferences(
+    patch: Partial<UserPreferences>,
+  ): Promise<UserPreferences> {
+    const currentPreferences = (await this.getPreferences()) ?? {};
+    const nextPreferences = {
+      ...currentPreferences,
+      ...patch,
+    };
+
+    await this.savePreferences(nextPreferences);
+
+    return nextPreferences;
+  }
 }
 
 export const userPreferencesRepository: UserPreferencesRepository =
