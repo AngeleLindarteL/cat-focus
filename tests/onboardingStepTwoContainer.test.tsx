@@ -316,8 +316,11 @@ describe("OnboardingStepTwoContainer", () => {
     });
 
     expect(submitButton).toBeDisabled();
-    expect(submitButton.parentElement).toHaveAttribute(
-      "title",
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    fireEvent.mouseEnter(submitButton.parentElement as HTMLElement);
+    const scheduleCreateTooltip = await screen.findByRole("tooltip");
+    expect(scheduleCreateTooltip).toBeVisible();
+    expect(scheduleCreateTooltip).toHaveTextContent(
       "Complete the form before saving your changes.",
     );
 
@@ -532,8 +535,11 @@ describe("OnboardingStepTwoContainer", () => {
     });
 
     expect(submitButton).toBeDisabled();
-    expect(submitButton.parentElement).toHaveAttribute(
-      "title",
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    fireEvent.mouseEnter(submitButton.parentElement as HTMLElement);
+    const usageCreateTooltip = await screen.findByRole("tooltip");
+    expect(usageCreateTooltip).toBeVisible();
+    expect(usageCreateTooltip).toHaveTextContent(
       "Complete the form before saving your changes.",
     );
   });
@@ -580,8 +586,11 @@ describe("OnboardingStepTwoContainer", () => {
     });
 
     expect(submitButton).toBeDisabled();
-    expect(submitButton.parentElement).toHaveAttribute(
-      "title",
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    fireEvent.mouseEnter(submitButton.parentElement as HTMLElement);
+    const scheduleUpdateTooltip = await screen.findByRole("tooltip");
+    expect(scheduleUpdateTooltip).toBeVisible();
+    expect(scheduleUpdateTooltip).toHaveTextContent(
       "There are no changes to save yet.",
     );
   });
@@ -622,8 +631,11 @@ describe("OnboardingStepTwoContainer", () => {
     const submitButton = screen.getByRole("button", { name: "Update usage limit" });
 
     expect(submitButton).toBeDisabled();
-    expect(submitButton.parentElement).toHaveAttribute(
-      "title",
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+    fireEvent.mouseEnter(submitButton.parentElement as HTMLElement);
+    const usageUpdateTooltip = await screen.findByRole("tooltip");
+    expect(usageUpdateTooltip).toBeVisible();
+    expect(usageUpdateTooltip).toHaveTextContent(
       "Complete the form before saving your changes.",
     );
   });

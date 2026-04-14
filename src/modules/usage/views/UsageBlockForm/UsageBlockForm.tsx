@@ -1,4 +1,5 @@
 import { PopularSiteCarousel } from "@/components/PopularSiteCarousel";
+import { Tooltip } from "@/components/Tooltip";
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { TranslationKey } from "@/lib/i18n";
 import { UsageLimitTimeInput } from "@/modules/usage/components/UsageLimitTimeInput";
@@ -165,7 +166,11 @@ export function UsageBlockForm({
         ) : (
           <span />
         )}
-        <div title={submitDisabled ? submitTooltip : undefined}>
+        <Tooltip
+          position="above"
+          text={submitTooltip ?? ""}
+          disabled={!submitDisabled}
+        >
           <button
             type="button"
             onClick={onSubmit}
@@ -174,7 +179,7 @@ export function UsageBlockForm({
           >
             {submitLabel}
           </button>
-        </div>
+        </Tooltip>
       </div>
     </div>
   );

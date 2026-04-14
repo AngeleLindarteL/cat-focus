@@ -1,10 +1,15 @@
 # Changelog
 
 ## [2026-04-14]
+
 ### Author: AngeleLindarteL
+
 ### Co-Authors: None
+
 ### Resume: Audited all interactive buttons across the extension and added missing `cursor-pointer` and `disabled:cursor-not-allowed` where needed.
+
 ### Changes:
+
 - Added `cursor-pointer` to the primary action button in `src/modules/home/views/HomeView/HomeView.tsx`.
 - Added `cursor-pointer` to the submit button in `src/modules/onboarding/views/OnboardingStepOneView/OnboardingStepOneView.tsx`.
 - Added `cursor-pointer` to both the `PRIMARY_ACTION` and `SECONDARY_ACTION` class name constants in `src/modules/onboarding/views/OnboardingStepPlaceholderView/constants.ts`.
@@ -32,7 +37,7 @@
 
 - Disabled schedule and usage submit buttons when the draft has no changes or is invalid.
 - Switched submit button copy between create/update modes.
-- Added tooltip reasons for the disabled state.
+- Replaced the native `title` submit hints with an animated shared `Tooltip` wrapper component and wired it into schedule/usage disabled-submit reasons.
 
 #### Onboarding copy and navigation
 

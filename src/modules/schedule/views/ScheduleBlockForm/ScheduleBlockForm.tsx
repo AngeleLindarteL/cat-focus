@@ -1,4 +1,5 @@
 import { PopularSiteCarousel } from "@/components/PopularSiteCarousel";
+import { Tooltip } from "@/components/Tooltip";
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { WeekdayToggleGroup } from "@/components/WeekdayToggleGroup";
 import { TranslationKey } from "@/lib/i18n";
@@ -35,12 +36,16 @@ export function ScheduleBlockForm({
   onClose,
 }: ScheduleBlockFormProps) {
   const nameLabel = getTranslation(TranslationKey.ScheduleNameLabel);
-  const namePlaceholder = getTranslation(TranslationKey.ScheduleNamePlaceholder);
+  const namePlaceholder = getTranslation(
+    TranslationKey.ScheduleNamePlaceholder,
+  );
   const daysLabel = getTranslation(TranslationKey.ScheduleDaysLabel);
   const fromLabel = getTranslation(TranslationKey.ScheduleFromLabel);
   const toLabel = getTranslation(TranslationKey.ScheduleToLabel);
   const sitesLabel = getTranslation(TranslationKey.ScheduleSitesLabel);
-  const siteNameLabel = getTranslation(TranslationKey.ValidationSiteNameRequired);
+  const siteNameLabel = getTranslation(
+    TranslationKey.ValidationSiteNameRequired,
+  );
   const siteNamePlaceholder = getTranslation(
     TranslationKey.ScheduleSiteNamePlaceholder,
   );
@@ -195,7 +200,11 @@ export function ScheduleBlockForm({
         ) : (
           <span />
         )}
-        <div title={submitDisabled ? submitTooltip : undefined}>
+        <Tooltip
+          position="above"
+          text={submitTooltip ?? ""}
+          disabled={!submitDisabled}
+        >
           <button
             type="button"
             onClick={onSubmit}
@@ -204,7 +213,7 @@ export function ScheduleBlockForm({
           >
             {submitLabel}
           </button>
-        </div>
+        </Tooltip>
       </div>
     </div>
   );
