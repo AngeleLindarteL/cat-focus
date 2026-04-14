@@ -98,17 +98,11 @@ export function OnboardingContainer({
   if (!onboardingState) {
     return (
       <OnboardingView
-        eyebrow={getTranslation(TranslationKey.OnboardingEyebrow)}
-        title={getTranslation(TranslationKey.OnboardingTitle)}
-        description={getTranslation(TranslationKey.OnboardingDescription)}
-        loadingLabel={getTranslation(TranslationKey.LoadingLabel)}
+        getTranslation={getTranslation}
         steps={stepItems}
         actualStep="1"
         isLoading
         language={language}
-        languageLabel={getTranslation(TranslationKey.LanguageLabel)}
-        languageEnglishLabel={getTranslation(TranslationKey.LanguageEnglish)}
-        languageSpanishLabel={getTranslation(TranslationKey.LanguageSpanish)}
         onLanguageChange={setLanguage}
       >
         <div />
@@ -143,11 +137,8 @@ export function OnboardingContainer({
   } else {
     stepContent = (
       <OnboardingStepPlaceholderView
-        title={getTranslation(TranslationKey.OnboardingStepThreeTitle)}
-        description={getTranslation(TranslationKey.OnboardingStepThreeDescription)}
+        getTranslation={getTranslation}
         note=""
-        previousActionLabel={getTranslation(TranslationKey.OnboardingBackAction)}
-        nextActionLabel={getTranslation(TranslationKey.OnboardingFinishAction)}
         onPreviousAction={() => {
           void handleMoveToStep(2);
         }}
@@ -160,17 +151,11 @@ export function OnboardingContainer({
 
   return (
     <OnboardingView
-      eyebrow={getTranslation(TranslationKey.OnboardingEyebrow)}
-      title={getTranslation(TranslationKey.OnboardingTitle)}
-      description={getTranslation(TranslationKey.OnboardingDescription)}
-      loadingLabel={getTranslation(TranslationKey.LoadingLabel)}
+      getTranslation={getTranslation}
       steps={stepItems}
       actualStep={actualStep}
       isLoading={showLoading}
       language={language}
-      languageLabel={getTranslation(TranslationKey.LanguageLabel)}
-      languageEnglishLabel={getTranslation(TranslationKey.LanguageEnglish)}
-      languageSpanishLabel={getTranslation(TranslationKey.LanguageSpanish)}
       onLanguageChange={setLanguage}
     >
       {stepContent}

@@ -1,9 +1,8 @@
+import type { UseTranslationResult } from "@/lib/i18n";
+
 export type OnboardingStepPlaceholderViewProps = {
-  title: string;
-  description: string;
+  getTranslation: UseTranslationResult["getTranslation"];
   note: string;
-  previousActionLabel?: string;
-  nextActionLabel: string;
   onPreviousAction?: () => void;
   onNextAction: () => void;
 };

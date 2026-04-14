@@ -1,5 +1,5 @@
 import type { CatRepository } from "@/lib/repositories/catRepository";
-import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
+import type { UseTranslationResult } from "@/lib/i18n";
 import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
 import { useCatProfileForm } from "@/modules/onboarding/hooks/useCatProfileForm";
 import type { CatProfileFormValues } from "@/modules/onboarding/types/onboardingView";
@@ -31,6 +31,7 @@ export function OnboardingStepOneContainer({
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)}>
       <OnboardingStepOneView
+        getTranslation={getTranslation}
         register={form.register}
         errors={form.formState.errors}
         catName={form.name}
@@ -38,16 +39,6 @@ export function OnboardingStepOneContainer({
         furColorSecondary={form.furColorSecondary}
         eyeColor={form.eyeColor}
         tailColor={form.tailColor}
-        title={getTranslation(TranslationKey.CatSetupTitle)}
-        description={getTranslation(TranslationKey.CatSetupDescription)}
-        nameLabel={getTranslation(TranslationKey.CatNameLabel)}
-        namePlaceholder={getTranslation(TranslationKey.CatNamePlaceholder)}
-        primaryColorLabel={getTranslation(TranslationKey.CatPrimaryColorLabel)}
-        secondaryColorLabel={getTranslation(TranslationKey.CatSecondaryColorLabel)}
-        eyeColorLabel={getTranslation(TranslationKey.CatEyeColorLabel)}
-        tailColorLabel={getTranslation(TranslationKey.CatTailColorLabel)}
-        previewLabel={getTranslation(TranslationKey.CatPreviewLabel)}
-        submitLabel={getTranslation(TranslationKey.CatStepSubmit)}
       />
     </form>
   );

@@ -1,3 +1,4 @@
+import { TranslationKey } from "@/lib/i18n";
 import type { ScheduleDays } from "@/lib/schedules";
 import type { ScheduleSummaryProps } from "@/modules/schedule/views/ScheduleSummary/interfaces";
 
@@ -10,12 +11,12 @@ function summarizeDays(days: ScheduleDays): string {
 }
 
 export function ScheduleSummary({
+  getTranslation,
   name,
   days,
   from,
   to,
   sitesCount,
-  sitesLabel,
 }: ScheduleSummaryProps) {
   return (
     <div className="space-y-3">
@@ -27,7 +28,7 @@ export function ScheduleSummary({
         <span>{from}</span>
         <span>{to}</span>
         <span>
-          {sitesCount} {sitesLabel}
+          {sitesCount} {getTranslation(TranslationKey.ScheduleSummarySites)}
         </span>
       </div>
     </div>

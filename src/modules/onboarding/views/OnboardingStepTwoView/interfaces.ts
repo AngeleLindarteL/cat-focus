@@ -1,14 +1,12 @@
 import type { ReactNode } from "react";
 import type { BlockTypeOption } from "@/components/BlockTypeSelector";
+import type { UseTranslationResult } from "@/lib/i18n";
 import type { StepTwoBlockType } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 
 export type OnboardingStepTwoViewProps = {
-  title: string;
-  description: string;
+  getTranslation: UseTranslationResult["getTranslation"];
   value: StepTwoBlockType;
   options: BlockTypeOption<StepTwoBlockType>[];
-  previousActionLabel: string;
-  nextActionLabel: string;
   isNextActionDisabled?: boolean;
   onValueChange: (value: StepTwoBlockType) => void;
   onPreviousAction: () => void;

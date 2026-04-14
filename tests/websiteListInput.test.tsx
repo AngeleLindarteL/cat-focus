@@ -6,15 +6,16 @@ function createProps() {
   return {
     label: "Sites",
     value: [] as Array<{ name: string; domain: string }>,
-    siteNameLabel: "Site name is required",
-    siteNamePlaceholder: "Site name",
-    siteDomainPlaceholder: "Site domain",
-    addLabel: "Create",
+    siteNameRequiredMessage: "Site name is required",
+    domainInvalidMessage: "Enter a valid website domain.",
+    siteNamePlaceholder: "Site Name (example: Instagram)",
+    siteDomainPlaceholder: "The Site you want to block (example: instagram.com)",
+    addLabel: "Block this site",
     editLabel: "Edit",
-    deleteLabel: "Delete",
+    cancelLabel: "Cancel",
+    deleteAriaLabel: "Delete site",
     onChange: vi.fn(),
-    onValidationError: vi.fn(),
-    clearValidationError: vi.fn(),
+    clearListError: vi.fn(),
   };
 }
 
@@ -29,13 +30,18 @@ describe("WebsiteListInput", () => {
       />,
     );
 
-    fireEvent.change(screen.getByPlaceholderText("Site name"), {
+    fireEvent.change(screen.getByPlaceholderText("Site Name (example: Instagram)"), {
       target: { value: "X again" },
     });
-    fireEvent.change(screen.getByPlaceholderText("Site domain"), {
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        "The Site you want to block (example: instagram.com)",
+      ),
+      {
       target: { value: "https://www.x.com" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Create" }));
+      },
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
 
     expect(props.onChange).not.toHaveBeenCalled();
   });
@@ -54,9 +60,14 @@ describe("WebsiteListInput", () => {
     );
 
     fireEvent.click(screen.getAllByRole("button", { name: "Edit" })[1]);
-    fireEvent.change(screen.getByPlaceholderText("Site domain"), {
-      target: { value: "https://www.x.com" },
-    });
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        "The Site you want to block (example: instagram.com)",
+      ),
+      {
+        target: { value: "https://www.x.com" },
+      },
+    );
     fireEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
 
     expect(props.onChange).not.toHaveBeenCalled();
@@ -74,6 +85,65 @@ describe("WebsiteListInput", () => {
     );
 
     expect(screen.getByRole("button", { name: "Edit" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: "Delete" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Delete site" })).toBeEnabled();
+  });
+
+  it("shows the name error under the name input and marks it invalid", () => {
+    const props = createProps();
+
+    render(<WebsiteListInput {...props} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
+
+    expect(screen.getByText("Site name is required")).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText("Site Name (example: Instagram)"),
+    ).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("shows the translated domain error under the domain input and marks it invalid", () => {
+    const props = createProps();
+
+    render(<WebsiteListInput {...props} />);
+
+    fireEvent.change(
+      screen.getByPlaceholderText("Site Name (example: Instagram)"),
+      {
+        target: { value: "Instagram" },
+      },
+    );
+    fireEvent.change(
+      screen.getByPlaceholderText(
+        "The Site you want to block (example: instagram.com)",
+      ),
+      {
+        target: { value: "nota_domain" },
+      },
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Block this site" }));
+
+    expect(
+      screen.getByText("Enter a valid website domain."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(
+        "The Site you want to block (example: instagram.com)",
+      ),
+    ).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("renders the translated cancel action while editing", () => {
+    const props = createProps();
+
+    render(
+      <WebsiteListInput
+        {...props}
+        value={[{ name: "Instagram", domain: "instagram.com" }]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
   });
 });

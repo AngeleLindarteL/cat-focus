@@ -1,6 +1,8 @@
 import type { UseTranslationResult } from "@/lib/i18n";
 
-export type ScheduleEmptyStateProps = {
+export type DeleteScheduleModalProps = {
   getTranslation: UseTranslationResult["getTranslation"];
-  onAction: () => void;
+  isOpen: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 };

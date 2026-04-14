@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DeleteScheduleModal } from "@/components/DeleteScheduleModal";
 import type { DayToggleOption, WeekdayToggleGroupRef } from "@/components/WeekdayToggleGroup";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import type { ScheduleBlock } from "@/lib/schedules";
+import { DeleteScheduleModal } from "@/modules/schedule/components/DeleteScheduleModal";
 import { ScheduleCard } from "@/modules/schedule/views/ScheduleCard";
 import { ScheduleEmptyState } from "@/modules/schedule/views/ScheduleEmptyState";
 import {
@@ -258,9 +258,7 @@ export function ScheduleBlockContainer({
 
       {showEmptyState ? (
         <ScheduleEmptyState
-          title={getTranslation(TranslationKey.ScheduleEmptyTitle)}
-          description={getTranslation(TranslationKey.ScheduleEmptyDescription)}
-          actionLabel={getTranslation(TranslationKey.ScheduleCreateFirst)}
+          getTranslation={getTranslation}
           onAction={openCreateForm}
         />
       ) : null}
@@ -274,67 +272,41 @@ export function ScheduleBlockContainer({
           expandedContent={
             <ScheduleBlockForm
               mode="create"
+              getTranslation={getTranslation}
               showUnsavedReminder={false}
-              nameLabel={getTranslation(TranslationKey.ScheduleNameLabel)}
-              namePlaceholder={getTranslation(
-                TranslationKey.ScheduleNamePlaceholder,
-              )}
               nameValue={draft.name}
               nameError={errors.name}
               onNameChange={(value) => {
                 setDraft((currentValue) => ({ ...currentValue, name: value }));
               }}
-              daysLabel={getTranslation(TranslationKey.ScheduleDaysLabel)}
               weekdayOptions={weekdayOptions}
               weekdayGroupKey={`create-${weekdayOptions.map((option) => Number(option.default)).join("-")}`}
               weekdayGroupRef={weekdayGroupRef}
               onWeekdayChange={(value) => {
                 setDraft((currentValue) => ({ ...currentValue, days: value }));
               }}
-              fromLabel={getTranslation(TranslationKey.ScheduleFromLabel)}
               fromValue={draft.from}
               fromError={errors.from}
               onFromChange={(value) => {
                 setDraft((currentValue) => ({ ...currentValue, from: value }));
               }}
-              toLabel={getTranslation(TranslationKey.ScheduleToLabel)}
               toValue={draft.to}
               toError={errors.to}
               onToChange={(value) => {
                 setDraft((currentValue) => ({ ...currentValue, to: value }));
               }}
-              sitesLabel={getTranslation(TranslationKey.ScheduleSitesLabel)}
-              siteNameLabel={getTranslation(
-                TranslationKey.ValidationSiteNameRequired,
-              )}
-              siteNamePlaceholder={getTranslation(
-                TranslationKey.ScheduleSiteNamePlaceholder,
-              )}
-              siteDomainPlaceholder={getTranslation(
-                TranslationKey.ScheduleSiteDomainPlaceholder,
-              )}
-              popularSitesTitle={getTranslation(
-                TranslationKey.SchedulePopularSitesTitle,
-              )}
               popularSites={popularSites}
               onPopularSiteSelect={handlePopularSiteSelect}
-              addSiteLabel={getTranslation(TranslationKey.ScheduleCreate)}
-              editSiteLabel={getTranslation(TranslationKey.ScheduleEdit)}
-              deleteSiteLabel={getTranslation(TranslationKey.ScheduleDelete)}
               sitesValue={draft.sites}
-              sitesError={errors.sites}
+              sitesListError={errors.sites}
               onSitesChange={(nextSites) => {
                 setDraft((currentValue) => ({ ...currentValue, sites: nextSites }));
                 setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
               }}
-              onSitesValidationError={(message) => {
-                setErrors((currentValue) => ({ ...currentValue, sites: message }));
-              }}
-              clearSitesValidationError={() => {
+              clearSitesListError={() => {
                 setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
               }}
               isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
-              submitLabel={getTranslation(TranslationKey.ScheduleSave)}
               onSubmit={() => {
                 void handleSubmit(null);
               }}
@@ -345,7 +317,6 @@ export function ScheduleBlockContainer({
                     }
                   : undefined
               }
-              closeLabel={getTranslation(TranslationKey.ScheduleClose)}
             />
           }
         />
@@ -369,86 +340,54 @@ export function ScheduleBlockContainer({
             }}
             summary={
               <ScheduleSummary
+                getTranslation={getTranslation}
                 name={schedule.name}
                 days={schedule.schedule.days}
                 from={schedule.schedule.time.from}
                 to={schedule.schedule.time.to}
                 sitesCount={schedule.sites.length}
-                sitesLabel={getTranslation(TranslationKey.ScheduleSummarySites)}
               />
             }
             expandedContent={
               <ScheduleBlockForm
                 mode="edit"
-                reminderTitle={getTranslation(
-                  TranslationKey.ScheduleUnsavedReminderTitle,
-                )}
-                reminderDescription={getTranslation(
-                  TranslationKey.ScheduleUnsavedReminderDescription,
-                )}
+                getTranslation={getTranslation}
                 showUnsavedReminder={
                   isExpanded && schedule.id === activeSchedule?.id && isActiveScheduleDirty
                 }
-                nameLabel={getTranslation(TranslationKey.ScheduleNameLabel)}
-                namePlaceholder={getTranslation(
-                  TranslationKey.ScheduleNamePlaceholder,
-                )}
                 nameValue={draft.name}
                 nameError={errors.name}
                 onNameChange={(value) => {
                   setDraft((currentValue) => ({ ...currentValue, name: value }));
                 }}
-                daysLabel={getTranslation(TranslationKey.ScheduleDaysLabel)}
                 weekdayOptions={currentWeekdayOptions}
                 weekdayGroupKey={`${schedule.id}-${currentWeekdayOptions.map((option) => Number(option.default)).join("-")}`}
                 weekdayGroupRef={weekdayGroupRef}
                 onWeekdayChange={(value) => {
                   setDraft((currentValue) => ({ ...currentValue, days: value }));
                 }}
-                fromLabel={getTranslation(TranslationKey.ScheduleFromLabel)}
                 fromValue={draft.from}
                 fromError={errors.from}
                 onFromChange={(value) => {
                   setDraft((currentValue) => ({ ...currentValue, from: value }));
                 }}
-                toLabel={getTranslation(TranslationKey.ScheduleToLabel)}
                 toValue={draft.to}
                 toError={errors.to}
                 onToChange={(value) => {
                   setDraft((currentValue) => ({ ...currentValue, to: value }));
                 }}
-                sitesLabel={getTranslation(TranslationKey.ScheduleSitesLabel)}
-                siteNameLabel={getTranslation(
-                  TranslationKey.ValidationSiteNameRequired,
-                )}
-                siteNamePlaceholder={getTranslation(
-                  TranslationKey.ScheduleSiteNamePlaceholder,
-                )}
-                siteDomainPlaceholder={getTranslation(
-                  TranslationKey.ScheduleSiteDomainPlaceholder,
-                )}
-                popularSitesTitle={getTranslation(
-                  TranslationKey.SchedulePopularSitesTitle,
-                )}
                 popularSites={popularSites}
                 onPopularSiteSelect={handlePopularSiteSelect}
-                addSiteLabel={getTranslation(TranslationKey.ScheduleCreate)}
-                editSiteLabel={getTranslation(TranslationKey.ScheduleEdit)}
-                deleteSiteLabel={getTranslation(TranslationKey.ScheduleDelete)}
                 sitesValue={draft.sites}
-                sitesError={errors.sites}
+                sitesListError={errors.sites}
                 onSitesChange={(nextSites) => {
                   setDraft((currentValue) => ({ ...currentValue, sites: nextSites }));
                   setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
                 }}
-                onSitesValidationError={(message) => {
-                  setErrors((currentValue) => ({ ...currentValue, sites: message }));
-                }}
-                clearSitesValidationError={() => {
+                clearSitesListError={() => {
                   setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
                 }}
                 isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
-                submitLabel={getTranslation(TranslationKey.ScheduleSave)}
                 onSubmit={() => {
                   void handleSubmit(schedule.id);
                 }}
@@ -456,19 +395,17 @@ export function ScheduleBlockContainer({
                   canDelete
                     ? () => {
                         setDeleteTargetId(schedule.id);
-                      }
-                    : undefined
+                    }
+                  : undefined
                 }
-                deleteLabel={getTranslation(TranslationKey.ScheduleDelete)}
                 onClose={
                   canCollapse
                     ? () => {
                         setExpandedScheduleId(null);
                         setErrors({});
-                      }
-                    : undefined
+                    }
+                  : undefined
                 }
-                closeLabel={getTranslation(TranslationKey.ScheduleClose)}
               />
             }
           />
@@ -476,15 +413,8 @@ export function ScheduleBlockContainer({
       })}
 
       <DeleteScheduleModal
+        getTranslation={getTranslation}
         isOpen={deleteTargetId !== null}
-        title={getTranslation(TranslationKey.ScheduleDeleteConfirmTitle)}
-        description={getTranslation(
-          TranslationKey.ScheduleDeleteConfirmDescription,
-        )}
-        confirmLabel={getTranslation(
-          TranslationKey.ScheduleDeleteConfirmAction,
-        )}
-        cancelLabel={getTranslation(TranslationKey.ScheduleCancel)}
         onConfirm={() => {
           void handleDelete();
         }}

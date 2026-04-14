@@ -1,9 +1,7 @@
+import type { UseTranslationResult } from "@/lib/i18n";
+
 export type PopupOnboardingRedirectViewProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  body: string;
-  primaryActionLabel: string;
-  secondaryText: string;
+  getTranslation: UseTranslationResult["getTranslation"];
+  isLoading?: boolean;
   onPrimaryAction: () => void;
 };

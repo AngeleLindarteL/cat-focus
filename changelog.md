@@ -3,6 +3,33 @@
 ## [2026-04-13]
 ### Author: AngeleLindarteL
 ### Co-Authors: None
+### Resume: Clarified blocked-site copy, moved site validation feedback inline, and replaced per-site delete text with a trash icon action.
+### Changes:
+- Added dedicated translation keys for blocked-site manual entry actions, placeholders, cancel editing, and delete-site accessibility labels in English and Spanish.
+- Refactored `WebsiteListInput` so name/domain validation errors render directly under the affected input, the invalid field is marked visually, and the old hardcoded English invalid-domain fallback is removed.
+- Kept the schedule-level empty-sites validation separate as a list-level error while local add/edit validation is now handled inside the blocked-site input component.
+- Replaced the per-site textual delete action with an icon-only trash button that keeps an accessible translated `aria-label`.
+- Updated `ScheduleBlockForm` and `ScheduleBlockContainer` to use the new site-specific labels and error wiring.
+- Expanded `tests/websiteListInput.test.tsx` to cover the new placeholders, inline validation states, translated cancel action, and icon-only delete button behavior.
+
+### Notes: Verified with `rtk npm test -- --run tests/websiteListInput.test.tsx` and `rtk npm run build`.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
+### Resume: Moved fixed translation ownership into module-local UI, relocated the schedule delete modal into the schedule domain, and documented the rule in module guidance.
+### Changes:
+- Refactored module-owned views and components in schedule, onboarding, and home so fixed copy is resolved with `getTranslation` inside the module UI instead of being passed as individual props.
+- Moved `DeleteScheduleModal` from shared `src/components` into `src/modules/schedule/components` and updated schedule flow imports and props accordingly.
+- Kept shared reusable components such as `WebsiteListInput`, `Stepper`, `OptionSelector`, and selectors prop-driven for labels because they remain context-dependent.
+- Updated `src/modules/AGENTS.md`, plus the `schedule`, `onboarding`, and `home` module guidance files, to enforce the module-local translation ownership rule.
+- Added the implementation record in `docs/plans/module-local-translation-ownership.md`.
+
+### Notes: The rule now applies to module-owned non-reusable UI only; shared components under `src/components` still accept labels and placeholders as props by design.
+
+## [2026-04-13]
+### Author: AngeleLindarteL
+### Co-Authors: None
 ### Resume: Migrated app translations to custom locale dictionaries, restored standard Chrome locale files for fallback usage, and synchronized weekday toggles through state.
 ### Changes:
 - Replaced the suffix-based `_locales` duplication with app-owned `en` and `es` translation catalogs under `src/lib/i18n`.

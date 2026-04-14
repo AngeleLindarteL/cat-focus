@@ -50,8 +50,7 @@ export function OnboardingStepTwoContainer({
 
   return (
     <OnboardingStepTwoView
-      title={getTranslation(TranslationKey.StepTwoTitle)}
-      description={getTranslation(TranslationKey.StepTwoDescription)}
+      getTranslation={getTranslation}
       value={blockType}
       options={[
         {
@@ -65,8 +64,6 @@ export function OnboardingStepTwoContainer({
           description: getTranslation(TranslationKey.StepTwoUsageDescription),
         },
       ]}
-      previousActionLabel={getTranslation(TranslationKey.OnboardingBackAction)}
-      nextActionLabel={getTranslation(TranslationKey.OnboardingNextAction)}
       isNextActionDisabled={!canContinueToStepThree}
       onValueChange={setBlockType}
       onPreviousAction={() => {

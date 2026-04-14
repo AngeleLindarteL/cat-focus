@@ -1,10 +1,11 @@
+import type { UseTranslationResult } from "@/lib/i18n";
+
 export type HomeViewProps = {
-  surface?: "options" | "popup";
-  eyebrow: string;
-  title: string;
-  description: string;
-  body: string;
-  primaryActionLabel?: string;
+  variant:
+    | "options-home"
+    | "popup-home"
+    | "popup-redirect"
+    | "popup-redirect-loading";
+  getTranslation: UseTranslationResult["getTranslation"];
   onPrimaryAction?: () => void;
-  secondaryText?: string;
 };

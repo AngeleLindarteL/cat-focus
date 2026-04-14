@@ -1,5 +1,5 @@
 import { openExtensionOptions } from "@/lib/chrome/extension";
-import { TranslationKey, useTranslation } from "@/lib/i18n";
+import { useTranslation } from "@/lib/i18n";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
@@ -21,12 +21,8 @@ export function PopupGateContainer({
   if (isLoading || !onboardingState) {
     return (
       <PopupOnboardingRedirectView
-        eyebrow={getTranslation(TranslationKey.PopupEyebrow)}
-        title={getTranslation(TranslationKey.PopupRedirectTitle)}
-        description={getTranslation(TranslationKey.PopupRedirectDescription)}
-        body={getTranslation(TranslationKey.LoadingLabel)}
-        primaryActionLabel={getTranslation(TranslationKey.PopupRedirectAction)}
-        secondaryText={getTranslation(TranslationKey.PopupRedirectFooter)}
+        getTranslation={getTranslation}
+        isLoading
         onPrimaryAction={() => {
           void openExtensionOptions();
         }}
@@ -37,12 +33,7 @@ export function PopupGateContainer({
   if (!onboardingState.finished) {
     return (
       <PopupOnboardingRedirectView
-        eyebrow={getTranslation(TranslationKey.PopupEyebrow)}
-        title={getTranslation(TranslationKey.PopupRedirectTitle)}
-        description={getTranslation(TranslationKey.PopupRedirectDescription)}
-        body={getTranslation(TranslationKey.PopupRedirectBody)}
-        primaryActionLabel={getTranslation(TranslationKey.PopupRedirectAction)}
-        secondaryText={getTranslation(TranslationKey.PopupRedirectFooter)}
+        getTranslation={getTranslation}
         onPrimaryAction={() => {
           void openExtensionOptions();
         }}

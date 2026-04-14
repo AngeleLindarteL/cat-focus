@@ -1,55 +1,73 @@
 import { WebsiteListInput } from "@/components/WebsiteListInput";
 import { WeekdayToggleGroup } from "@/components/WeekdayToggleGroup";
+import { TranslationKey } from "@/lib/i18n";
 import { PopularSiteCarousel } from "@/modules/schedule/components/PopularSiteCarousel";
 import type { ScheduleBlockFormProps } from "@/modules/schedule/views/ScheduleBlockForm/interfaces";
 
 export function ScheduleBlockForm({
   mode,
-  reminderTitle,
-  reminderDescription,
+  getTranslation,
   showUnsavedReminder = false,
-  nameLabel,
-  namePlaceholder,
   nameValue,
   nameError,
   onNameChange,
-  daysLabel,
   weekdayOptions,
   weekdayGroupKey,
   weekdayGroupRef,
   onWeekdayChange,
-  fromLabel,
   fromValue,
   fromError,
   onFromChange,
-  toLabel,
   toValue,
   toError,
   onToChange,
-  sitesLabel,
-  siteNameLabel,
-  siteNamePlaceholder,
-  siteDomainPlaceholder,
-  popularSitesTitle,
   popularSites,
   onPopularSiteSelect,
-  addSiteLabel,
-  editSiteLabel,
-  deleteSiteLabel,
   sitesValue,
-  sitesError,
+  sitesListError,
   onSitesChange,
-  onSitesValidationError,
-  clearSitesValidationError,
+  clearSitesListError,
   isSiteEditable,
-  submitLabel,
   onSubmit,
   submitDisabled,
   onDelete,
-  deleteLabel,
   onClose,
-  closeLabel,
 }: ScheduleBlockFormProps) {
+  const nameLabel = getTranslation(TranslationKey.ScheduleNameLabel);
+  const namePlaceholder = getTranslation(TranslationKey.ScheduleNamePlaceholder);
+  const daysLabel = getTranslation(TranslationKey.ScheduleDaysLabel);
+  const fromLabel = getTranslation(TranslationKey.ScheduleFromLabel);
+  const toLabel = getTranslation(TranslationKey.ScheduleToLabel);
+  const sitesLabel = getTranslation(TranslationKey.ScheduleSitesLabel);
+  const siteNameLabel = getTranslation(TranslationKey.ValidationSiteNameRequired);
+  const siteNamePlaceholder = getTranslation(
+    TranslationKey.ScheduleSiteNamePlaceholder,
+  );
+  const siteDomainPlaceholder = getTranslation(
+    TranslationKey.ScheduleSiteDomainPlaceholder,
+  );
+  const popularSitesTitle = getTranslation(
+    TranslationKey.SchedulePopularSitesTitle,
+  );
+  const addSiteLabel = getTranslation(TranslationKey.ScheduleSiteAdd);
+  const editSiteLabel = getTranslation(TranslationKey.ScheduleEdit);
+  const cancelSiteLabel = getTranslation(TranslationKey.ScheduleSiteCancelEdit);
+  const deleteSiteAriaLabel = getTranslation(
+    TranslationKey.ScheduleSiteDeleteAriaLabel,
+  );
+  const domainInvalidMessage = getTranslation(
+    TranslationKey.ValidationDomainInvalid,
+  );
+  const submitLabel = getTranslation(TranslationKey.ScheduleSave);
+  const deleteLabel = getTranslation(TranslationKey.ScheduleDelete);
+  const closeLabel = getTranslation(TranslationKey.ScheduleClose);
+  const reminderTitle = getTranslation(
+    TranslationKey.ScheduleUnsavedReminderTitle,
+  );
+  const reminderDescription = getTranslation(
+    TranslationKey.ScheduleUnsavedReminderDescription,
+  );
+
   return (
     <div className="space-y-5">
       <div className="flex items-start justify-between gap-3">
@@ -137,22 +155,20 @@ export function ScheduleBlockForm({
       <WebsiteListInput
         label={sitesLabel}
         value={sitesValue}
-        siteNameLabel={siteNameLabel}
+        siteNameRequiredMessage={siteNameLabel}
+        domainInvalidMessage={domainInvalidMessage}
         siteNamePlaceholder={siteNamePlaceholder}
         siteDomainPlaceholder={siteDomainPlaceholder}
         addLabel={addSiteLabel}
         editLabel={editSiteLabel}
-        deleteLabel={deleteSiteLabel}
-        error={sitesError}
+        cancelLabel={cancelSiteLabel}
+        deleteAriaLabel={deleteSiteAriaLabel}
+        listError={sitesListError}
         onChange={onSitesChange}
-        onValidationError={onSitesValidationError}
-        clearValidationError={clearSitesValidationError}
+        clearListError={clearSitesListError}
         isSiteEditable={isSiteEditable}
       />
-      {mode === "edit" &&
-      showUnsavedReminder &&
-      reminderTitle &&
-      reminderDescription ? (
+      {mode === "edit" && showUnsavedReminder ? (
         <div className="rounded-3xl border border-amber-300 bg-amber-50 px-4 py-3">
           <p className="text-sm font-semibold text-amber-800">
             {reminderTitle}

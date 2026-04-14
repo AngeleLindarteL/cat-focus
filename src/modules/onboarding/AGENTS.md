@@ -13,4 +13,5 @@ This module owns onboarding UI flow, onboarding-specific hooks, and feature-loca
   - services for pure feature logic and validation helpers
   - views for presentation
   - types for module-local UI contracts
+- Onboarding-owned non-reusable views should receive `getTranslation` instead of fixed translated label/title/action props.
 - If onboarding logic becomes shared beyond this feature, move that part to `src/lib`.

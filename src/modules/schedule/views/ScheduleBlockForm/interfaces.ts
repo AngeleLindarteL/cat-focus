@@ -4,53 +4,36 @@ import type {
   DayToggleOption,
   WeekdayToggleGroupRef,
 } from "@/components/WeekdayToggleGroup";
+import type { UseTranslationResult } from "@/lib/i18n";
 import type { ScheduleSitePresetItem } from "@/modules/schedule/services/scheduleSitePresets";
 import type { ScheduleBlockFormValues } from "@/modules/schedule/services/scheduleBlockForm";
 
 export type ScheduleBlockFormProps = {
   mode: "create" | "edit";
-  reminderTitle?: string;
-  reminderDescription?: string;
+  getTranslation: UseTranslationResult["getTranslation"];
   showUnsavedReminder?: boolean;
-  nameLabel: string;
-  namePlaceholder: string;
   nameValue: string;
   nameError?: string;
   onNameChange: (value: string) => void;
-  daysLabel: string;
   weekdayOptions: DayToggleOption[];
   weekdayGroupKey: string;
   weekdayGroupRef: RefObject<WeekdayToggleGroupRef | null>;
   onWeekdayChange: (value: ScheduleBlockFormValues["days"]) => void;
-  fromLabel: string;
   fromValue: string;
   fromError?: string;
   onFromChange: (value: string) => void;
-  toLabel: string;
   toValue: string;
   toError?: string;
   onToChange: (value: string) => void;
-  sitesLabel: string;
-  siteNameLabel: string;
-  siteNamePlaceholder: string;
-  siteDomainPlaceholder: string;
-  popularSitesTitle: string;
   popularSites: ScheduleSitePresetItem[];
   onPopularSiteSelect: (item: ScheduleSitePresetItem) => void;
-  addSiteLabel: string;
-  editSiteLabel: string;
-  deleteSiteLabel: string;
   sitesValue: BlockedSite[];
-  sitesError?: string;
+  sitesListError?: string;
   onSitesChange: (nextValue: BlockedSite[]) => void;
-  onSitesValidationError: (message: string) => void;
-  clearSitesValidationError: () => void;
+  clearSitesListError: () => void;
   isSiteEditable?: (site: BlockedSite) => boolean;
-  submitLabel: string;
   onSubmit: () => void;
   submitDisabled?: boolean;
   onDelete?: () => void;
-  deleteLabel?: string;
   onClose?: () => void;
-  closeLabel?: string;
 };

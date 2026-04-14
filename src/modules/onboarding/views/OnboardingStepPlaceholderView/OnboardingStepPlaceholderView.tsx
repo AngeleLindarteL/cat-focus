@@ -4,14 +4,12 @@ import {
   ONBOARDING_STEP_PLACEHOLDER_PRIMARY_ACTION_CLASS_NAME,
   ONBOARDING_STEP_PLACEHOLDER_SECONDARY_ACTION_CLASS_NAME,
 } from "@/modules/onboarding/views/OnboardingStepPlaceholderView/constants";
+import { TranslationKey } from "@/lib/i18n";
 import type { OnboardingStepPlaceholderViewProps } from "@/modules/onboarding/views/OnboardingStepPlaceholderView/interfaces";
 
 export function OnboardingStepPlaceholderView({
-  title,
-  description,
+  getTranslation,
   note,
-  previousActionLabel,
-  nextActionLabel,
   onPreviousAction,
   onNextAction,
 }: OnboardingStepPlaceholderViewProps) {
@@ -19,19 +17,21 @@ export function OnboardingStepPlaceholderView({
     <div className={ONBOARDING_STEP_PLACEHOLDER_CLASS_NAME}>
       <div className="space-y-2">
         <h2 className="text-xl font-semibold tracking-tight text-stone-900">
-          {title}
+          {getTranslation(TranslationKey.OnboardingStepThreeTitle)}
         </h2>
-        <p className="text-sm leading-6 text-stone-600">{description}</p>
+        <p className="text-sm leading-6 text-stone-600">
+          {getTranslation(TranslationKey.OnboardingStepThreeDescription)}
+        </p>
         <p className={ONBOARDING_STEP_PLACEHOLDER_NOTE_CLASS_NAME}>{note}</p>
       </div>
       <div className="flex gap-3">
-        {previousActionLabel && onPreviousAction ? (
+        {onPreviousAction ? (
           <button
             type="button"
             className={ONBOARDING_STEP_PLACEHOLDER_SECONDARY_ACTION_CLASS_NAME}
             onClick={onPreviousAction}
           >
-            {previousActionLabel}
+            {getTranslation(TranslationKey.OnboardingBackAction)}
           </button>
         ) : null}
         <button
@@ -39,7 +39,7 @@ export function OnboardingStepPlaceholderView({
           className={ONBOARDING_STEP_PLACEHOLDER_PRIMARY_ACTION_CLASS_NAME}
           onClick={onNextAction}
         >
-          {nextActionLabel}
+          {getTranslation(TranslationKey.OnboardingFinishAction)}
         </button>
       </div>
     </div>
