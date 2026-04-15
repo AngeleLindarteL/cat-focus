@@ -10,4 +10,5 @@ export interface ScheduleRepository {
   updateOneById(id: string, schedule: ScheduleBlockDraft): Promise<ScheduleBlock | null>;
   findAll(): Promise<ScheduleBlock[]>;
   deleteOneById(id: string): Promise<void>;
+  deleteAll(): Promise<void>;
 }

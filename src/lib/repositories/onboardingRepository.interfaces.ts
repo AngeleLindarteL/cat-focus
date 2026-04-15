@@ -10,4 +10,5 @@ export interface OnboardingRepository {
   getOnboardingState(): Promise<OnboardingState>;
   setActiveStep(step: OnboardingStep): Promise<void>;
   finishOnboarding(): Promise<void>;
+  resetOnboarding(): Promise<void>;
 }

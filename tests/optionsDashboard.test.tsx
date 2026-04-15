@@ -96,6 +96,7 @@ function createUsageRepository(): UsageRepository {
     insertOne: async (block) => ({ ...block, id: crypto.randomUUID() }),
     updateOneById: async (id, block) => ({ ...block, id }),
     deleteOneById: async () => undefined,
+    deleteAll: async () => undefined,
   };
 }
 
@@ -105,6 +106,7 @@ function createScheduleRepository(): ScheduleRepository {
     insertOne: async (schedule) => ({ ...schedule, id: crypto.randomUUID() }),
     updateOneById: async (id, schedule) => ({ ...schedule, id }),
     deleteOneById: async () => undefined,
+    deleteAll: async () => undefined,
   };
 }
 

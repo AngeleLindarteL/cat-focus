@@ -65,6 +65,12 @@ export class ChromeStorageUsageRepository implements UsageRepository {
       [USAGE_BLOCK_STORAGE_KEY]: blocks.filter((block) => block.id !== id),
     });
   }
+
+  async deleteAll(): Promise<void> {
+    await setLocalStorageValues({
+      [USAGE_BLOCK_STORAGE_KEY]: [],
+    });
+  }
 }
 
 export const usageRepository: UsageRepository =

@@ -46,6 +46,18 @@ describe("repositories", () => {
     });
   });
 
+  it("resets onboarding back to the initial state", async () => {
+    const repository = new ChromeStorageOnboardingRepository();
+
+    await repository.finishOnboarding();
+    await repository.resetOnboarding();
+
+    await expect(repository.getOnboardingState()).resolves.toEqual({
+      step: 1,
+      finished: false,
+    });
+  });
+
   it("saves and reloads the cat profile", async () => {
     const repository = new ChromeStorageCatRepository();
     const profile = {
@@ -143,5 +155,50 @@ describe("repositories", () => {
     expect(globalThis.chrome.__storageState).toHaveProperty(
       USAGE_BLOCK_STORAGE_KEY,
     );
+  });
+
+  it("deletes all usage blocks", async () => {
+    const repository = new ChromeStorageUsageRepository();
+
+    await repository.insertOne({
+      name: "Adult sites",
+      limit: {
+        time: "01:00",
+        resetsAt: "00:00",
+      },
+      sites: [{ name: "Instagram", domain: "instagram.com" }],
+    });
+
+    await repository.deleteAll();
+
+    await expect(repository.findAll()).resolves.toEqual([]);
+  });
+
+  it("deletes all schedule blocks", async () => {
+    const repository = new ChromeStorageScheduleRepository();
+
+    await repository.insertOne({
+      name: "Work",
+      schedule: {
+        days: {
+          monday: true,
+          tuesday: true,
+          wednesday: true,
+          thursday: true,
+          friday: true,
+          saturday: false,
+          sunday: false,
+        },
+        time: {
+          from: "06:00",
+          to: "18:00",
+        },
+      },
+      sites: [{ name: "Instagram", domain: "instagram.com" }],
+    });
+
+    await repository.deleteAll();
+
+    await expect(repository.findAll()).resolves.toEqual([]);
   });
 });

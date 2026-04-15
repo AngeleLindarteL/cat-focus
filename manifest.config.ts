@@ -22,6 +22,12 @@ export default defineManifest({
     },
   ],
   host_permissions: ["<all_urls>"],
-  permissions: ["storage", "activeTab", "tabs", "unlimitedStorage"],
+  permissions: [
+    "storage",
+    "activeTab",
+    "tabs",
+    "unlimitedStorage",
+    "management",
+  ],
   options_page: "src/options/index.html",
 });

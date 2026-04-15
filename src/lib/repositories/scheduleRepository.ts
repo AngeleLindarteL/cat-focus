@@ -67,6 +67,12 @@ export class ChromeStorageScheduleRepository implements ScheduleRepository {
       ),
     });
   }
+
+  async deleteAll(): Promise<void> {
+    await setLocalStorageValues({
+      [SCHEDULE_BLOCK_STORAGE_KEY]: [],
+    });
+  }
 }
 
 export const scheduleRepository: ScheduleRepository =

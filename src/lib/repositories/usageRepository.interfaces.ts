@@ -10,4 +10,5 @@ export interface UsageRepository {
   updateOneById(id: string, block: UsageBlockDraft): Promise<UsageBlock | null>;
   findAll(): Promise<UsageBlock[]>;
   deleteOneById(id: string): Promise<void>;
+  deleteAll(): Promise<void>;
 }

@@ -27,6 +27,9 @@ function createOnboardingRepository(state: OnboardingState): OnboardingRepositor
     finishOnboarding: async () => {
       currentState = { step: 3, finished: true };
     },
+    resetOnboarding: async () => {
+      currentState = { step: 1, finished: false };
+    },
   };
 }
 

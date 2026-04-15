@@ -6,6 +6,24 @@
 
 ### Co-Authors: None
 
+### Resume: Added a development-only floating options overlay for onboarding shortcuts and block-data cleanup, gated by `chrome.management.getSelf()`.
+
+### Changes:
+
+- Added the `management` permission to `manifest.config.ts` and introduced a thin Chrome management wrapper under `src/lib/chrome` to detect development installs via `chrome.management.getSelf()`.
+- Extended onboarding, usage, and schedule repositories with explicit reset and clear-all operations so the new developer tools can mutate state through repository contracts instead of UI-side storage calls.
+- Added a new `src/modules/options-developer-tools` module with a floating card-style overlay rendered from `OptionsGateContainer` across onboarding, finish, and dashboard states.
+- Wired developer actions for skipping onboarding, resetting onboarding, clearing all usage-limit blocks, and clearing all schedule blocks, with inline success/error feedback.
+- Expanded Chrome mocks and added focused Vitest coverage for management detection, repository reset/clear-all behavior, and developer-tools visibility/actions.
+
+### Notes: Verified with targeted tests for repository state, Chrome management detection, and options-page developer tools behavior.
+
+## [2026-04-14]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
 ### Resume: Replaced the post-onboarding options placeholder with a floating dashboard shell that reuses the Cat Focus design system and exposes editable cat, usage, schedule, and preferences sections.
 
 ### Changes:

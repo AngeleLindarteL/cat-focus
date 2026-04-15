@@ -1,5 +1,6 @@
 import { vi } from "vitest";
 import { translationCatalog, type Language, type TranslationKey } from "@/lib/i18n";
+import type { ExtensionInstallType } from "@/lib/chrome/management";
 
 type StorageState = Record<string, unknown>;
 
@@ -10,6 +11,7 @@ function toUiLanguage(language: Language): string {
 export function createChromeMock(
   initialState: StorageState = {},
   uiLanguage: Language = "en",
+  installType: ExtensionInstallType = "normal",
 ) {
   const storageState: StorageState = { ...initialState };
 
@@ -38,6 +40,11 @@ export function createChromeMock(
         return translationCatalog[uiLanguage][key] ?? String(key);
       }),
       getUILanguage: vi.fn(() => toUiLanguage(uiLanguage)),
+    },
+    management: {
+      getSelf: vi.fn(async () => ({
+        installType,
+      })),
     },
     __storageState: storageState,
   };

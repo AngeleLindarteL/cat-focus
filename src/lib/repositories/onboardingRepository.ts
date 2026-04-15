@@ -50,6 +50,13 @@ export class ChromeStorageOnboardingRepository implements OnboardingRepository {
       [ONBOARDING_STORAGE_KEYS.finished]: true,
     });
   }
+
+  async resetOnboarding(): Promise<void> {
+    await setLocalStorageValues({
+      [ONBOARDING_STORAGE_KEYS.step]: 1,
+      [ONBOARDING_STORAGE_KEYS.finished]: false,
+    });
+  }
 }
 
 export const onboardingRepository: OnboardingRepository =

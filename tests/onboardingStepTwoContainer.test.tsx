@@ -37,6 +37,9 @@ function createScheduleRepository(): ScheduleRepository {
     deleteOneById: async (id) => {
       schedules = schedules.filter((schedule) => schedule.id !== id);
     },
+    deleteAll: async () => {
+      schedules = [];
+    },
   };
 }
 
@@ -162,6 +165,9 @@ function createUsageRepository(): UsageRepository {
     },
     deleteOneById: async (id) => {
       usageBlocks = usageBlocks.filter((block) => block.id !== id);
+    },
+    deleteAll: async () => {
+      usageBlocks = [];
     },
   };
 }
