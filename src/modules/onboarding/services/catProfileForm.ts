@@ -18,10 +18,12 @@ export function createCatProfileSchema(messages: {
         z
           .string()
           .min(1, messages.nameRequired)
-          .min(5, messages.nameMinLength)
+          .min(3, messages.nameMinLength)
           .max(32, messages.nameMaxLength),
       ),
-    furColorPrimary: z.string().regex(/^#[0-9a-fA-F]{6}$/, messages.colorInvalid),
+    furColorPrimary: z
+      .string()
+      .regex(/^#[0-9a-fA-F]{6}$/, messages.colorInvalid),
     furColorSecondary: z
       .string()
       .regex(/^#[0-9a-fA-F]{6}$/, messages.colorInvalid),

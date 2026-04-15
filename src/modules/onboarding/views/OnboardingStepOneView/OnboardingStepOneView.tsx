@@ -16,6 +16,7 @@ export function OnboardingStepOneView({
   furColorSecondary,
   eyeColor,
   tailColor,
+  submitLabelKey = TranslationKey.CatStepSubmit,
 }: OnboardingStepOneViewProps) {
   return (
     <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
@@ -78,7 +79,7 @@ export function OnboardingStepOneView({
           type="submit"
           className="inline-flex w-full cursor-pointer items-center justify-center rounded-2xl bg-stone-900 px-4 py-3 text-sm font-medium text-stone-50 transition hover:bg-stone-700"
         >
-          {getTranslation(TranslationKey.CatStepSubmit)}
+          {getTranslation(submitLabelKey)}
         </button>
       </div>
 

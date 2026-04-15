@@ -6,6 +6,25 @@
 
 ### Co-Authors: None
 
+### Resume: Replaced the post-onboarding options placeholder with a floating dashboard shell that reuses the Cat Focus design system and exposes editable cat, usage, schedule, and preferences sections.
+
+### Changes:
+
+- Added a new `src/modules/options-dashboard` module with a floating options shell, left-side section navigation, hash-based section persistence, and responsive dashboard layout aligned with the Cat Focus design system.
+- Replaced the finished-onboarding options branch in `OptionsGateContainer` so the options page now renders the real dashboard instead of the old generic home card.
+- Added a standalone options cat editor container that reuses the onboarding cat form/view but saves without mutating onboarding progress and uses edit-mode submit copy.
+- Reused the existing standalone usage, schedule, and user-preferences containers inside the dashboard, with a new preferences wrapper to preload saved values.
+- Added new English/Spanish copy for dashboard navigation, section descriptions, and cat edit submit text.
+- Added `docs/plans/options-dashboard.md` plus focused dashboard tests covering hash routing, section switching, cat persistence, and preferences persistence; updated onboarding flow expectations for the new post-finish destination.
+
+### Notes: Verified with `rtk npm test -- --run tests/optionsDashboard.test.tsx tests/onboardingFlow.test.tsx`, `rtk npm run build`, and `rtk npm run lint`.
+
+## [2026-04-14]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
 ### Resume: Implemented onboarding v4 step-three profile capture with reusable user-preferences form, merged preference patch persistence, and a post-finish celebration screen with confetti.
 
 ### Changes:

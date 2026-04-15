@@ -8,10 +8,10 @@ import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
 } from "@/lib/repositories/onboardingRepository";
-import { OptionsHomeContainer } from "@/modules/home/containers/OptionsHomeContainer";
 import { OnboardingFinishContainer } from "@/modules/onboarding/containers/OnboardingFinishContainer";
 import { OnboardingContainer } from "@/modules/onboarding/containers/OnboardingContainer";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
+import { OptionsDashboardContainer } from "@/modules/options-dashboard/containers/OptionsDashboardContainer";
 
 type OptionsGateContainerProps = {
   catRepository?: CatRepository;
@@ -71,5 +71,10 @@ export function OptionsGateContainer({
     );
   }
 
-  return <OptionsHomeContainer getTranslation={getTranslation} />;
+  return (
+    <OptionsDashboardContainer
+      getTranslation={getTranslation}
+      catRepository={catRepository}
+    />
+  );
 }

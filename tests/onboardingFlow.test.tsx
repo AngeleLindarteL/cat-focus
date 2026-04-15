@@ -61,7 +61,7 @@ describe("onboarding flow", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders the default options home when onboarding is finished", async () => {
+  it("renders the options dashboard when onboarding is finished", async () => {
     render(
       <OptionsGateContainer
         onboardingRepository={createOnboardingRepository({
@@ -72,7 +72,7 @@ describe("onboarding flow", () => {
       />,
     );
 
-    expect(await screen.findByText("Extension settings")).toBeInTheDocument();
+    expect(await screen.findByText("Your focus dashboard")).toBeInTheDocument();
   });
 
   it("prefills saved data and advances after a valid submit", async () => {
@@ -403,7 +403,7 @@ describe("onboarding flow", () => {
     fireEvent.click(screen.getByRole("button", { name: "Go to home" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Extension settings")).toBeInTheDocument();
+      expect(screen.getByText("Your focus dashboard")).toBeInTheDocument();
     });
   });
 
