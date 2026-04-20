@@ -1,5 +1,20 @@
 # Changelog
 
+## [2026-04-20]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
+### Resume: Converted the sprite generation script from TypeScript syntax to valid JavaScript while preserving its Node-based spritesheet workflow.
+
+### Changes:
+
+- Updated `scripts/sprites.js` to remove TypeScript-only type aliases, parameter annotations, return annotations, and typed local declarations.
+- Kept the script’s ESM imports, argument parsing, frame grouping, spritesheet generation, and manifest output behavior unchanged.
+
+### Notes: Intended as a runtime-syntax fix so the script can execute as plain JavaScript without a TypeScript runner.
+
 ## [2026-04-15]
 
 ### Author: AngelELindarteL
