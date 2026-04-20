@@ -35,7 +35,10 @@ export function PopularSiteCarousel({
   function scrollBy(direction: "left" | "right") {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollBy({ left: direction === "left" ? -160 : 160, behavior: "smooth" });
+    el.scrollBy({
+      left: direction === "left" ? -160 : 160,
+      behavior: "smooth",
+    });
   }
 
   return (

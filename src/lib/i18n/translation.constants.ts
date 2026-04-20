@@ -39,8 +39,10 @@ export const TranslationKey = {
   DeveloperToolsStatusWorking: "developerToolsStatusWorking",
   DeveloperToolsSuccessSkipOnboarding: "developerToolsSuccessSkipOnboarding",
   DeveloperToolsSuccessResetOnboarding: "developerToolsSuccessResetOnboarding",
-  DeveloperToolsSuccessClearUsageBlocks: "developerToolsSuccessClearUsageBlocks",
-  DeveloperToolsSuccessClearScheduleBlocks: "developerToolsSuccessClearScheduleBlocks",
+  DeveloperToolsSuccessClearUsageBlocks:
+    "developerToolsSuccessClearUsageBlocks",
+  DeveloperToolsSuccessClearScheduleBlocks:
+    "developerToolsSuccessClearScheduleBlocks",
   DeveloperToolsErrorAction: "developerToolsErrorAction",
   OnboardingEyebrow: "onboardingEyebrow",
   OnboardingTitle: "onboardingTitle",
@@ -59,11 +61,16 @@ export const TranslationKey = {
   UserPreferencesReasonPlaceholder: "userPreferencesReasonPlaceholder",
   UserPreferencesCreateSubmit: "userPreferencesCreateSubmit",
   UserPreferencesUpdateSubmit: "userPreferencesUpdateSubmit",
-  ValidationUserPreferencesNameRequired: "validationUserPreferencesNameRequired",
-  ValidationUserPreferencesNameMinLength: "validationUserPreferencesNameMinLength",
-  ValidationUserPreferencesReasonRequired: "validationUserPreferencesReasonRequired",
-  ValidationUserPreferencesReasonMinLength: "validationUserPreferencesReasonMinLength",
-  ValidationUserPreferencesReasonMaxLength: "validationUserPreferencesReasonMaxLength",
+  ValidationUserPreferencesNameRequired:
+    "validationUserPreferencesNameRequired",
+  ValidationUserPreferencesNameMinLength:
+    "validationUserPreferencesNameMinLength",
+  ValidationUserPreferencesReasonRequired:
+    "validationUserPreferencesReasonRequired",
+  ValidationUserPreferencesReasonMinLength:
+    "validationUserPreferencesReasonMinLength",
+  ValidationUserPreferencesReasonMaxLength:
+    "validationUserPreferencesReasonMaxLength",
   OnboardingFinishTitle: "onboardingFinishTitle",
   OnboardingFinishQuote: "onboardingFinishQuote",
   OnboardingFinishQuoteAuthor: "onboardingFinishQuoteAuthor",
@@ -188,4 +195,5 @@ export const TranslationKey = {
   WeekdaySunday: "weekdaySunday",
 } as const;
 
-export type TranslationKey = (typeof TranslationKey)[keyof typeof TranslationKey];
+export type TranslationKey =
+  (typeof TranslationKey)[keyof typeof TranslationKey];

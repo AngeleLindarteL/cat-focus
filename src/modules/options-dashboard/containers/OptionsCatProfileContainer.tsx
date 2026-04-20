@@ -18,9 +18,8 @@ export function OptionsCatProfileContainer({
   getTranslation,
   catRepository = defaultCatRepository,
 }: OptionsCatProfileContainerProps) {
-  const [initialValues, setInitialValues] = useState<
-    Awaited<ReturnType<CatRepository["getCatProfile"]>>
-  >(null);
+  const [initialValues, setInitialValues] =
+    useState<Awaited<ReturnType<CatRepository["getCatProfile"]>>>(null);
   const [isLoading, setIsLoading] = useState(true);
   const form = useCatProfileForm(initialValues, getTranslation);
 

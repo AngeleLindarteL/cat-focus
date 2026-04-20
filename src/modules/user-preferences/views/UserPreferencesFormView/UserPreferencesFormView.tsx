@@ -34,7 +34,9 @@ export function UserPreferencesFormView({
         <input
           {...register("userName")}
           type="text"
-          placeholder={getTranslation(TranslationKey.UserPreferencesNamePlaceholder)}
+          placeholder={getTranslation(
+            TranslationKey.UserPreferencesNamePlaceholder,
+          )}
           className="w-full rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500"
         />
         {errors.userName ? (
@@ -48,12 +50,16 @@ export function UserPreferencesFormView({
         </span>
         <textarea
           {...register("installationReason")}
-          placeholder={getTranslation(TranslationKey.UserPreferencesReasonPlaceholder)}
+          placeholder={getTranslation(
+            TranslationKey.UserPreferencesReasonPlaceholder,
+          )}
           rows={5}
           className="w-full resize-y rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500"
         />
         {errors.installationReason ? (
-          <p className="text-sm text-red-700">{errors.installationReason.message}</p>
+          <p className="text-sm text-red-700">
+            {errors.installationReason.message}
+          </p>
         ) : null}
       </label>
 
@@ -72,7 +78,9 @@ export function UserPreferencesFormView({
           text={submitLabel}
           disabled={(mode === "dashboard" && !isDirty) || isSubmitting}
           tooltip={{
-            whenDisabled: getTranslation(TranslationKey.FormSubmitDisabledNoChanges),
+            whenDisabled: getTranslation(
+              TranslationKey.FormSubmitDisabledNoChanges,
+            ),
           }}
           className="flex-1"
         />
@@ -80,4 +88,3 @@ export function UserPreferencesFormView({
     </div>
   );
 }
-

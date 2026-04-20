@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { catToast } from "@/components/Toast";
-import type { DayToggleOption, WeekdayToggleGroupRef } from "@/components/WeekdayToggleGroup";
+import type {
+  DayToggleOption,
+  WeekdayToggleGroupRef,
+} from "@/components/WeekdayToggleGroup";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
 import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
@@ -87,9 +90,13 @@ export function ScheduleBlockContainer({
 }: ScheduleBlockContainerProps) {
   const [schedules, setSchedules] = useState<ScheduleBlock[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedScheduleId, setExpandedScheduleId] = useState<string | null>(null);
+  const [expandedScheduleId, setExpandedScheduleId] = useState<string | null>(
+    null,
+  );
   const [isCreating, setIsCreating] = useState(false);
-  const [draft, setDraft] = useState<ScheduleBlockFormValues>(createDefaultScheduleValues);
+  const [draft, setDraft] = useState<ScheduleBlockFormValues>(
+    createDefaultScheduleValues,
+  );
   const [errors, setErrors] = useState<ScheduleBlockFormErrors>({});
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const weekdayGroupRef = useRef<WeekdayToggleGroupRef | null>(null);
@@ -148,7 +155,9 @@ export function ScheduleBlockContainer({
   );
   const validationMessages = useMemo(
     () => ({
-      nameRequired: getTranslation(TranslationKey.ValidationScheduleNameRequired),
+      nameRequired: getTranslation(
+        TranslationKey.ValidationScheduleNameRequired,
+      ),
       nameMinLength: getTranslation(
         TranslationKey.ValidationScheduleNameMinLength,
       ),
@@ -192,7 +201,10 @@ export function ScheduleBlockContainer({
     const nextValues: ScheduleBlockFormValues = {
       ...draft,
     };
-    const nextErrors = validateScheduleBlockForm(nextValues, validationMessages);
+    const nextErrors = validateScheduleBlockForm(
+      nextValues,
+      validationMessages,
+    );
 
     setErrors(nextErrors);
 
@@ -239,12 +251,16 @@ export function ScheduleBlockContainer({
     catToast.success(getTranslation(TranslationKey.ToastScheduleDeleted));
   }
 
-  const activeSchedule = schedules.find((schedule) => schedule.id === expandedScheduleId) ?? null;
+  const activeSchedule =
+    schedules.find((schedule) => schedule.id === expandedScheduleId) ?? null;
   const showEmptyState = !isLoading && schedules.length === 0 && !isCreating;
   const canCollapse = !isOnboarding;
   const canDelete = !isOnboarding && !!activeSchedule;
-  const renderCreateForm = isCreating && (!isOnboarding || schedules.length === 0);
-  const defaultCreateDraft = createScheduleBlockDraft(createDefaultScheduleValues());
+  const renderCreateForm =
+    isCreating && (!isOnboarding || schedules.length === 0);
+  const defaultCreateDraft = createScheduleBlockDraft(
+    createDefaultScheduleValues(),
+  );
   const currentCreateDraft = createScheduleBlockDraft(draft);
   const isCreateDirty =
     isCreating &&
@@ -253,13 +269,18 @@ export function ScheduleBlockContainer({
     ? createScheduleBlockDraft(draft)
     : null;
   const persistedActiveScheduleDraft = activeSchedule
-    ? createScheduleBlockDraft(createScheduleFormValuesFromDraft(activeSchedule))
+    ? createScheduleBlockDraft(
+        createScheduleFormValuesFromDraft(activeSchedule),
+      )
     : null;
   const isActiveScheduleDirty =
     !!activeSchedule &&
     !!activeScheduleDraft &&
     !!persistedActiveScheduleDraft &&
-    !areScheduleBlockDraftsEqual(activeScheduleDraft, persistedActiveScheduleDraft);
+    !areScheduleBlockDraftsEqual(
+      activeScheduleDraft,
+      persistedActiveScheduleDraft,
+    );
   const hasBlockingUnsavedChanges = isCreateDirty || isActiveScheduleDirty;
   const draftValidationErrors = useMemo(
     () => validateScheduleBlockForm(draft, validationMessages),
@@ -335,11 +356,20 @@ export function ScheduleBlockContainer({
               sitesValue={draft.sites}
               sitesListError={errors.sites}
               onSitesChange={(nextSites) => {
-                setDraft((currentValue) => ({ ...currentValue, sites: nextSites }));
-                setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
+                setDraft((currentValue) => ({
+                  ...currentValue,
+                  sites: nextSites,
+                }));
+                setErrors((currentValue) => ({
+                  ...currentValue,
+                  sites: undefined,
+                }));
               }}
               clearSitesListError={() => {
-                setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
+                setErrors((currentValue) => ({
+                  ...currentValue,
+                  sites: undefined,
+                }));
               }}
               isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
               onSubmit={() => {
@@ -363,7 +393,9 @@ export function ScheduleBlockContainer({
 
       {schedules.map((schedule) => {
         const isExpanded = schedule.id === expandedScheduleId;
-        const formValues = isExpanded ? draft : createScheduleFormValuesFromDraft(schedule);
+        const formValues = isExpanded
+          ? draft
+          : createScheduleFormValuesFromDraft(schedule);
         const currentWeekdayOptions = createWeekdayOptions(
           getTranslation,
           formValues.days,
@@ -373,7 +405,11 @@ export function ScheduleBlockContainer({
           <ScheduleCard
             key={schedule.id}
             isExpanded={isExpanded}
-            isHighlighted={isExpanded && schedule.id === activeSchedule?.id && isActiveScheduleDirty}
+            isHighlighted={
+              isExpanded &&
+              schedule.id === activeSchedule?.id &&
+              isActiveScheduleDirty
+            }
             onExpand={() => {
               openEditForm(schedule);
             }}
@@ -392,23 +428,34 @@ export function ScheduleBlockContainer({
                 mode="edit"
                 getTranslation={getTranslation}
                 showUnsavedReminder={
-                  isExpanded && schedule.id === activeSchedule?.id && isActiveScheduleDirty
+                  isExpanded &&
+                  schedule.id === activeSchedule?.id &&
+                  isActiveScheduleDirty
                 }
                 nameValue={draft.name}
                 nameError={errors.name}
                 onNameChange={(value) => {
-                  setDraft((currentValue) => ({ ...currentValue, name: value }));
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    name: value,
+                  }));
                 }}
                 weekdayOptions={currentWeekdayOptions}
                 weekdayGroupKey={`${schedule.id}-${currentWeekdayOptions.map((option) => Number(option.default)).join("-")}`}
                 weekdayGroupRef={weekdayGroupRef}
                 onWeekdayChange={(value) => {
-                  setDraft((currentValue) => ({ ...currentValue, days: value }));
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    days: value,
+                  }));
                 }}
                 fromValue={draft.from}
                 fromError={errors.from}
                 onFromChange={(value) => {
-                  setDraft((currentValue) => ({ ...currentValue, from: value }));
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    from: value,
+                  }));
                 }}
                 toValue={draft.to}
                 toError={errors.to}
@@ -420,11 +467,20 @@ export function ScheduleBlockContainer({
                 sitesValue={draft.sites}
                 sitesListError={errors.sites}
                 onSitesChange={(nextSites) => {
-                  setDraft((currentValue) => ({ ...currentValue, sites: nextSites }));
-                  setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    sites: nextSites,
+                  }));
+                  setErrors((currentValue) => ({
+                    ...currentValue,
+                    sites: undefined,
+                  }));
                 }}
                 clearSitesListError={() => {
-                  setErrors((currentValue) => ({ ...currentValue, sites: undefined }));
+                  setErrors((currentValue) => ({
+                    ...currentValue,
+                    sites: undefined,
+                  }));
                 }}
                 isSiteEditable={(site) => !isPresetBackedScheduleSite(site)}
                 onSubmit={() => {
@@ -436,16 +492,16 @@ export function ScheduleBlockContainer({
                   canDelete
                     ? () => {
                         setDeleteTargetId(schedule.id);
-                    }
-                  : undefined
+                      }
+                    : undefined
                 }
                 onClose={
                   canCollapse
                     ? () => {
                         setExpandedScheduleId(null);
                         setErrors({});
-                    }
-                  : undefined
+                      }
+                    : undefined
                 }
               />
             }

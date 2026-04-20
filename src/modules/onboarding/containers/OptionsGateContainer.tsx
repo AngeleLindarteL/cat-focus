@@ -40,7 +40,8 @@ export function OptionsGateContainer({
   isDevelopmentInstall = defaultIsDevelopmentInstall,
 }: OptionsGateContainerProps) {
   const { language, setLanguage, getTranslation } = useTranslation();
-  const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
+  const { isLoading, onboardingState, refresh } =
+    useOnboardingState(onboardingRepository);
   const [showFinishScreen, setShowFinishScreen] = useState(false);
   const [surfaceVersion, setSurfaceVersion] = useState(0);
 

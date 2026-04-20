@@ -50,18 +50,16 @@ export const translationCatalog = {
     developerToolsResetOnboarding: "Reset onboarding",
     developerToolsClearUsageBlocks: "Delete all usage limit blocks",
     developerToolsClearScheduleBlocks: "Delete all schedule blocks",
-    developerToolsStatusIdle: "Visible because this extension is installed in development mode.",
+    developerToolsStatusIdle:
+      "Visible because this extension is installed in development mode.",
     developerToolsStatusWorking: "Running developer action...",
-    developerToolsSuccessSkipOnboarding:
-      "Onboarding marked as completed.",
-    developerToolsSuccessResetOnboarding:
-      "Onboarding restored to step one.",
+    developerToolsSuccessSkipOnboarding: "Onboarding marked as completed.",
+    developerToolsSuccessResetOnboarding: "Onboarding restored to step one.",
     developerToolsSuccessClearUsageBlocks:
       "All usage limit blocks were deleted.",
     developerToolsSuccessClearScheduleBlocks:
       "All schedule blocks were deleted.",
-    developerToolsErrorAction:
-      "The developer action could not be completed.",
+    developerToolsErrorAction: "The developer action could not be completed.",
     onboardingEyebrow: "Onboarding",
     onboardingTitle: "Set up Cat Focus",
     onboardingDescription:
@@ -282,22 +280,18 @@ export const translationCatalog = {
     developerToolsResetOnboarding: "Reiniciar onboarding",
     developerToolsClearUsageBlocks:
       "Eliminar todos los bloques de límite de uso",
-    developerToolsClearScheduleBlocks:
-      "Eliminar todos los bloques de horario",
+    developerToolsClearScheduleBlocks: "Eliminar todos los bloques de horario",
     developerToolsStatusIdle:
       "Visible porque esta extensión está instalada en modo desarrollo.",
-    developerToolsStatusWorking:
-      "Ejecutando acción de desarrollo...",
+    developerToolsStatusWorking: "Ejecutando acción de desarrollo...",
     developerToolsSuccessSkipOnboarding:
       "El onboarding quedó marcado como completado.",
-    developerToolsSuccessResetOnboarding:
-      "El onboarding volvió al paso uno.",
+    developerToolsSuccessResetOnboarding: "El onboarding volvió al paso uno.",
     developerToolsSuccessClearUsageBlocks:
       "Se eliminaron todos los bloques de límite de uso.",
     developerToolsSuccessClearScheduleBlocks:
       "Se eliminaron todos los bloques de horario.",
-    developerToolsErrorAction:
-      "No se pudo completar la acción de desarrollo.",
+    developerToolsErrorAction: "No se pudo completar la acción de desarrollo.",
     onboardingEyebrow: "Onboarding",
     onboardingTitle: "Configura Cat Focus",
     onboardingDescription:

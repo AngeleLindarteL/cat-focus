@@ -100,7 +100,11 @@ export function CatProfileDashboardView({
           type="submit"
           text={getTranslation(submitLabelKey)}
           disabled={!isDirty || isSubmitting}
-          tooltip={{ whenDisabled: getTranslation(TranslationKey.FormSubmitDisabledNoChanges) }}
+          tooltip={{
+            whenDisabled: getTranslation(
+              TranslationKey.FormSubmitDisabledNoChanges,
+            ),
+          }}
           className="w-full"
         />
       </div>

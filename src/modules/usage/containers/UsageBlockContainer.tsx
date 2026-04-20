@@ -45,7 +45,9 @@ export function UsageBlockContainer({
   const [isLoading, setIsLoading] = useState(true);
   const [expandedBlockId, setExpandedBlockId] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
-  const [draft, setDraft] = useState<UsageBlockFormValues>(createDefaultUsageValues);
+  const [draft, setDraft] = useState<UsageBlockFormValues>(
+    createDefaultUsageValues,
+  );
   const [errors, setErrors] = useState<UsageBlockFormErrors>({});
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [cardsRef] = useAutoAnimate<HTMLDivElement>();
@@ -103,7 +105,9 @@ export function UsageBlockContainer({
       nameMinLength: getTranslation(
         TranslationKey.ValidationUsageNameMinLength,
       ),
-      hoursRequired: getTranslation(TranslationKey.ValidationUsageHoursRequired),
+      hoursRequired: getTranslation(
+        TranslationKey.ValidationUsageHoursRequired,
+      ),
       hoursInvalid: getTranslation(TranslationKey.ValidationUsageHoursInvalid),
       minutesRequired: getTranslation(
         TranslationKey.ValidationUsageMinutesRequired,
@@ -193,7 +197,8 @@ export function UsageBlockContainer({
     catToast.success(getTranslation(TranslationKey.ToastUsageDeleted));
   }
 
-  const activeBlock = blocks.find((block) => block.id === expandedBlockId) ?? null;
+  const activeBlock =
+    blocks.find((block) => block.id === expandedBlockId) ?? null;
   const showEmptyState = !isLoading && blocks.length === 0 && !isCreating;
   const canCollapse = !isOnboarding;
   const canDelete = !isOnboarding && !!activeBlock;
@@ -201,7 +206,8 @@ export function UsageBlockContainer({
   const defaultCreateDraft = createUsageBlockDraft(createDefaultUsageValues());
   const currentCreateDraft = createUsageBlockDraft(draft);
   const isCreateDirty =
-    isCreating && !areUsageBlockDraftsEqual(currentCreateDraft, defaultCreateDraft);
+    isCreating &&
+    !areUsageBlockDraftsEqual(currentCreateDraft, defaultCreateDraft);
   const activeBlockDraft = activeBlock ? createUsageBlockDraft(draft) : null;
   const persistedActiveBlockDraft = activeBlock
     ? createUsageBlockDraft(createUsageFormValuesFromDraft(activeBlock))
@@ -328,7 +334,9 @@ export function UsageBlockContainer({
           <UsageCard
             key={block.id}
             isExpanded={isExpanded}
-            isHighlighted={isExpanded && block.id === activeBlock?.id && isActiveBlockDirty}
+            isHighlighted={
+              isExpanded && block.id === activeBlock?.id && isActiveBlockDirty
+            }
             onExpand={() => {
               openEditForm(block);
             }}
@@ -345,12 +353,17 @@ export function UsageBlockContainer({
                 mode="edit"
                 getTranslation={getTranslation}
                 showUnsavedReminder={
-                  isExpanded && block.id === activeBlock?.id && isActiveBlockDirty
+                  isExpanded &&
+                  block.id === activeBlock?.id &&
+                  isActiveBlockDirty
                 }
                 nameValue={draft.name}
                 nameError={errors.name}
                 onNameChange={(value) => {
-                  setDraft((currentValue) => ({ ...currentValue, name: value }));
+                  setDraft((currentValue) => ({
+                    ...currentValue,
+                    name: value,
+                  }));
                 }}
                 limitHoursValue={draft.limitHours}
                 limitHoursError={errors.limitHours}
@@ -406,7 +419,7 @@ export function UsageBlockContainer({
                     ? () => {
                         setExpandedBlockId(null);
                         setErrors({});
-                    }
+                      }
                     : undefined
                 }
               />

@@ -34,8 +34,7 @@ export function WebsiteListInput({
 
   const baseInputClassName =
     "rounded-2xl border bg-white px-4 py-3 text-sm text-stone-900 outline-none transition";
-  const normalInputClassName =
-    "border-stone-200 focus:border-amber-500";
+  const normalInputClassName = "border-stone-200 focus:border-amber-500";
   const invalidInputClassName =
     "border-red-400 text-red-900 focus:border-red-500";
 
@@ -71,10 +70,7 @@ export function WebsiteListInput({
       domain: normalizeBlockedSiteDomain(siteDomain),
     };
 
-    const duplicateIndex = findBlockedSiteIndexByDomain(
-      value,
-      nextSite.domain,
-    );
+    const duplicateIndex = findBlockedSiteIndexByDomain(value, nextSite.domain);
 
     if (duplicateIndex >= 0 && duplicateIndex !== editingIndex) {
       resetDraft();
@@ -159,7 +155,8 @@ export function WebsiteListInput({
         ref={listRef}
         className="grid w-full gap-3"
         style={{
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
           maxWidth: "calc(4 * 250px + 3 * 0.75rem)",
         }}
       >

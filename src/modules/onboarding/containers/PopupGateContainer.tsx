@@ -17,7 +17,8 @@ export function PopupGateContainer({
   onboardingRepository = defaultOnboardingRepository,
 }: PopupGateContainerProps) {
   const { getTranslation } = useTranslation();
-  const { isLoading, onboardingState } = useOnboardingState(onboardingRepository);
+  const { isLoading, onboardingState } =
+    useOnboardingState(onboardingRepository);
 
   if (isLoading || !onboardingState) {
     return (

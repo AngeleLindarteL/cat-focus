@@ -13,4 +13,3 @@ export type UserPreferencesFormViewProps = {
   onPreviousAction?: () => void;
   previousActionLabel?: string;
 };
-
