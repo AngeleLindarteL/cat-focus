@@ -1,5 +1,29 @@
 # Changelog
 
+## [2026-04-15]
+
+### Author: AngelELindarteL
+
+### Co-Authors: GitHub Copilot
+
+### Resume: Implemented comprehensive UX improvements across all forms — toast notifications, dirty-state submit gating, auto-animated lists, working carousel, cat dashboard refactor, preferences cleanup, schedule/usage create button logic, and fixed 90vh dashboard layout.
+
+### Changes:
+
+- **Installed `react-hot-toast`** and created a themed `catToast` helper (`src/components/Toast/`) with dark stone background, amber/red icon accents, and `rounded-2xl` styling matching the design system. Mounted `<Toaster position="bottom-center" />` in both `OptionsGateContainer` and `PopupGateContainer`.
+- **Created `PrimaryButton`** (`src/components/PrimaryButton/`) — amber-filled submit/action button with `disabled` state (muted stone), pointer cursor when enabled, `cursor-not-allowed` when disabled, and optional `tooltip` prop rendered via the existing `Tooltip` component.
+- **Created `SecondaryButton`** (`src/components/SecondaryButton/`) — outlined bordered variant with the same props interface as `PrimaryButton`.
+- **Added auto-animate** to dynamic lists: `WebsiteListInput` site list uses `useAutoAnimate` for add/remove animations; `ScheduleBlockContainer` and `UsageBlockContainer` card lists both animated on add/remove.
+- **Fixed `PopularSiteCarousel`** — replaced hidden-scrollbar-only approach with left/right chevron arrow buttons that use `scrollBy({ behavior: 'smooth' })`. Arrows appear/hide based on scroll position tracked via `onScroll` + `ResizeObserver`. Scroll snap maintained.
+- **Cat dashboard refactor** — created `CatProfileDashboardView` (`src/modules/options-dashboard/views/CatProfileDashboardView/`) with a stacked block layout: `PixelCat` preview full-width on top, form full-width below. `OptionsCatProfileContainer` now uses this view instead of reusing `OnboardingStepOneView`, fires a success toast on save, resets `isDirty` after save, and disables the submit button when not dirty.
+- **Preferences module cleanup** — `UserPreferencesFormView` now accepts a `mode` prop (`"onboarding" | "dashboard"`). The descriptive paragraph ("Cuéntanos sobre ti…") renders only in `onboarding` mode. Dashboard mode also gates the submit button behind `isDirty`. `UserPreferencesFormContainer` wires `isDirty`, `mode`, and fires a success toast on edition.
+- **Schedule/Usage create button logic** — in dashboard mode (`!isOnboarding`), the "Create schedule" / "Create usage limit" button is now hidden when the list is empty. The empty-state info card is the only CTA when `blocks.length === 0`. Button appears again once at least one block exists.
+- **Toasts on all form mutations** — `ScheduleBlockContainer` fires created/updated/deleted toasts. `UsageBlockContainer` does the same. New `TranslationKey` entries added for all toast messages (EN + ES).
+- **Dashboard layout — fixed 90vh** — `OptionsDashboardView` now renders the outer wrapper as `h-screen` with an inner `h-[90vh]` container. `SurfaceCard` gained an optional `className` prop and now uses `flex-col` internally so children can fill available height. The content column is `overflow-y-auto` allowing section content to scroll independently within the fixed frame.
+- **i18n additions** — added 10 new `TranslationKey` entries for toast messages (`ToastCatSaved`, `ToastPreferencesSaved`, `ToastScheduleCreated`, `ToastScheduleUpdated`, `ToastScheduleDeleted`, `ToastUsageCreated`, `ToastUsageUpdated`, `ToastUsageDeleted`, `ToastSaveError`) with English and Spanish translations.
+
+### Notes: Build and lint pass clean. Zero TypeScript errors. All existing tests unaffected.
+
 ## [2026-04-14]
 
 ### Author: AngeleLindarteL

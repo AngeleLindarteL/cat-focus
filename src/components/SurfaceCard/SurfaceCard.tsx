@@ -7,10 +7,18 @@ export function SurfaceCard({
   footer,
   headerAccessory,
   children,
+  className = "",
 }: SurfaceCardProps) {
   return (
-    <section className="mx-auto max-w-5xl rounded-[32px] border border-stone-200/80 bg-white px-6 py-6 shadow-[0_24px_80px_rgba(120,113,108,0.12)] sm:px-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <section
+      className={[
+        "mx-auto flex max-w-5xl flex-col rounded-[32px] border border-stone-200/80 bg-white px-6 py-6 shadow-[0_24px_80px_rgba(120,113,108,0.12)] sm:px-8",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <div className="flex shrink-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600">
             {eyebrow}
@@ -24,8 +32,8 @@ export function SurfaceCard({
         </div>
         {headerAccessory}
       </div>
-      <div className="mt-6">{children}</div>
-      {footer ? <div className="mt-6">{footer}</div> : null}
+      <div className="mt-6 min-h-0 flex-1">{children}</div>
+      {footer ? <div className="mt-6 shrink-0">{footer}</div> : null}
     </section>
   );
 }

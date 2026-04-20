@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "@/components/Toast";
 import { useTranslation } from "@/lib/i18n";
 import {
   catRepository as defaultCatRepository,
@@ -68,6 +69,7 @@ export function OptionsGateContainer({
   if (isLoading || !onboardingState) {
     return (
       <>
+        <Toaster position="bottom-center" />
         <div key={surfaceVersion}>{content}</div>
         <OptionsDeveloperToolsContainer
           getTranslation={getTranslation}
@@ -103,6 +105,7 @@ export function OptionsGateContainer({
 
   return (
     <>
+      <Toaster position="bottom-center" />
       <div key={surfaceVersion}>{content}</div>
       <OptionsDeveloperToolsContainer
         getTranslation={getTranslation}

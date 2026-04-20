@@ -1,3 +1,5 @@
+import { PrimaryButton } from "@/components/PrimaryButton";
+import { SecondaryButton } from "@/components/SecondaryButton";
 import { TranslationKey } from "@/lib/i18n";
 import type { UserPreferencesFormViewProps } from "@/modules/user-preferences/views/UserPreferencesFormView/interfaces";
 
@@ -7,19 +9,23 @@ export function UserPreferencesFormView({
   errors,
   submitLabel,
   isSubmitting = false,
+  isDirty = true,
+  mode = "onboarding",
   onPreviousAction,
   previousActionLabel,
 }: UserPreferencesFormViewProps) {
   return (
     <div className="space-y-5 rounded-2xl bg-stone-100 p-5">
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold tracking-tight text-stone-900">
-          {getTranslation(TranslationKey.OnboardingStepThreeTitle)}
-        </h2>
-        <p className="text-sm leading-6 text-stone-600">
-          {getTranslation(TranslationKey.OnboardingStepThreeDescription)}
-        </p>
-      </div>
+      {mode === "onboarding" ? (
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold tracking-tight text-stone-900">
+            {getTranslation(TranslationKey.OnboardingStepThreeTitle)}
+          </h2>
+          <p className="text-sm leading-6 text-stone-600">
+            {getTranslation(TranslationKey.OnboardingStepThreeDescription)}
+          </p>
+        </div>
+      ) : null}
 
       <label className="block space-y-2">
         <span className="text-sm font-medium text-stone-800">
@@ -53,22 +59,23 @@ export function UserPreferencesFormView({
 
       <div className="flex gap-3">
         {onPreviousAction && previousActionLabel ? (
-          <button
+          <SecondaryButton
             type="button"
-            onClick={onPreviousAction}
+            text={previousActionLabel}
             disabled={isSubmitting}
-            className="inline-flex flex-1 cursor-pointer items-center justify-center rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm font-medium text-stone-700 transition hover:bg-stone-50 disabled:cursor-not-allowed"
-          >
-            {previousActionLabel}
-          </button>
+            onClick={onPreviousAction}
+            className="flex-1"
+          />
         ) : null}
-        <button
+        <PrimaryButton
           type="submit"
-          disabled={isSubmitting}
-          className="inline-flex flex-1 cursor-pointer items-center justify-center rounded-2xl bg-stone-900 px-4 py-3 text-sm font-medium text-stone-50 transition hover:bg-stone-700 disabled:cursor-not-allowed disabled:bg-stone-300"
-        >
-          {submitLabel}
-        </button>
+          text={submitLabel}
+          disabled={(mode === "dashboard" && !isDirty) || isSubmitting}
+          tooltip={{
+            whenDisabled: getTranslation(TranslationKey.FormSubmitDisabledNoChanges),
+          }}
+          className="flex-1"
+        />
       </div>
     </div>
   );

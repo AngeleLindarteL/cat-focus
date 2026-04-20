@@ -8,6 +8,8 @@ export type UserPreferencesFormViewProps = {
   errors: FieldErrors<UserPreferencesFormValues>;
   submitLabel: string;
   isSubmitting?: boolean;
+  isDirty?: boolean;
+  mode?: "onboarding" | "dashboard";
   onPreviousAction?: () => void;
   previousActionLabel?: string;
 };

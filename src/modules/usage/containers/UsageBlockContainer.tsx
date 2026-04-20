@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { catToast } from "@/components/Toast";
 import {
   createPopularSitePresetItems,
   isPopularSitePresetSite,
@@ -46,6 +48,7 @@ export function UsageBlockContainer({
   const [draft, setDraft] = useState<UsageBlockFormValues>(createDefaultUsageValues);
   const [errors, setErrors] = useState<UsageBlockFormErrors>({});
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [cardsRef] = useAutoAnimate<HTMLDivElement>();
 
   const refresh = useCallback(async () => {
     setIsLoading(true);
@@ -53,14 +56,9 @@ export function UsageBlockContainer({
     setBlocks(storedBlocks);
     onUsageBlocksChange?.(storedBlocks);
 
-    if (isOnboarding) {
-      if (storedBlocks.length > 0) {
-        setExpandedBlockId(storedBlocks[0].id);
-        setIsCreating(false);
-        setDraft(createUsageFormValuesFromDraft(storedBlocks[0]));
-      } else {
-        setExpandedBlockId(null);
-      }
+    if (isOnboarding && storedBlocks.length === 0) {
+      setExpandedBlockId(null);
+      setIsCreating(false);
     }
 
     setIsLoading(false);
@@ -166,11 +164,20 @@ export function UsageBlockContainer({
       await repository.updateOneById(activeBlockId, nextDraft);
     } else {
       const createdBlock = await repository.insertOne(nextDraft);
-      setExpandedBlockId(createdBlock.id);
+      if (!isOnboarding) {
+        setExpandedBlockId(createdBlock.id);
+      } else {
+        setDraft(createDefaultUsageValues());
+      }
       setIsCreating(false);
     }
 
     await refresh();
+    if (activeBlockId) {
+      catToast.success(getTranslation(TranslationKey.ToastUsageUpdated));
+    } else {
+      catToast.success(getTranslation(TranslationKey.ToastUsageCreated));
+    }
   }
 
   async function handleDelete() {
@@ -183,6 +190,7 @@ export function UsageBlockContainer({
     setExpandedBlockId(null);
     setDraft(createDefaultUsageValues());
     await refresh();
+    catToast.success(getTranslation(TranslationKey.ToastUsageDeleted));
   }
 
   const activeBlock = blocks.find((block) => block.id === expandedBlockId) ?? null;
@@ -221,8 +229,8 @@ export function UsageBlockContainer({
   }, [hasBlockingUnsavedChanges, onHasBlockingUnsavedChangesChange]);
 
   return (
-    <div className="space-y-4">
-      {!isOnboarding ? (
+    <div ref={cardsRef} className="space-y-4">
+      {!isOnboarding && blocks.length > 0 ? (
         <div className="flex justify-end">
           <button
             type="button"

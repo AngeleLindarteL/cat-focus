@@ -1,4 +1,5 @@
 import { openExtensionOptions } from "@/lib/chrome/extension";
+import { Toaster } from "@/components/Toast";
 import { useTranslation } from "@/lib/i18n";
 import {
   onboardingRepository as defaultOnboardingRepository,
@@ -41,5 +42,10 @@ export function PopupGateContainer({
     );
   }
 
-  return <PopupHomeContainer getTranslation={getTranslation} />;
+  return (
+    <>
+      <Toaster position="bottom-center" />
+      <PopupHomeContainer getTranslation={getTranslation} />
+    </>
+  );
 }

@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { catToast } from "@/components/Toast";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
@@ -65,12 +66,21 @@ export function UserPreferencesFormContainer({
   }, [form, initialValues]);
 
   async function handleSubmit(values: UserPreferencesFormValues) {
-    const normalizedValues = normalizeUserPreferencesFormValues(values);
+    try {
+      const normalizedValues = normalizeUserPreferencesFormValues(values);
 
-    await repository.updatePreferences(normalizedValues);
+      await repository.updatePreferences(normalizedValues);
 
-    if (onSubmitted) {
-      await onSubmitted(normalizedValues);
+      if (onSubmitted) {
+        await onSubmitted(normalizedValues);
+      }
+
+      if (mode === "edition") {
+        form.reset(normalizedValues);
+        catToast.success(getTranslation(TranslationKey.ToastPreferencesSaved));
+      }
+    } catch {
+      catToast.error(getTranslation(TranslationKey.ToastSaveError));
     }
   }
 
@@ -81,6 +91,8 @@ export function UserPreferencesFormContainer({
         register={form.register}
         errors={form.formState.errors}
         isSubmitting={form.formState.isSubmitting}
+        isDirty={form.formState.isDirty}
+        mode={mode === "creation" ? "onboarding" : "dashboard"}
         submitLabel={getTranslation(
           mode === "creation"
             ? TranslationKey.UserPreferencesCreateSubmit

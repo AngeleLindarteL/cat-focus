@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import {
   findBlockedSiteIndexByDomain,
   normalizeBlockedSiteDomain,
@@ -24,6 +25,7 @@ export function WebsiteListInput({
   isSiteEditable = () => true,
   disabled = false,
 }: WebsiteListInputProps) {
+  const [listRef] = useAutoAnimate<HTMLDivElement>();
   const [siteName, setSiteName] = useState("");
   const [siteDomain, setSiteDomain] = useState("");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -154,6 +156,7 @@ export function WebsiteListInput({
       </div>
       {listError ? <p className="text-sm text-red-700">{listError}</p> : null}
       <div
+        ref={listRef}
         className="grid w-full gap-3"
         style={{
           gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",

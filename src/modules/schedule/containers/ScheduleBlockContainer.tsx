@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { catToast } from "@/components/Toast";
 import type { DayToggleOption, WeekdayToggleGroupRef } from "@/components/WeekdayToggleGroup";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
@@ -91,6 +93,7 @@ export function ScheduleBlockContainer({
   const [errors, setErrors] = useState<ScheduleBlockFormErrors>({});
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const weekdayGroupRef = useRef<WeekdayToggleGroupRef | null>(null);
+  const [cardsRef] = useAutoAnimate<HTMLDivElement>();
 
   const refresh = useCallback(async () => {
     setIsLoading(true);
@@ -98,14 +101,9 @@ export function ScheduleBlockContainer({
     setSchedules(storedSchedules);
     onSchedulesChange?.(storedSchedules);
 
-    if (isOnboarding) {
-      if (storedSchedules.length > 0) {
-        setExpandedScheduleId(storedSchedules[0].id);
-        setIsCreating(false);
-        setDraft(createScheduleFormValuesFromDraft(storedSchedules[0]));
-      } else {
-        setExpandedScheduleId(null);
-      }
+    if (isOnboarding && storedSchedules.length === 0) {
+      setExpandedScheduleId(null);
+      setIsCreating(false);
     }
 
     setIsLoading(false);
@@ -212,11 +210,20 @@ export function ScheduleBlockContainer({
       await repository.updateOneById(activeScheduleId, nextDraft);
     } else {
       const createdSchedule = await repository.insertOne(nextDraft);
-      setExpandedScheduleId(createdSchedule.id);
+      if (!isOnboarding) {
+        setExpandedScheduleId(createdSchedule.id);
+      } else {
+        setDraft(createDefaultScheduleValues());
+      }
       setIsCreating(false);
     }
 
     await refresh();
+    if (activeScheduleId) {
+      catToast.success(getTranslation(TranslationKey.ToastScheduleUpdated));
+    } else {
+      catToast.success(getTranslation(TranslationKey.ToastScheduleCreated));
+    }
   }
 
   async function handleDelete() {
@@ -229,6 +236,7 @@ export function ScheduleBlockContainer({
     setExpandedScheduleId(null);
     setDraft(createDefaultScheduleValues());
     await refresh();
+    catToast.success(getTranslation(TranslationKey.ToastScheduleDeleted));
   }
 
   const activeSchedule = schedules.find((schedule) => schedule.id === expandedScheduleId) ?? null;
@@ -270,8 +278,8 @@ export function ScheduleBlockContainer({
   }, [hasBlockingUnsavedChanges, onHasBlockingUnsavedChangesChange]);
 
   return (
-    <div className="space-y-4">
-      {!isOnboarding ? (
+    <div ref={cardsRef} className="space-y-4">
+      {!isOnboarding && schedules.length > 0 ? (
         <div className="flex justify-end">
           <button
             type="button"
