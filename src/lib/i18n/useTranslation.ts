@@ -7,11 +7,11 @@ import {
 import { translationCatalog } from "@/lib/i18n/translationCatalog.constants";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
 import type {
   Language,
 } from "@/lib/i18n/translation.interfaces";
-import type { UserPreferencesRepository } from "@/lib/repositories/userPreferencesRepository";
+import type { UserPreferencesRepository } from "@/lib/repositories";
 
 function normalizeLanguage(value: string | null | undefined): Language {
   if (!value) {

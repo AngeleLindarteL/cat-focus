@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
-import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import type { UsageRepository } from "@/lib/repositories/usageRepository";
+import type { ScheduleRepository } from "@/lib/repositories";
+import type { UsageRepository } from "@/lib/repositories";
 import type { ScheduleBlock } from "@/lib/schedules";
-import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import { usageRepository as defaultUsageRepository } from "@/lib/repositories/usageRepository";
+import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories";
+import { usageRepository as defaultUsageRepository } from "@/lib/repositories";
 import { ScheduleBlockContainer } from "@/modules/schedule/containers/ScheduleBlockContainer";
 import { OnboardingStepTwoView } from "@/modules/onboarding/views/OnboardingStepTwoView";
 import type { UsageBlock } from "@/lib/usage";

@@ -1,11 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { ONBOARDING_STORAGE_KEYS } from "@/lib/onboarding";
-import { ChromeStorageCatRepository } from "@/lib/repositories/catRepository";
-import { ChromeStorageOnboardingRepository } from "@/lib/repositories/onboardingRepository";
-import { ChromeStorageScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import { ChromeStorageUsageRepository } from "@/lib/repositories/usageRepository";
-import { ChromeStorageUserPreferencesRepository } from "@/lib/repositories/userPreferencesRepository";
-import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
+import { ChromeStorageCatRepository } from "@/lib/repositories";
+import { ChromeStorageNewCatRepository } from "@/lib/repositories";
+import { NEW_CAT_REPOSITORY_STORAGE_KEY } from "@/lib/repositories";
+import { ChromeStorageOnboardingRepository } from "@/lib/repositories";
+import { ChromeStorageScheduleRepository } from "@/lib/repositories";
+import { ChromeStorageUsageRepository } from "@/lib/repositories";
+import { ChromeStorageUserPreferencesRepository } from "@/lib/repositories";
+import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories";
 import { SCHEDULE_BLOCK_STORAGE_KEY } from "@/lib/schedules";
 import { USAGE_BLOCK_STORAGE_KEY } from "@/lib/usage";
 import { createChromeMock } from "./helpers/chrome";
@@ -71,6 +73,27 @@ describe("repositories", () => {
     await repository.saveCatProfile(profile);
 
     await expect(repository.getCatProfile()).resolves.toEqual(profile);
+  });
+
+  it("returns null for a missing experimental new cat profile and persists saved values", async () => {
+    const repository = new ChromeStorageNewCatRepository();
+
+    await expect(repository.getNewCatProfile()).resolves.toBeNull();
+
+    const profile = {
+      baseFurColor: "#d0a06a",
+      eyeColor: "#365314",
+      furType: "spots" as const,
+      furTypeColor1: "#8a5527",
+      furTypeColor2: "#f3c48b",
+    };
+
+    await repository.saveNewCatProfile(profile);
+
+    await expect(repository.getNewCatProfile()).resolves.toEqual(profile);
+    expect(globalThis.chrome.__storageState).toMatchObject({
+      [NEW_CAT_REPOSITORY_STORAGE_KEY]: profile,
+    });
   });
 
   it("persists and reloads the app language", async () => {

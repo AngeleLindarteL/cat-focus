@@ -1,5 +1,60 @@
 # Changelog
 
+## [2026-04-21]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
+### Resume: Extracted the experimental Pixi cat renderer into a shared cat domain, renamed onboarding’s legacy cat profile, and expanded shared renderer coverage.
+
+### Changes:
+
+- Added `src/lib/cat` with shared animated cat ownership for `CatProfile`, `CatFurType`, `CatAnimation`, `CatLayerDefinition`, `AssetCatBuilder`, and `CatSpritesheetsBuilder`.
+- Added shared utility helpers under `src/lib/utils` for extension asset URL resolution and flat-color Pixi masking, and moved the reusable Pixi canvas into `src/components/CatPixiCanvas`.
+- Updated the experimental `new-cat` feature and repository contracts to use the shared cat-domain types while keeping the existing feature/repository folder names and autosave behavior unchanged.
+- Renamed the onboarding form model from `CatProfile` to `LegacyCatProfile` across onboarding modules, repositories, and tests so the shared animated renderer can own the plain `CatProfile` name.
+- Replaced the old feature-local spritesheet helper tests with shared cat-domain coverage for layer construction, spritesheet frame generation, and `LoadLayers` tint/disposable-texture behavior.
+- Rebundled `src/lib/repositories` so each repository now lives in its own folder with a local `index.ts` barrel, and added a root `src/lib/repositories/index.ts` barrel for shared repository imports.
+
+### Notes: The reusable renderer now requires an explicit `animation="idle"` prop, but its visual layer order, tinting rules, and cleanup behavior remain unchanged.
+
+## [2026-04-20]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
+### Resume: Changed the development-only options devtools overlay to start hidden and be revealed manually with a floating chip.
+
+### Changes:
+
+- Updated the `options-developer-tools` module so development installs now render a bottom-corner reveal chip by default and only open the devtools panel after an explicit user action.
+- Added show/hide visibility controls to the devtools view contract while keeping the existing onboarding and block-reset actions unchanged once the panel is open.
+- Added English and Spanish translation entries for the new devtools visibility controls.
+- Expanded `tests/optionsDeveloperTools.test.tsx` to cover hidden-by-default rendering, reveal/collapse behavior, and the existing developer actions after opening the panel.
+
+### Notes: Devtools visibility remains development-only and resets to hidden on each options-page load.
+
+## [2026-04-20]
+
+### Author: AngeleLindarteL
+
+### Co-Authors: None
+
+### Resume: Added an experimental New Cat dashboard section with a persisted PixiJS animated cat editor, layered spritesheet rendering, debounced autosave, and focused coverage.
+
+### Changes:
+
+- Added a new persisted experimental cat model under `src/lib/newCat` plus a dedicated `newCatRepository` backed by Chrome local storage under the `new-cat-profile` key.
+- Extended the options dashboard navigation with a new `New Cat` section and added English/Spanish copy for the section, form fields, fur-type options, and autosave states.
+- Created a new `src/modules/new-cat` feature module with a container/view split, `500ms` debounced autosave, and a PixiJS canvas component that renders the layered idle animation from the existing `idle_spritesheets` assets.
+- Added a pure spritesheet helper that slices each `224x32` strip into seven `32x32` frames and reused it across the Pixi renderer and tests.
+- Added focused repository, dashboard, and New Cat module tests plus a new implementation note in `docs/plans/new-cat-pixi-dashboard.md`.
+- Installed the `pixi.js` runtime dependency for the new renderer.
+
+### Notes: The experimental New Cat flow is isolated from the existing `Your Cat` profile and currently lives only in the options dashboard.
+
 ## [2026-04-20]
 
 ### Author: AngeleLindarteL

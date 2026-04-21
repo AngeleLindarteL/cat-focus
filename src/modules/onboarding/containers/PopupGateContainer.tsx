@@ -4,7 +4,7 @@ import { useTranslation } from "@/lib/i18n";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
-} from "@/lib/repositories/onboardingRepository";
+} from "@/lib/repositories";
 import { PopupHomeContainer } from "@/modules/home/containers/PopupHomeContainer";
 import { useOnboardingState } from "@/modules/onboarding/hooks/useOnboardingState";
 import { PopupOnboardingRedirectView } from "@/modules/onboarding/views/PopupOnboardingRedirectView";

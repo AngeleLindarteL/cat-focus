@@ -7,3 +7,11 @@ export const DEVELOPER_TOOLS_ACTIONS = {
 
 export type DeveloperToolsActionId =
   (typeof DEVELOPER_TOOLS_ACTIONS)[keyof typeof DEVELOPER_TOOLS_ACTIONS];
+
+export const DEVELOPER_TOOLS_VISIBILITY_CONTROLS = {
+  show: "show",
+  hide: "hide",
+} as const;
+
+export type DeveloperToolsVisibilityControlId =
+  (typeof DEVELOPER_TOOLS_VISIBILITY_CONTROLS)[keyof typeof DEVELOPER_TOOLS_VISIBILITY_CONTROLS];

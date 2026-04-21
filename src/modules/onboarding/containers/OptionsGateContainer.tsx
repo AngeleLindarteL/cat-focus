@@ -4,19 +4,19 @@ import { useTranslation } from "@/lib/i18n";
 import {
   catRepository as defaultCatRepository,
   type CatRepository,
-} from "@/lib/repositories/catRepository";
+} from "@/lib/repositories";
 import {
   scheduleRepository as defaultScheduleRepository,
   type ScheduleRepository,
-} from "@/lib/repositories/scheduleRepository";
+} from "@/lib/repositories";
 import {
   usageRepository as defaultUsageRepository,
   type UsageRepository,
-} from "@/lib/repositories/usageRepository";
+} from "@/lib/repositories";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
-} from "@/lib/repositories/onboardingRepository";
+} from "@/lib/repositories";
 import { isDevelopmentInstall as defaultIsDevelopmentInstall } from "@/lib/chrome/management";
 import { OptionsDeveloperToolsContainer } from "@/modules/options-developer-tools/containers/OptionsDeveloperToolsContainer";
 import { OnboardingFinishContainer } from "@/modules/onboarding/containers/OnboardingFinishContainer";
@@ -91,7 +91,7 @@ export function OptionsGateContainer({
         catRepository={catRepository}
         onPrimaryAction={() => {
           setShowFinishScreen(false);
-          void refresh();
+          setSurfaceVersion((currentVersion) => currentVersion + 1);
         }}
       />
     ) : (

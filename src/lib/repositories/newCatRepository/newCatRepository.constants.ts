@@ -1,0 +1,3 @@
+export const NEW_CAT_REPOSITORY_STORAGE_KEY = "new-cat-profile";
+
+export const NEW_CAT_REPOSITORY_STORAGE_KEYS = [NEW_CAT_REPOSITORY_STORAGE_KEY];

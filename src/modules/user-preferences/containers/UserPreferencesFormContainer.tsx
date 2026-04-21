@@ -6,7 +6,7 @@ import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
   type UserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
 import {
   createUserPreferencesFormDefaultValues,
   createUserPreferencesFormSchema,

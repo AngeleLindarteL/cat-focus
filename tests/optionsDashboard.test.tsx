@@ -1,18 +1,34 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { CatProfile } from "@/lib/onboarding";
-import type { CatRepository } from "@/lib/repositories/catRepository";
-import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import type { UsageRepository } from "@/lib/repositories/usageRepository";
+import type { CatProfile } from "@/lib/cat";
+import type { LegacyCatProfile } from "@/lib/onboarding";
+import type { CatRepository } from "@/lib/repositories";
+import type { NewCatRepository } from "@/lib/repositories";
+import type { ScheduleRepository } from "@/lib/repositories";
+import type { UsageRepository } from "@/lib/repositories";
 import type {
   UserPreferences,
   UserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
 import { OptionsDashboardContainer } from "@/modules/options-dashboard/containers/OptionsDashboardContainer";
 import {
   getOptionsDashboardHash,
   getOptionsDashboardSectionFromHash,
 } from "@/modules/options-dashboard/services/optionsDashboardNavigation";
+
+vi.mock("@/components/CatPixiCanvas", () => ({
+  CatPixiCanvas: ({
+    profile,
+    animation,
+  }: {
+    profile: CatProfile;
+    animation: "idle";
+  }) => (
+    <div data-testid="new-cat-pixi-canvas" data-animation={animation}>
+      {profile.furType}
+    </div>
+  ),
+}));
 
 function getTranslation(key: string): string {
   const messages: Record<string, string> = {
@@ -25,12 +41,28 @@ function getTranslation(key: string): string {
     optionsNavigationLabel: "Dashboard",
     optionsSectionYourCatLabel: "Your Cat",
     optionsSectionYourCatDescription: "Edit your companion's name and colors.",
+    optionsSectionNewCatLabel: "New Cat",
+    optionsSectionNewCatDescription:
+      "Preview the experimental animated cat renderer.",
     optionsSectionUsageLabel: "Usage Time Limits",
     optionsSectionUsageDescription: "Manage daily time-based website limits.",
     optionsSectionScheduleLabel: "Schedule Limits",
     optionsSectionScheduleDescription: "Configure recurring schedule-based blocks.",
     optionsSectionPreferencesLabel: "Preferences",
     optionsSectionPreferencesDescription: "Update your name and focus motivation.",
+    newCatTitle: "New Cat",
+    newCatDescription:
+      "Customize the experimental PixiJS cat preview. Changes save automatically.",
+    newCatBaseFurColorLabel: "Base fur color",
+    newCatEyeColorLabel: "Eye color",
+    newCatFurTypeLabel: "Fur type",
+    newCatFurTypeStripesLabel: "Stripes",
+    newCatFurTypeSpotsLabel: "Spots",
+    newCatPatternColor1Label: "Pattern color 1",
+    newCatPatternColor2Label: "Pattern color 2",
+    newCatAutosaveSaving: "Saving...",
+    newCatAutosaveSaved: "Saved",
+    newCatAutosaveError: "Could not save changes.",
     catSetupTitle: "Create your cat companion",
     catSetupDescription:
       "Pick a name and choose its fur, eye, and tail colors. You can come back later and your saved values will be prefilled.",
@@ -79,7 +111,22 @@ function getTranslation(key: string): string {
   return messages[key] ?? key;
 }
 
-function createCatRepository(profile: CatProfile | null = null): CatRepository {
+function createNewCatRepository(
+  profile: CatProfile | null = null,
+): NewCatRepository {
+  let currentProfile = profile;
+
+  return {
+    getNewCatProfile: async () => currentProfile,
+    saveNewCatProfile: async (nextProfile) => {
+      currentProfile = nextProfile;
+    },
+  };
+}
+
+function createCatRepository(
+  profile: LegacyCatProfile | null = null,
+): CatRepository {
   let currentProfile = profile;
 
   return {
@@ -143,6 +190,7 @@ describe("options dashboard navigation", () => {
 
   it("resolves known hashes", () => {
     expect(getOptionsDashboardSectionFromHash("#preferences")).toBe("preferences");
+    expect(getOptionsDashboardSectionFromHash("#new-cat")).toBe("new-cat");
     expect(getOptionsDashboardHash("schedule-limits")).toBe("#schedule-limits");
   });
 
@@ -157,6 +205,7 @@ describe("options dashboard navigation", () => {
           eyeColor: "#365314",
           tailColor: "#445566",
         })}
+        newCatRepository={createNewCatRepository()}
         usageRepository={createUsageRepository()}
         scheduleRepository={createScheduleRepository()}
         userPreferencesRepository={createUserPreferencesRepository()}
@@ -181,6 +230,7 @@ describe("options dashboard navigation", () => {
           eyeColor: "#365314",
           tailColor: "#445566",
         })}
+        newCatRepository={createNewCatRepository()}
         usageRepository={createUsageRepository()}
         scheduleRepository={createScheduleRepository()}
         userPreferencesRepository={createUserPreferencesRepository({
@@ -223,6 +273,7 @@ describe("options dashboard navigation", () => {
       <OptionsDashboardContainer
         getTranslation={getTranslation}
         catRepository={catRepository}
+        newCatRepository={createNewCatRepository()}
         usageRepository={createUsageRepository()}
         scheduleRepository={createScheduleRepository()}
         userPreferencesRepository={createUserPreferencesRepository()}
@@ -267,6 +318,7 @@ describe("options dashboard navigation", () => {
       <OptionsDashboardContainer
         getTranslation={getTranslation}
         catRepository={createCatRepository()}
+        newCatRepository={createNewCatRepository()}
         usageRepository={createUsageRepository()}
         scheduleRepository={createScheduleRepository()}
         userPreferencesRepository={userPreferencesRepository}
@@ -287,5 +339,36 @@ describe("options dashboard navigation", () => {
         installationReason: "Keep building with focus",
       });
     });
+  });
+
+  it("renders the new cat dashboard section from hash navigation", async () => {
+    window.history.replaceState(null, "", "/options.html#new-cat");
+
+    render(
+      <OptionsDashboardContainer
+        getTranslation={getTranslation}
+        catRepository={createCatRepository()}
+        newCatRepository={createNewCatRepository({
+          baseFurColor: "#d0a06a",
+          eyeColor: "#365314",
+          furType: "spots",
+          furTypeColor1: "#8a5527",
+          furTypeColor2: "#f3c48b",
+        })}
+        usageRepository={createUsageRepository()}
+        scheduleRepository={createScheduleRepository()}
+        userPreferencesRepository={createUserPreferencesRepository()}
+      />,
+    );
+
+    expect(
+      await screen.findByText(
+        "Customize the experimental PixiJS cat preview. Changes save automatically.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /New Cat/ }),
+    ).toHaveAttribute("aria-current", "page");
+    expect(screen.getByTestId("new-cat-pixi-canvas")).toHaveTextContent("spots");
   });
 });

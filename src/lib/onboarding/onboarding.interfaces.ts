@@ -5,7 +5,7 @@ export type OnboardingState = {
   finished: boolean;
 };
 
-export type CatProfile = {
+export type LegacyCatProfile = {
   name: string;
   furColorPrimary: string;
   furColorSecondary: string;

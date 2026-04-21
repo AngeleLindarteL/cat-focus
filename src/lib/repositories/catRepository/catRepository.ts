@@ -2,15 +2,15 @@ import {
   getLocalStorageValues,
   setLocalStorageValues,
 } from "@/lib/chrome/storage";
-import { ONBOARDING_STORAGE_KEYS, type CatProfile } from "@/lib/onboarding";
-import { CAT_REPOSITORY_STORAGE_KEYS } from "@/lib/repositories/catRepository.constants";
-import type {
-  CatRepository,
-  CatStorageShape,
-} from "@/lib/repositories/catRepository.interfaces";
+import {
+  ONBOARDING_STORAGE_KEYS,
+  type LegacyCatProfile,
+} from "@/lib/onboarding";
+import { CAT_REPOSITORY_STORAGE_KEYS } from "./catRepository.constants";
+import type { CatRepository, CatStorageShape } from "./catRepository.interfaces";
 
 export class ChromeStorageCatRepository implements CatRepository {
-  async getCatProfile(): Promise<CatProfile | null> {
+  async getCatProfile(): Promise<LegacyCatProfile | null> {
     const values = await getLocalStorageValues<CatStorageShape>(
       CAT_REPOSITORY_STORAGE_KEYS,
     );
@@ -18,7 +18,7 @@ export class ChromeStorageCatRepository implements CatRepository {
     return values[ONBOARDING_STORAGE_KEYS.catProfile] ?? null;
   }
 
-  async saveCatProfile(profile: CatProfile): Promise<void> {
+  async saveCatProfile(profile: LegacyCatProfile): Promise<void> {
     await setLocalStorageValues({
       [ONBOARDING_STORAGE_KEYS.catProfile]: profile,
     });
@@ -26,5 +26,3 @@ export class ChromeStorageCatRepository implements CatRepository {
 }
 
 export const catRepository: CatRepository = new ChromeStorageCatRepository();
-
-export type { CatRepository, CatStorageShape } from "@/lib/repositories/catRepository.interfaces";

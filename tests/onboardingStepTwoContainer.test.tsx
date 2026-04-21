@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { TranslationKey } from "@/lib/i18n";
-import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import type { UsageRepository } from "@/lib/repositories/usageRepository";
+import type { ScheduleRepository } from "@/lib/repositories";
+import type { UsageRepository } from "@/lib/repositories";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 
 function createScheduleRepository(): ScheduleRepository {

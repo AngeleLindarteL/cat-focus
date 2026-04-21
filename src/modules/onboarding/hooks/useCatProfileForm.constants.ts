@@ -1,6 +1,6 @@
-import type { CatProfile } from "@/lib/onboarding";
+import type { LegacyCatProfile } from "@/lib/onboarding";
 
-export const DEFAULT_CAT_PROFILE: CatProfile = {
+export const DEFAULT_CAT_PROFILE: LegacyCatProfile = {
   name: "",
   furColorPrimary: "#d0a06a",
   furColorSecondary: "#8a5527",

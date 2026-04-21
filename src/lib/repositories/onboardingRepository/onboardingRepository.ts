@@ -7,11 +7,11 @@ import {
   type OnboardingState,
   type OnboardingStep,
 } from "@/lib/onboarding";
-import { ONBOARDING_REPOSITORY_STORAGE_KEYS } from "@/lib/repositories/onboardingRepository.constants";
+import { ONBOARDING_REPOSITORY_STORAGE_KEYS } from "./onboardingRepository.constants";
 import type {
   OnboardingRepository,
   OnboardingStorageShape,
-} from "@/lib/repositories/onboardingRepository.interfaces";
+} from "./onboardingRepository.interfaces";
 
 function normalizeOnboardingStep(step: number | null | undefined): OnboardingStep {
   if (step === 2 || step === 3) {
@@ -61,8 +61,3 @@ export class ChromeStorageOnboardingRepository implements OnboardingRepository {
 
 export const onboardingRepository: OnboardingRepository =
   new ChromeStorageOnboardingRepository();
-
-export type {
-  OnboardingRepository,
-  OnboardingStorageShape,
-} from "@/lib/repositories/onboardingRepository.interfaces";

@@ -2,11 +2,12 @@ import {
   getLocalStorageValues,
   setLocalStorageValues,
 } from "@/lib/chrome/storage";
-import { USAGE_BLOCK_STORAGE_KEY, type UsageBlock, type UsageBlockDraft } from "@/lib/usage";
-import type {
-  UsageRepository,
-  UsageStorageShape,
-} from "@/lib/repositories/usageRepository.interfaces";
+import {
+  USAGE_BLOCK_STORAGE_KEY,
+  type UsageBlock,
+  type UsageBlockDraft,
+} from "@/lib/usage";
+import type { UsageRepository, UsageStorageShape } from "./usageRepository.interfaces";
 
 export class ChromeStorageUsageRepository implements UsageRepository {
   async findAll(): Promise<UsageBlock[]> {
@@ -75,5 +76,3 @@ export class ChromeStorageUsageRepository implements UsageRepository {
 
 export const usageRepository: UsageRepository =
   new ChromeStorageUsageRepository();
-
-export type { UsageRepository, UsageStorageShape } from "@/lib/repositories/usageRepository.interfaces";

@@ -1,14 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import type { CatProfile } from "@/lib/onboarding";
+import type { LegacyCatProfile } from "@/lib/onboarding";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import { createCatProfileSchema } from "@/modules/onboarding/services/catProfileForm";
 import type { CatProfileFormValues } from "@/modules/onboarding/types/onboardingView";
 import { DEFAULT_CAT_PROFILE } from "@/modules/onboarding/hooks/useCatProfileForm.constants";
 
 export function useCatProfileForm(
-  initialValues: CatProfile | null,
+  initialValues: LegacyCatProfile | null,
   getTranslation: UseTranslationResult["getTranslation"],
 ) {
   const schema = useMemo(

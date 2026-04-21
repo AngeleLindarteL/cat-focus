@@ -3,7 +3,7 @@ import type { OnboardingState } from "@/lib/onboarding";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
-} from "@/lib/repositories/onboardingRepository";
+} from "@/lib/repositories";
 
 type UseOnboardingStateResult = {
   isLoading: boolean;

@@ -1,5 +1,5 @@
-import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
 import type { Language } from "@/lib/i18n";
+import { USER_PREFERENCES_STORAGE_KEY } from "./userPreferencesRepository.constants";
 
 export type UserPreferences = {
   language?: Language;

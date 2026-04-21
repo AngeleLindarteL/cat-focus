@@ -35,6 +35,9 @@ export const translationCatalog = {
     optionsNavigationLabel: "Dashboard",
     optionsSectionYourCatLabel: "Your Cat",
     optionsSectionYourCatDescription: "Edit your companion's name and colors.",
+    optionsSectionNewCatLabel: "New Cat",
+    optionsSectionNewCatDescription:
+      "Preview the experimental animated cat renderer.",
     optionsSectionUsageLabel: "Usage Time Limits",
     optionsSectionUsageDescription: "Manage daily time-based website limits.",
     optionsSectionScheduleLabel: "Schedule Limits",
@@ -43,9 +46,24 @@ export const translationCatalog = {
     optionsSectionPreferencesLabel: "Preferences",
     optionsSectionPreferencesDescription:
       "Update your name and focus motivation.",
+    newCatTitle: "New Cat",
+    newCatDescription:
+      "Customize the experimental PixiJS cat preview. Changes save automatically.",
+    newCatBaseFurColorLabel: "Base fur color",
+    newCatEyeColorLabel: "Eye color",
+    newCatFurTypeLabel: "Fur type",
+    newCatFurTypeStripesLabel: "Stripes",
+    newCatFurTypeSpotsLabel: "Spots",
+    newCatPatternColor1Label: "Pattern color 1",
+    newCatPatternColor2Label: "Pattern color 2",
+    newCatAutosaveSaving: "Saving...",
+    newCatAutosaveSaved: "Saved",
+    newCatAutosaveError: "Could not save changes.",
     developerToolsTitle: "Developer tools",
     developerToolsDescription:
       "Development-only controls for onboarding and persisted block data.",
+    developerToolsShow: "Show devtools",
+    developerToolsHide: "Hide",
     developerToolsSkipOnboarding: "Skip onboarding",
     developerToolsResetOnboarding: "Reset onboarding",
     developerToolsClearUsageBlocks: "Delete all usage limit blocks",
@@ -264,6 +282,9 @@ export const translationCatalog = {
     optionsSectionYourCatLabel: "Tu gato",
     optionsSectionYourCatDescription:
       "Edita el nombre y los colores de tu compañero.",
+    optionsSectionNewCatLabel: "Nuevo gato",
+    optionsSectionNewCatDescription:
+      "Previsualiza el renderizador experimental del gato animado.",
     optionsSectionUsageLabel: "Límites de tiempo de uso",
     optionsSectionUsageDescription:
       "Administra límites diarios de tiempo por sitio.",
@@ -273,9 +294,24 @@ export const translationCatalog = {
     optionsSectionPreferencesLabel: "Preferencias",
     optionsSectionPreferencesDescription:
       "Actualiza tu nombre y tu motivación de enfoque.",
+    newCatTitle: "Nuevo gato",
+    newCatDescription:
+      "Personaliza la previsualización experimental del gato con PixiJS. Los cambios se guardan automáticamente.",
+    newCatBaseFurColorLabel: "Color base del pelaje",
+    newCatEyeColorLabel: "Color de ojos",
+    newCatFurTypeLabel: "Tipo de pelaje",
+    newCatFurTypeStripesLabel: "Rayas",
+    newCatFurTypeSpotsLabel: "Manchas",
+    newCatPatternColor1Label: "Color 1 del patrón",
+    newCatPatternColor2Label: "Color 2 del patrón",
+    newCatAutosaveSaving: "Guardando...",
+    newCatAutosaveSaved: "Guardado",
+    newCatAutosaveError: "No se pudieron guardar los cambios.",
     developerToolsTitle: "Herramientas de desarrollo",
     developerToolsDescription:
       "Controles solo para desarrollo sobre el onboarding y los bloques persistidos.",
+    developerToolsShow: "Mostrar devtools",
+    developerToolsHide: "Ocultar",
     developerToolsSkipOnboarding: "Saltar onboarding",
     developerToolsResetOnboarding: "Reiniciar onboarding",
     developerToolsClearUsageBlocks:

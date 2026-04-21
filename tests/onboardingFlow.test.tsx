@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
-import type { CatProfile, OnboardingState } from "@/lib/onboarding";
-import type { CatRepository } from "@/lib/repositories/catRepository";
-import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
+import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories";
+import type { LegacyCatProfile, OnboardingState } from "@/lib/onboarding";
+import type { CatRepository } from "@/lib/repositories";
+import type { OnboardingRepository } from "@/lib/repositories";
 import { OptionsGateContainer } from "@/modules/onboarding/containers/OptionsGateContainer";
 import { PopupGateContainer } from "@/modules/onboarding/containers/PopupGateContainer";
 import { createChromeMock } from "./helpers/chrome";
@@ -33,7 +33,9 @@ function createOnboardingRepository(state: OnboardingState): OnboardingRepositor
   };
 }
 
-function createCatRepository(profile: CatProfile | null = null): CatRepository {
+function createCatRepository(
+  profile: LegacyCatProfile | null = null,
+): CatRepository {
   let currentProfile = profile;
 
   return {
@@ -120,7 +122,7 @@ describe("onboarding flow", () => {
       finished: false,
     });
     let getCatProfileCalls = 0;
-    let currentProfile: CatProfile | null = {
+    let currentProfile: LegacyCatProfile | null = {
       name: "Captain Whiskers",
       furColorPrimary: "#112233",
       furColorSecondary: "#445566",

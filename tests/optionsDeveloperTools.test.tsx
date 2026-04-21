@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { CatProfile, OnboardingState } from "@/lib/onboarding";
-import type { CatRepository } from "@/lib/repositories/catRepository";
-import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
-import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import type { UsageRepository } from "@/lib/repositories/usageRepository";
+import type { LegacyCatProfile, OnboardingState } from "@/lib/onboarding";
+import type { CatRepository } from "@/lib/repositories";
+import type { OnboardingRepository } from "@/lib/repositories";
+import type { ScheduleRepository } from "@/lib/repositories";
+import type { UsageRepository } from "@/lib/repositories";
 import { OptionsGateContainer } from "@/modules/onboarding/containers/OptionsGateContainer";
 import { createChromeMock } from "./helpers/chrome";
 
@@ -33,7 +33,9 @@ function createOnboardingRepository(state: OnboardingState): OnboardingRepositor
   };
 }
 
-function createCatRepository(profile: CatProfile | null = null): CatRepository {
+function createCatRepository(
+  profile: LegacyCatProfile | null = null,
+): CatRepository {
   return {
     getCatProfile: async () => profile,
     saveCatProfile: async () => undefined,
@@ -80,10 +82,10 @@ describe("options developer tools", () => {
       />,
     );
 
-    expect(await screen.findByText("Developer tools")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Skip onboarding" }),
+      await screen.findByRole("button", { name: "Show devtools" }),
     ).toBeInTheDocument();
+    expect(screen.queryByText("Developer tools")).not.toBeInTheDocument();
   });
 
   it("keeps the developer tools hidden for non-development installs", async () => {
@@ -104,6 +106,9 @@ describe("options developer tools", () => {
 
     await waitFor(() => {
       expect(screen.queryByText("Developer tools")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Show devtools" }),
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -123,6 +128,7 @@ describe("options developer tools", () => {
 
     expect(await screen.findByText("Set up Cat Focus")).toBeInTheDocument();
 
+    fireEvent.click(await screen.findByRole("button", { name: "Show devtools" }));
     fireEvent.click(await screen.findByRole("button", { name: "Skip onboarding" }));
 
     await waitFor(() => {
@@ -150,6 +156,7 @@ describe("options developer tools", () => {
 
     expect(await screen.findByText("Your focus dashboard")).toBeInTheDocument();
 
+    fireEvent.click(await screen.findByRole("button", { name: "Show devtools" }));
     fireEvent.click(await screen.findByRole("button", { name: "Reset onboarding" }));
 
     await waitFor(() => {
@@ -188,6 +195,8 @@ describe("options developer tools", () => {
       />,
     );
 
+    fireEvent.click(await screen.findByRole("button", { name: "Show devtools" }));
+
     expect(await screen.findByText("Developer tools")).toBeInTheDocument();
 
     fireEvent.click(
@@ -209,5 +218,34 @@ describe("options developer tools", () => {
     await waitFor(() => {
       expect(scheduleRepository.deleteAll).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it("opens and closes the developer tools within the current page session", async () => {
+    render(
+      <OptionsGateContainer
+        onboardingRepository={createOnboardingRepository({
+          step: 3,
+          finished: true,
+        })}
+        catRepository={createCatRepository()}
+        usageRepository={createUsageRepository()}
+        scheduleRepository={createScheduleRepository()}
+        isDevelopmentInstall={async () => true}
+      />,
+    );
+
+    fireEvent.click(await screen.findByRole("button", { name: "Show devtools" }));
+
+    expect(await screen.findByText("Developer tools")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Hide" }));
+
+    await waitFor(() => {
+      expect(screen.queryByText("Developer tools")).not.toBeInTheDocument();
+    });
+
+    expect(
+      screen.getByRole("button", { name: "Show devtools" }),
+    ).toBeInTheDocument();
   });
 });

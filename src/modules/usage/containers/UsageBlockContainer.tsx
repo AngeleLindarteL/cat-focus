@@ -8,8 +8,8 @@ import {
   type PopularSitePresetItem,
 } from "@/lib/blockedSites";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
-import type { UsageRepository } from "@/lib/repositories/usageRepository";
-import { usageRepository as defaultUsageRepository } from "@/lib/repositories/usageRepository";
+import type { UsageRepository } from "@/lib/repositories";
+import { usageRepository as defaultUsageRepository } from "@/lib/repositories";
 import type { UsageBlock } from "@/lib/usage";
 import { DeleteUsageModal } from "@/modules/usage/components/DeleteUsageModal";
 import {

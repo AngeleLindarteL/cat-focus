@@ -4,19 +4,21 @@ import { isDevelopmentInstall as defaultIsDevelopmentInstall } from "@/lib/chrom
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
-} from "@/lib/repositories/onboardingRepository";
+} from "@/lib/repositories";
 import {
   scheduleRepository as defaultScheduleRepository,
   type ScheduleRepository,
-} from "@/lib/repositories/scheduleRepository";
+} from "@/lib/repositories";
 import {
   usageRepository as defaultUsageRepository,
   type UsageRepository,
-} from "@/lib/repositories/usageRepository";
+} from "@/lib/repositories";
 import {
   DEVELOPER_TOOLS_ACTIONS,
+  DEVELOPER_TOOLS_VISIBILITY_CONTROLS,
   OptionsDeveloperToolsView,
   type DeveloperToolsActionId,
+  type DeveloperToolsVisibilityControlId,
 } from "@/modules/options-developer-tools/views/OptionsDeveloperToolsView";
 
 type OptionsDeveloperToolsContainerProps = {
@@ -37,9 +39,12 @@ export function OptionsDeveloperToolsContainer({
   onMutation,
 }: OptionsDeveloperToolsContainerProps) {
   const [shouldRender, setShouldRender] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [pendingActionId, setPendingActionId] = useState<DeveloperToolsActionId | null>(
     null,
   );
+  const [pendingVisibilityControlId, setPendingVisibilityControlId] =
+    useState<DeveloperToolsVisibilityControlId | null>(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -52,6 +57,7 @@ export function OptionsDeveloperToolsContainer({
       }
 
       setShouldRender(result);
+      setIsOpen(false);
       setFeedbackMessage(
         result
           ? getTranslation(TranslationKey.DeveloperToolsStatusIdle)
@@ -89,12 +95,29 @@ export function OptionsDeveloperToolsContainer({
     return null;
   }
 
+  function handleVisibilityChange(
+    controlId: DeveloperToolsVisibilityControlId,
+    nextIsOpen: boolean,
+  ) {
+    setPendingVisibilityControlId(controlId);
+    setIsOpen(nextIsOpen);
+    setPendingVisibilityControlId(null);
+  }
+
   return (
     <OptionsDeveloperToolsView
       getTranslation={getTranslation}
+      isOpen={isOpen}
       pendingActionId={pendingActionId}
+      pendingVisibilityControlId={pendingVisibilityControlId}
       feedbackMessage={feedbackMessage}
       isError={isError}
+      onOpen={() => {
+        handleVisibilityChange(DEVELOPER_TOOLS_VISIBILITY_CONTROLS.show, true);
+      }}
+      onClose={() => {
+        handleVisibilityChange(DEVELOPER_TOOLS_VISIBILITY_CONTROLS.hide, false);
+      }}
       onSkipOnboarding={() => {
         void runAction(
           DEVELOPER_TOOLS_ACTIONS.skipOnboarding,

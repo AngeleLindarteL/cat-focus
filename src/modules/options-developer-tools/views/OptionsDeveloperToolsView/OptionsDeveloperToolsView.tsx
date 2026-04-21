@@ -2,6 +2,8 @@ import { TranslationKey } from "@/lib/i18n";
 import {
   DEVELOPER_TOOLS_ACTIONS,
   type DeveloperToolsActionId,
+  DEVELOPER_TOOLS_VISIBILITY_CONTROLS,
+  type DeveloperToolsVisibilityControlId,
 } from "@/modules/options-developer-tools/views/OptionsDeveloperToolsView/constants";
 import type { OptionsDeveloperToolsViewProps } from "@/modules/options-developer-tools/views/OptionsDeveloperToolsView/interfaces";
 
@@ -11,6 +13,12 @@ type ActionItem = {
   id: DeveloperToolsActionId;
   label: string;
   tone: ActionTone;
+  onClick: () => void;
+};
+
+type VisibilityControlItem = {
+  id: DeveloperToolsVisibilityControlId;
+  label: string;
   onClick: () => void;
 };
 
@@ -31,9 +39,13 @@ function getActionClassName(tone: ActionTone): string {
 
 export function OptionsDeveloperToolsView({
   getTranslation,
+  isOpen,
   pendingActionId,
+  pendingVisibilityControlId,
   feedbackMessage,
   isError,
+  onOpen,
+  onClose,
   onSkipOnboarding,
   onResetOnboarding,
   onClearUsageBlocks,
@@ -66,16 +78,57 @@ export function OptionsDeveloperToolsView({
     },
   ];
 
+  const visibilityControl: VisibilityControlItem = isOpen
+    ? {
+        id: DEVELOPER_TOOLS_VISIBILITY_CONTROLS.hide,
+        label: getTranslation(TranslationKey.DeveloperToolsHide),
+        onClick: onClose,
+      }
+    : {
+        id: DEVELOPER_TOOLS_VISIBILITY_CONTROLS.show,
+        label: getTranslation(TranslationKey.DeveloperToolsShow),
+        onClick: onOpen,
+      };
+
+  const isVisibilityControlDisabled = pendingVisibilityControlId !== null;
+
+  if (!isOpen) {
+    return (
+      <div className="fixed inset-x-4 bottom-4 z-50 flex justify-end">
+        <button
+          type="button"
+          className="inline-flex cursor-pointer items-center justify-center rounded-full border border-amber-200 bg-white/95 px-4 py-2 text-sm font-medium text-stone-700 shadow-[0_20px_60px_rgba(120,113,108,0.18)] backdrop-blur transition hover:border-amber-300 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-60"
+          disabled={isVisibilityControlDisabled}
+          onClick={visibilityControl.onClick}
+        >
+          {visibilityControl.label}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <aside className="fixed inset-x-4 bottom-4 z-50 sm:left-auto sm:w-[22rem]">
       <div className="overflow-hidden rounded-[28px] border border-amber-200 bg-white/95 shadow-[0_24px_80px_rgba(120,113,108,0.22)] backdrop-blur">
         <div className="border-b border-amber-100 bg-[linear-gradient(180deg,rgba(254,243,199,0.9)_0%,rgba(255,251,235,0.8)_100%)] px-4 py-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-700">
-            {getTranslation(TranslationKey.DeveloperToolsTitle)}
-          </p>
-          <p className="mt-2 text-sm leading-6 text-stone-700">
-            {getTranslation(TranslationKey.DeveloperToolsDescription)}
-          </p>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-700">
+                {getTranslation(TranslationKey.DeveloperToolsTitle)}
+              </p>
+              <p className="mt-2 text-sm leading-6 text-stone-700">
+                {getTranslation(TranslationKey.DeveloperToolsDescription)}
+              </p>
+            </div>
+            <button
+              type="button"
+              className="inline-flex cursor-pointer items-center justify-center rounded-full border border-amber-200 bg-white/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 transition hover:border-amber-300 hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={isVisibilityControlDisabled}
+              onClick={visibilityControl.onClick}
+            >
+              {visibilityControl.label}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-3 px-4 py-4">

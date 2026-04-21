@@ -12,6 +12,10 @@ export const OPTIONS_DASHBOARD_SECTIONS: OptionsDashboardSectionDefinition[] = [
     hash: "#your-cat",
   },
   {
+    id: "new-cat",
+    hash: "#new-cat",
+  },
+  {
     id: "usage-time-limits",
     hash: "#usage-time-limits",
   },

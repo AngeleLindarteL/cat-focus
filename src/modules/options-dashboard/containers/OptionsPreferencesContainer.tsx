@@ -3,7 +3,7 @@ import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
   type UserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
 import { UserPreferencesFormContainer } from "@/modules/user-preferences";
 import type { UserPreferencesFormValues } from "@/modules/user-preferences/services/userPreferencesForm";
 

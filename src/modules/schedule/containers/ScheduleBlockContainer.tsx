@@ -6,8 +6,8 @@ import type {
   WeekdayToggleGroupRef,
 } from "@/components/WeekdayToggleGroup";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
-import type { ScheduleRepository } from "@/lib/repositories/scheduleRepository";
-import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories/scheduleRepository";
+import type { ScheduleRepository } from "@/lib/repositories";
+import { scheduleRepository as defaultScheduleRepository } from "@/lib/repositories";
 import type { ScheduleBlock } from "@/lib/schedules";
 import { DeleteScheduleModal } from "@/modules/schedule/components/DeleteScheduleModal";
 import { ScheduleCard } from "@/modules/schedule/views/ScheduleCard";

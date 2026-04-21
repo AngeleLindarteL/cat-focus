@@ -1,18 +1,23 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
-import type { CatRepository } from "@/lib/repositories/catRepository";
+import type { CatRepository } from "@/lib/repositories";
+import {
+  newCatRepository as defaultNewCatRepository,
+  type NewCatRepository,
+} from "@/lib/repositories";
 import {
   scheduleRepository as defaultScheduleRepository,
   type ScheduleRepository,
-} from "@/lib/repositories/scheduleRepository";
+} from "@/lib/repositories";
 import {
   usageRepository as defaultUsageRepository,
   type UsageRepository,
-} from "@/lib/repositories/usageRepository";
+} from "@/lib/repositories";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
   type UserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
+import { NewCatDashboardContainer } from "@/modules/new-cat/containers/NewCatDashboardContainer";
 import { ScheduleBlockContainer } from "@/modules/schedule/containers/ScheduleBlockContainer";
 import { UsageBlockContainer } from "@/modules/usage/containers/UsageBlockContainer";
 import { OptionsCatProfileContainer } from "@/modules/options-dashboard/containers/OptionsCatProfileContainer";
@@ -28,6 +33,7 @@ import { OptionsDashboardView } from "@/modules/options-dashboard/views/OptionsD
 type OptionsDashboardContainerProps = {
   getTranslation: UseTranslationResult["getTranslation"];
   catRepository: CatRepository;
+  newCatRepository?: NewCatRepository;
   scheduleRepository?: ScheduleRepository;
   usageRepository?: UsageRepository;
   userPreferencesRepository?: UserPreferencesRepository;
@@ -36,6 +42,7 @@ type OptionsDashboardContainerProps = {
 export function OptionsDashboardContainer({
   getTranslation,
   catRepository,
+  newCatRepository = defaultNewCatRepository,
   scheduleRepository = defaultScheduleRepository,
   usageRepository = defaultUsageRepository,
   userPreferencesRepository = defaultUserPreferencesRepository,
@@ -85,6 +92,11 @@ export function OptionsDashboardContainer({
         description: getTranslation(TranslationKey.OptionsSectionYourCatDescription),
       },
       {
+        id: "new-cat" as const,
+        label: getTranslation(TranslationKey.OptionsSectionNewCatLabel),
+        description: getTranslation(TranslationKey.OptionsSectionNewCatDescription),
+      },
+      {
         id: "usage-time-limits" as const,
         label: getTranslation(TranslationKey.OptionsSectionUsageLabel),
         description: getTranslation(TranslationKey.OptionsSectionUsageDescription),
@@ -119,6 +131,12 @@ export function OptionsDashboardContainer({
       <OptionsCatProfileContainer
         getTranslation={getTranslation}
         catRepository={catRepository}
+      />
+    ),
+    "new-cat": (
+      <NewCatDashboardContainer
+        getTranslation={getTranslation}
+        repository={newCatRepository}
       />
     ),
     "usage-time-limits": (

@@ -1,6 +1,6 @@
-import type { CatRepository } from "@/lib/repositories/catRepository";
+import type { CatRepository } from "@/lib/repositories";
 import type { UseTranslationResult } from "@/lib/i18n";
-import type { OnboardingRepository } from "@/lib/repositories/onboardingRepository";
+import type { OnboardingRepository } from "@/lib/repositories";
 import { useCatProfileForm } from "@/modules/onboarding/hooks/useCatProfileForm";
 import type { CatProfileFormValues } from "@/modules/onboarding/types/onboardingView";
 import { OnboardingStepOneView } from "@/modules/onboarding/views/OnboardingStepOneView";

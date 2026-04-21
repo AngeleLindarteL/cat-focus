@@ -2,11 +2,15 @@ import {
   getLocalStorageValues,
   setLocalStorageValues,
 } from "@/lib/chrome/storage";
-import { SCHEDULE_BLOCK_STORAGE_KEY, type ScheduleBlock, type ScheduleBlockDraft } from "@/lib/schedules";
+import {
+  SCHEDULE_BLOCK_STORAGE_KEY,
+  type ScheduleBlock,
+  type ScheduleBlockDraft,
+} from "@/lib/schedules";
 import type {
   ScheduleRepository,
   ScheduleStorageShape,
-} from "@/lib/repositories/scheduleRepository.interfaces";
+} from "./scheduleRepository.interfaces";
 
 export class ChromeStorageScheduleRepository implements ScheduleRepository {
   async findAll(): Promise<ScheduleBlock[]> {
@@ -77,5 +81,3 @@ export class ChromeStorageScheduleRepository implements ScheduleRepository {
 
 export const scheduleRepository: ScheduleRepository =
   new ChromeStorageScheduleRepository();
-
-export type { ScheduleRepository, ScheduleStorageShape } from "@/lib/repositories/scheduleRepository.interfaces";

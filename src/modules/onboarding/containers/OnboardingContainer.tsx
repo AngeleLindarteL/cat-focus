@@ -1,26 +1,26 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { TranslationKey, type Language, type UseTranslationResult } from "@/lib/i18n";
-import type { CatProfile, OnboardingStep } from "@/lib/onboarding";
+import type { LegacyCatProfile, OnboardingStep } from "@/lib/onboarding";
 import {
   catRepository as defaultCatRepository,
   type CatRepository,
-} from "@/lib/repositories/catRepository";
+} from "@/lib/repositories";
 import {
   onboardingRepository as defaultOnboardingRepository,
   type OnboardingRepository,
-} from "@/lib/repositories/onboardingRepository";
+} from "@/lib/repositories";
 import {
   scheduleRepository as defaultScheduleRepository,
   type ScheduleRepository,
-} from "@/lib/repositories/scheduleRepository";
+} from "@/lib/repositories";
 import {
   usageRepository as defaultUsageRepository,
   type UsageRepository,
-} from "@/lib/repositories/usageRepository";
+} from "@/lib/repositories";
 import {
   userPreferencesRepository as defaultUserPreferencesRepository,
   type UserPreferencesRepository,
-} from "@/lib/repositories/userPreferencesRepository";
+} from "@/lib/repositories";
 import { OnboardingStepOneContainer } from "@/modules/onboarding/containers/OnboardingStepOneContainer";
 import { OnboardingStepTwoContainer } from "@/modules/onboarding/containers/OnboardingStepTwoContainer";
 import { useOnboardingStepper } from "@/modules/onboarding/hooks/useOnboardingStepper";
@@ -52,7 +52,7 @@ export function OnboardingContainer({
   getTranslation,
 }: OnboardingContainerProps) {
   const { isLoading, onboardingState, refresh } = useOnboardingState(onboardingRepository);
-  const [catProfile, setCatProfile] = useState<CatProfile | null>(null);
+  const [catProfile, setCatProfile] = useState<LegacyCatProfile | null>(null);
   const [isCatProfileLoading, setIsCatProfileLoading] = useState(true);
   const [isUserPreferencesLoading, setIsUserPreferencesLoading] = useState(true);
   const [userPreferences, setUserPreferences] = useState<{

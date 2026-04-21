@@ -2,12 +2,12 @@ import {
   getLocalStorageValues,
   setLocalStorageValues,
 } from "@/lib/chrome/storage";
-import { USER_PREFERENCES_STORAGE_KEY } from "@/lib/repositories/userPreferencesRepository.constants";
+import { USER_PREFERENCES_STORAGE_KEY } from "./userPreferencesRepository.constants";
 import type {
   UserPreferences,
   UserPreferencesRepository,
   UserPreferencesStorageShape,
-} from "@/lib/repositories/userPreferencesRepository.interfaces";
+} from "./userPreferencesRepository.interfaces";
 
 export class ChromeStorageUserPreferencesRepository
   implements UserPreferencesRepository
@@ -43,9 +43,3 @@ export class ChromeStorageUserPreferencesRepository
 
 export const userPreferencesRepository: UserPreferencesRepository =
   new ChromeStorageUserPreferencesRepository();
-
-export type {
-  UserPreferences,
-  UserPreferencesRepository,
-  UserPreferencesStorageShape,
-} from "@/lib/repositories/userPreferencesRepository.interfaces";

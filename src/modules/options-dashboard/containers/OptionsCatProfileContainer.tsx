@@ -4,7 +4,7 @@ import { TranslationKey, type UseTranslationResult } from "@/lib/i18n";
 import {
   catRepository as defaultCatRepository,
   type CatRepository,
-} from "@/lib/repositories/catRepository";
+} from "@/lib/repositories";
 import { useCatProfileForm } from "@/modules/onboarding/hooks/useCatProfileForm";
 import type { CatProfileFormValues } from "@/modules/onboarding/types/onboardingView";
 import { CatProfileDashboardView } from "@/modules/options-dashboard/views/CatProfileDashboardView";
